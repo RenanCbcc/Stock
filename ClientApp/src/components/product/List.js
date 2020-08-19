@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-export class FetchData extends Component {
+export class List extends Component {
 
-    static displayName = FetchData.name;
+    static displayName = List.name;
 
     constructor(props) {
         super(props);
@@ -13,24 +13,24 @@ export class FetchData extends Component {
         this.populateProductsData();
     }
 
-    static renderProductsTable(forecasts) {
+    static renderProductsTable(products) {
         return (
             <table className='table table-striped' aria-labelledby="tabelLabel">
                 <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Temp. (C)</th>
-                        <th>Temp. (F)</th>
-                        <th>Summary</th>
+                        <th>Descrição</th>
+                        <th>Preço</th>
+                        <th>Código(F)</th>
+                        <th>Quantidade</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {forecasts.map(forecast =>
-                        <tr key={forecast.date}>
-                            <td>{forecast.date}</td>
-                            <td>{forecast.temperatureC}</td>
-                            <td>{forecast.temperatureF}</td>
-                            <td>{forecast.summary}</td>
+                    {products.map((product, index) =>
+                        <tr key={index}>
+                            <td>{product.description}</td>
+                            <td>{product.price}</td>
+                            <td>{product.code}</td>
+                            <td>{product.quantity}</td>
                         </tr>
                     )}
                 </tbody>
@@ -41,7 +41,7 @@ export class FetchData extends Component {
     render() {
         let contents = this.state.loading
             ? <p><em>Loading...</em></p>
-            : FetchData.renderProductsTable(this.state.products);
+            : List.renderProductsTable(this.state.products);
 
         return (
             <div>
@@ -52,9 +52,21 @@ export class FetchData extends Component {
         );
     }
 
+    isOK(res) {
+        if (res.ok) {
+            return res;
+        } else {
+            throw new Error(res.statusText);
+        }
+    }
+
     async populateProductsData() {
-        const response = await fetch('products');
-        const data = await response.json();
-        this.setState({ products: data, loading: false });
+        await fetch('product')
+            .then(res => this.isOK(res))
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ products: data, loading: false });
+            })
+            .catch(err => console.log(err));
     }
 }

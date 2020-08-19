@@ -21,9 +21,13 @@ namespace Estoque.Controllers
 
         // GET: api/Product
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Product> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new Product[] {
+                new Product() { Price=39.50f,Description="Bermuda",Code="1234567891011",Quantity=10},
+                new Product() { Price=19.00f,Description="Sandálias",Code="1834267891741",Quantity=12}
+            }.ToArray();
+
         }
 
         // GET: api/Product/5
