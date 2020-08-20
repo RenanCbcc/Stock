@@ -12,5 +12,7 @@ namespace Estoque.Models.CategoryModels
         [StringLength(maximumLength: 4, MinimumLength = 50,
         ErrorMessage = "O título da categoria deve ter no mímino 4 caracteres e no máximo 50.")]
         public string Title { get; set; }
+
+        public float Discount { get; set; }
     }
 }

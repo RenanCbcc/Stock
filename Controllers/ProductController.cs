@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Estoque.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -23,24 +23,45 @@ namespace Estoque.Controllers
         [HttpGet]
         public IEnumerable<Product> Get()
         {
-            return new Product[] {
-                new Product() { Price=39.50f,Description="Bermuda",Code="1234567891011",Quantity=10},
-                new Product() { Price=19.00f,Description="Sandálias",Code="1834267891741",Quantity=12}
-            }.ToArray();
-
+            return repository.Browse();
         }
 
         // GET: api/Product/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return "value";
+            var product = await repository.Read(id);
+            if (product == null)
+            {
+                return NotFound(id);
+            }
+            return Ok(product);
         }
 
         // POST: api/Product
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post(CreateViewModel model)
         {
+            if (ModelState.IsValid)
+            {
+                var p = new Product
+                {
+                    Discount = model.Discount,
+                    PurchasePrice = model.PurchasePrice,
+                    SalePrice = model.SalePrice,
+                    Description = model.Description,
+                    Code = model.Code,
+                    Quantity = model.Quantity,
+                    //CatgoryId = model.CatgoryId,
+                    //SupplierId = model.SupplierId
+                };
+
+                await repository.Add(p);
+                var url = Url.Action("Read", new { id = p.Id });
+                return Created(url, p);
+            }
+
+            return BadRequest(ModelState);
         }
 
         // PUT: api/Product/5

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Estoque.Models.ProductModels
 {
-    public class SearchProductViewModel
+    public class SearchViewModel
     {
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,10 +9,10 @@ namespace Estoque.Models.ProductModels
     public interface IProductRepository
     {
         Task<Product> Read(int Id);
-        IQueryable<Product> Browse();
+        IEnumerable<Product> Browse();
         Task Add(Product product);
         Task Edit(Product product);
-        IQueryable<Product> Search(SearchProductViewModel model);
+        IQueryable<Product> Search(SearchViewModel model);
     }
     public class ProductRepository : IProductRepository
     {
@@ -22,27 +23,30 @@ namespace Estoque.Models.ProductModels
             this.context = context;
         }
 
-        public Task Add(Product product)
+        public async Task Add(Product product)
         {
-            throw new NotImplementedException();
+            await context.Products.AddAsync(product);
+            await context.SaveChangesAsync();
         }
 
-        public IQueryable<Product> Browse()
+        public IEnumerable<Product> Browse()
         {
-            throw new NotImplementedException();
+            return context.Products;
         }
 
-        public Task Edit(Product product)
+        public async Task Edit(Product alteredProduct)
         {
-            throw new NotImplementedException();
+            var product = context.Products.Attach(alteredProduct);
+            product.State = EntityState.Modified;
+            await context.SaveChangesAsync();
         }
 
-        public Task<Product> Read(int Id)
+        public async Task<Product> Read(int Id)
         {
-            throw new NotImplementedException();
+            return await context.Products.FindAsync(Id);
         }
 
-        public IQueryable<Product> Search(SearchProductViewModel model)
+        public IQueryable<Product> Search(SearchViewModel model)
         {
             throw new NotImplementedException();
         }

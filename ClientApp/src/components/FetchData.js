@@ -1,4 +1,12 @@
 import React, { Component } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 
 export class FetchData extends Component {
     static displayName = FetchData.name;
@@ -13,27 +21,37 @@ export class FetchData extends Component {
     }
 
     static renderForecastsTable(forecasts) {
+        const classes = makeStyles({
+            table: {
+                minWidth: 650,
+            },
+        });
+
         return (
-            <table className='table table-striped' aria-labelledby="tabelLabel">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Temp. (C)</th>
-                        <th>Temp. (F)</th>
-                        <th>Summary</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {forecasts.map(forecast =>
-                        <tr key={forecast.date}>
-                            <td>{forecast.date}</td>
-                            <td>{forecast.temperatureC}</td>
-                            <td>{forecast.temperatureF}</td>
-                            <td>{forecast.summary}</td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
+            <TableContainer component={Paper}>
+                <Table className={classes.table} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Date</TableCell>
+                            <TableCell align="right">Temp. (C)</TableCell>
+                            <TableCell align="right">Temp. (F)</TableCell>
+                            <TableCell align="right">Summary</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {forecasts.map((forecast) => (
+                            <TableRow key={forecast.date}>
+                                <TableCell component="th" scope="row">
+                                    {forecast.date}
+                                </TableCell>
+                                <TableCell align="right">{forecast.temperatureC}</TableCell>
+                                <TableCell align="right">{forecast.temperatureF}</TableCell>
+                                <TableCell align="right">{forecast.summary}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         );
     }
 

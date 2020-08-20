@@ -61,7 +61,7 @@ export class List extends Component {
     }
 
     async populateProductsData() {
-        await fetch('product')
+        await fetch('api/Product')
             .then(res => this.isOK(res))
             .then(response => response.json())
             .then(data => {
