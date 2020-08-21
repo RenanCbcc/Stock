@@ -15,8 +15,8 @@ namespace Estoque.Migrations
                     Discount = table.Column<float>(nullable: false),
                     PurchasePrice = table.Column<float>(nullable: false),
                     SalePrice = table.Column<float>(nullable: false),
-                    Description = table.Column<string>(maxLength: 4, nullable: false),
-                    Code = table.Column<string>(maxLength: 9, nullable: false),
+                    Description = table.Column<string>(maxLength: 50, nullable: false),
+                    Code = table.Column<string>(maxLength: 13, nullable: false),
                     Quantity = table.Column<int>(nullable: false)
                 },
                 constraints: table =>

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Estoque.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -57,7 +57,7 @@ namespace Estoque.Controllers
                 };
 
                 await repository.Add(p);
-                var url = Url.Action("Read", new { id = p.Id });
+                var url = Url.Action("Get", new { id = p.Id });
                 return Created(url, p);
             }
 

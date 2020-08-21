@@ -28,15 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200820184234_Product.cs" />
-    <Compile Remove="Migrations\20200820184234_Product.Designer.cs" />
-    <Compile Remove="Migrations\20200820185155_Product.cs" />
-    <Compile Remove="Migrations\20200820185155_Product.Designer.cs" />
-    <Compile Remove="Migrations\20200820185741_Product.cs" />
-    <Compile Remove="Migrations\20200820185741_Product.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="ClientApp\src\components\client\" />
   </ItemGroup>
 

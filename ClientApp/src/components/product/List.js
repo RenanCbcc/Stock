@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import MaterialTable from 'material-table';
 
 export class List extends Component {
 
@@ -15,26 +16,7 @@ export class List extends Component {
 
     static renderProductsTable(products) {
         return (
-            <table className='table table-striped' aria-labelledby="tabelLabel">
-                <thead>
-                    <tr>
-                        <th>Descrição</th>
-                        <th>Preço</th>
-                        <th>Código(F)</th>
-                        <th>Quantidade</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {products.map((product, index) =>
-                        <tr key={index}>
-                            <td>{product.description}</td>
-                            <td>{product.price}</td>
-                            <td>{product.code}</td>
-                            <td>{product.quantity}</td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
+            <></>
         );
     }
 
@@ -61,7 +43,7 @@ export class List extends Component {
     }
 
     async populateProductsData() {
-        await fetch('api/Product')
+        await fetch('Product')
             .then(res => this.isOK(res))
             .then(response => response.json())
             .then(data => {
