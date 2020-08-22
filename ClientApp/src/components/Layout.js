@@ -5,7 +5,7 @@ import { Route } from 'react-router';
 import { Home } from '../components/Home';
 import { FetchData } from '../components/FetchData';
 import { Counter } from '../components/Counter';
-import { List } from '../components/product/List'
+import { Product } from '../components/product/Product'
 
 export class Layout extends Component {
     static displayName = Layout.name;
@@ -18,7 +18,7 @@ export class Layout extends Component {
                     <Route exact path='/' component={Home} />
                     <Route path='/counter' component={Counter} />
                     <Route path='/fetch-data' component={FetchData} />
-                    <Route path='/list' component={List} />
+                    <Route path='/product' component={Product} />
                 </Container>
             </div>
         );

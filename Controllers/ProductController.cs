@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Estoque.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -64,10 +64,27 @@ namespace Estoque.Controllers
             return BadRequest(ModelState);
         }
 
-        // PUT: api/Product/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // PUT: api/Product/
+        [HttpPut]
+        public async Task<IActionResult> Put(EditViewModel model)
         {
+            if (ModelState.IsValid)
+            {
+                var p = await repository.Read(model.Id);
+                if (p == null)
+                {
+                    return NotFound(model.Id);
+                }
+
+                p.Discount = model.Discount;
+                p.SalePrice = model.SalePrice;
+                p.PurchasePrice = model.PurchasePrice;
+                p.Description = model.Description;
+                p.Quantity = model.Quantity;
+                await repository.Edit(p);
+                return Ok(p);
+            }
+            return BadRequest(ModelState);
         }
 
         // DELETE: api/ApiWithActions/5
