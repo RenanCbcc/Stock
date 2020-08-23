@@ -1,11 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Layout } from './components/Layout';
 import './custom.css'
 
-export default class App extends Component {
-  static displayName = App.name;
-
-  render () {
-    return (<Layout/>);
-  }
+function App() {
+    return (<Layout />);
 }
+
+export default App
