@@ -8,13 +8,60 @@ function renderProductsTable(products, handleRowAdd, handleRowUpdate, iserror, e
     const columns =
         [
             { title: "id", field: "id", hidden: true },
-            { title: 'Descrição', field: 'description' },
-            { title: 'Código', field: 'code' },
-            { title: 'Preço de compra', field: 'purchasePrice', type: 'numeric' },
-            { title: 'Preço de venda', field: 'salePrice', type: 'numeric' },
-            { title: 'Quantidade', field: 'quantity', type: 'numeric' },
-            { title: 'Desconto', field: 'discount', type: 'numeric' },
+            {
+                title: 'Descrição', field: 'description',
+                validate: rowData => rowData.description === '' ? 'Descrição não pode ser vazia' : ''
+            },
+            {
+                title: 'Código', field: 'code',
+                validate: rowData => (rowData.code === '' || rowData.code.length < 9 || rowData.code.length > 13)
+                    ? 'Código deve ter entre 9 e 13 dígitos' : ''
+            },
+            {
+                title: 'Preço de compra', field: 'purchasePrice', type: 'numeric',
+                validate: rowData => rowData.purchasePrice < 0 ? 'Preço de compra não pode ser menor que zero' : ''
+            },
+            {
+                title: 'Preço de venda', field: 'salePrice', type: 'numeric',
+                validate: rowData => rowData.salePrice < 0 ? 'Preço de venda não pode ser menor que zero' : ''
+            },
+            {
+                title: 'Quantidade', field: 'quantity', type: 'numeric',
+                validate: rowData => rowData.quantity < 0 ? 'Quantidade não pode ser menor que zero' : ''
+            },
+            {
+                title: 'Desconto', field: 'discount', type: 'numeric',
+                validate: rowData => (rowData.discount < 0 || rowData.discount > 100) ? 'Desconto deve ser >= 0 e <=100' : ''
+            },
         ];
+
+    const localization = {
+        body: {
+            emptyDataSourceMessage: 'Nenhum registro para exibir',
+            addTooltip: 'Adicionar',
+            deleteTooltip: 'Apagar',
+            editTooltip: 'Editar',
+            editRow: {
+                deleteText: 'Voulez-vous supprimer cette ligne?',
+                cancelTooltip: 'Cancelar',
+                saveTooltip: 'Salvar'
+            }
+        },
+        toolbar: {
+            searchTooltip: 'Pesquisar',
+            searchPlaceholder: 'Pesquisar',
+            exportTitle: 'Exportar',
+            exportAriaLabel: 'Exportar',
+        },
+        pagination: {
+            labelRowsSelect: 'linhas',
+            labelDisplayedRows: '{count} de {from}-{to}',
+            firstTooltip: 'Primeira página',
+            previousTooltip: 'Página anterior',
+            nextTooltip: 'Próxima página',
+            lastTooltip: 'Última página'
+        }
+    }
 
     return (
         <>
@@ -32,6 +79,8 @@ function renderProductsTable(products, handleRowAdd, handleRowUpdate, iserror, e
                 title="Produtos"
                 data={products}
                 columns={columns}
+                localization={localization}
+                options={{ exportButton: true }}
                 editable={{
                     onRowAdd: newData =>
                         new Promise((resolve) => {
@@ -59,7 +108,7 @@ function Product() {
     const isOk = (response) => {
         if (response !== null && response.ok) {
             return response;
-        } else {           
+        } else {
             throw new Error(response.statusText);
         }
     }
@@ -77,117 +126,56 @@ function Product() {
 
 
     const handleRowAdd = (newData, resolve) => {
-        //validation
-        let errorList = []
 
-        if (newData.description === undefined) {
-            errorList.push("O produto precisa ter uma descrição.")
-        }
-
-        if (newData.code === undefined) {
-            errorList.push("O produto precisa ter um código.")
-        }
-        if (newData.purchasePrice === undefined) {
-            errorList.push("O produto precisa ter um valor de preço de compra.")
-        }
-
-        if (newData.purchasePrice === undefined) {
-            errorList.push("O produto precisa ter um valor de preço de compra.")
-        }
-
-        if (newData.salePrice === undefined) {
-            errorList.push("O produto precisa ter um valor de preço de venda.")
-        }
-
-        if (newData.quantity === undefined) {
-            errorList.push("O produto precisa ter uma quantidade.")
-        }
-
-
-        if (errorList.length === 0) { //no error
-            fetch(baseURL, {
-                method: 'Post',
-                headers: { 'Content-type': 'application/json' },
-                body: JSON.stringify(newData)
+        fetch(baseURL, {
+            method: 'Post',
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify(newData)
+        })
+            .then(res => isOk(res))
+            .then(response => response.json())
+            .then(product => {
+                let dataToAdd = [...data];
+                dataToAdd.push(product);
+                setData(dataToAdd);
+                resolve()
+                setErrorMessages([])
+                setIserror(false)
             })
-                .then(res => isOk(res))
-                .then(response => response.json())
-                .then(product => {
-                    let dataToAdd = [...data];
-                    dataToAdd.push(product);
-                    setData(dataToAdd);
-                    resolve()
-                    setErrorMessages([])
-                    setIserror(false)
-                })
-                .catch(error => {
-                    setErrorMessages([`Não foi possível enviar os dados ao servidor. ${error}`])
-                    setIserror(true)
-                    resolve()
-                })
-        } else {
-            console.log(errorList)
-            setErrorMessages(errorList)
-            setIserror(true)
-            resolve()
-        }
+            .catch(error => {
+                setErrorMessages([`Não foi possível enviar os dados ao servidor. ${error}`])
+                setIserror(true)
+                resolve()
+            })
+
 
 
     }
 
     const handleRowUpdate = (newData, oldData, resolve) => {
-        //validation
-        let errorList = []
+        fetch(baseURL,
+            {
+                method: 'Put',
+                headers: { 'Content-type': 'application/json' },
+                body: JSON.stringify(newData)
+            })
+            .then(res => isOk(res))
+            .then(response => response.json())
+            .then(product => {
+                const dataUpdate = [...data];
+                const index = oldData.tableData.id;
+                dataUpdate[index] = product;
+                setData([...dataUpdate]);
+                resolve()
+                setIserror(false)
+                setErrorMessages([])
+            })
+            .catch(error => {
+                setErrorMessages(["Não foi possível atualizar o produto. Erro no servidor."])
+                setIserror(true)
+                resolve()
+            })
 
-        if (newData.description === undefined) {
-            errorList.push("O produto precisa ter uma descrição.")
-        }
-
-        if (newData.purchasePrice === undefined) {
-            errorList.push("O produto precisa ter um valor de preço de compra.")
-        }
-
-        if (newData.purchasePrice === undefined) {
-            errorList.push("O produto precisa ter um valor de preço de compra.")
-        }
-
-        if (newData.salePrice === undefined) {
-            errorList.push("O produto precisa ter um valor de preço de venda.")
-        }
-
-        if (newData.quantity === undefined) {
-            errorList.push("O produto precisa ter uma quantidade.")
-        }
-
-        if (errorList.length === 0) {
-            fetch(baseURL,
-                {
-                    method: 'Put',
-                    headers: { 'Content-type': 'application/json' },
-                    body: JSON.stringify(newData)
-                })
-                .then(res => isOk(res))
-                .then(response => response.json())
-                .then(product => {
-                    const dataUpdate = [...data];
-                    const index = oldData.tableData.id;
-                    dataUpdate[index] = product;
-                    setData([...dataUpdate]);
-                    resolve()
-                    setIserror(false)
-                    setErrorMessages([])
-                })
-                .catch(error => {
-                    setErrorMessages(["Não foi possível atualizar o produto. Erro no servidor."])
-                    setIserror(true)
-                    resolve()
-                })
-        } else {
-            setErrorMessages(errorList)
-            setIserror(true)
-            resolve()
-
-        }
 
     }
 
