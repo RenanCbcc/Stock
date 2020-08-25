@@ -6,38 +6,30 @@ import { Select, MenuItem } from "@material-ui/core";
 const baseURL = "api/Client";
 
 function renderProductsTable(clients, handleRowAdd, handleRowUpdate, iserror, errorMessages) {
-    const status = ["Ativo", "Inativo"];
+
     const columns =
         [
             { title: "id", field: "id", hidden: true },
             {
                 title: 'Nome', field: 'name',
-                validate: rowData => rowData.name === '' ? 'Nome não pode ser vazio.' : ''
+                validate: rowData => rowData.name === '' ? '⚠️ Nome não pode ser vazio.' : ''
             },
             {
                 title: 'Endereço', field: 'address',
                 validate: rowData => (rowData.address === '' || rowData.address.length < 10 || rowData.address.length > 100)
-                    ? 'Endereço deve ter entre 10 e 100 caracteres.' : ''
+                    ? '⚠️ Endereço deve ter entre 10 e 100 caracteres.' : ''
             },
             {
                 title: 'Telefone', field: 'phoneNumber',
-                validate: rowData => (rowData.address === '' || rowData.phoneNumber !== 11)
-                    ? 'Número de telefone deve ter 11 caracteres.' : ''
+                validate: rowData => (rowData.address === '' || rowData.phoneNumber.length !== 11)
+                    ? '⚠️ Número de telefone deve ter 11 caracteres.' : ''
+            },
+            {
+                title: 'Status', field: 'status', type: 'numeric',
+                lookup: { 0: 'Ativo', 1: 'Inativo' }
             },
             {
                 title: 'Débito', field: 'debt', type: 'numeric', editable: 'never'
-            },
-            {
-                title: 'Status', field: 'status',
-                editComponent: ({ value, onRowDataChange, rowData }) => (
-                    <Select>
-                        {status.map((state) => (
-                            <MenuItem key={state} value={state}>
-                                {state}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                )
             },
             {
                 title: 'Última compra', field: 'lastPurchase', type: 'date', editable: 'never'

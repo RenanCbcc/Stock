@@ -10,28 +10,28 @@ function renderProductsTable(products, handleRowAdd, handleRowUpdate, iserror, e
             { title: "id", field: "id", hidden: true },
             {
                 title: 'Descrição', field: 'description', type: 'string',
-                validate: rowData => rowData.description === '' ? 'Descrição não pode ser vazia' : ''
+                validate: rowData => rowData.description === '' ? '⚠️ Descrição não pode ser vazia' : ''
             },
             {
                 title: 'Código', field: 'code', editable: 'string',
                 validate: rowData => (rowData.code === '' || rowData.code.length < 9 || rowData.code.length > 13)
-                    ? 'Código deve ter entre 9 e 13 dígitos' : ''
+                    ? '⚠️ Código deve ter entre 9 e 13 dígitos' : ''
             },
             {
                 title: 'Preço de compra', field: 'purchasePrice', type: 'currency',
-                validate: rowData => rowData.purchasePrice < 0 ? 'Preço de compra não pode ser menor que zero' : ''
+                validate: rowData => rowData.purchasePrice < 0 ? '⚠️ Preço de compra não pode ser menor que zero' : ''
             },
             {
                 title: 'Preço de venda', field: 'salePrice', type: 'currency',
-                validate: rowData => rowData.salePrice < 0 ? 'Preço de venda não pode ser menor que zero' : ''
+                validate: rowData => rowData.salePrice < 0 ? '⚠️ Preço de venda não pode ser menor que zero' : ''
             },
             {
                 title: 'Quantidade', field: 'quantity', type: 'numeric',
-                validate: rowData => rowData.quantity < 0 ? 'Quantidade não pode ser menor que zero' : ''
+                validate: rowData => rowData.quantity < 0 ? '⚠️ Quantidade não pode ser menor que zero' : ''
             },
             {
                 title: 'Desconto', field: 'discount', type: 'numeric',
-                validate: rowData => (rowData.discount < 0 || rowData.discount > 100) ? 'Desconto deve ser >= 0 e <=100' : ''
+                validate: rowData => (rowData.discount < 0 || rowData.discount > 100) ? '⚠️ Desconto deve ser >= 0 e <=100' : ''
             },
         ];
 
