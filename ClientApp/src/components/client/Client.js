@@ -1,37 +1,46 @@
 ﻿import React, { useState, useEffect } from 'react';
 import MaterialTable from 'material-table';
 import Alert from '@material-ui/lab/Alert';
+import { Select, MenuItem } from "@material-ui/core";
 
-const baseURL = "api/Product";
+const baseURL = "api/Client";
 
-function renderProductsTable(products, handleRowAdd, handleRowUpdate, iserror, errorMessages) {
+function renderProductsTable(clients, handleRowAdd, handleRowUpdate, iserror, errorMessages) {
+    const status = ["Ativo", "Inativo"];
     const columns =
         [
             { title: "id", field: "id", hidden: true },
             {
-                title: 'Descrição', field: 'description', type: 'string',
-                validate: rowData => rowData.description === '' ? 'Descrição não pode ser vazia' : ''
+                title: 'Nome', field: 'name',
+                validate: rowData => rowData.name === '' ? 'Nome não pode ser vazio.' : ''
             },
             {
-                title: 'Código', field: 'code', editable: 'string',
-                validate: rowData => (rowData.code === '' || rowData.code.length < 9 || rowData.code.length > 13)
-                    ? 'Código deve ter entre 9 e 13 dígitos' : ''
+                title: 'Endereço', field: 'address',
+                validate: rowData => (rowData.address === '' || rowData.address.length < 10 || rowData.address.length > 100)
+                    ? 'Endereço deve ter entre 10 e 100 caracteres.' : ''
             },
             {
-                title: 'Preço de compra', field: 'purchasePrice', type: 'currency',
-                validate: rowData => rowData.purchasePrice < 0 ? 'Preço de compra não pode ser menor que zero' : ''
+                title: 'Telefone', field: 'phoneNumber',
+                validate: rowData => (rowData.address === '' || rowData.phoneNumber !== 11)
+                    ? 'Número de telefone deve ter 11 caracteres.' : ''
             },
             {
-                title: 'Preço de venda', field: 'salePrice', type: 'currency',
-                validate: rowData => rowData.salePrice < 0 ? 'Preço de venda não pode ser menor que zero' : ''
+                title: 'Débito', field: 'debt', type: 'numeric', editable: 'never'
             },
             {
-                title: 'Quantidade', field: 'quantity', type: 'numeric',
-                validate: rowData => rowData.quantity < 0 ? 'Quantidade não pode ser menor que zero' : ''
+                title: 'Status', field: 'status',
+                editComponent: ({ value, onRowDataChange, rowData }) => (
+                    <Select>
+                        {status.map((state) => (
+                            <MenuItem key={state} value={state}>
+                                {state}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                )
             },
             {
-                title: 'Desconto', field: 'discount', type: 'numeric',
-                validate: rowData => (rowData.discount < 0 || rowData.discount > 100) ? 'Desconto deve ser >= 0 e <=100' : ''
+                title: 'Última compra', field: 'lastPurchase', type: 'date', editable: 'never'
             },
         ];
 
@@ -63,6 +72,7 @@ function renderProductsTable(products, handleRowAdd, handleRowUpdate, iserror, e
         }
     }
 
+
     return (
         <>
             <div>
@@ -76,8 +86,8 @@ function renderProductsTable(products, handleRowAdd, handleRowUpdate, iserror, e
                 }
             </div>
             <MaterialTable
-                title="Produtos"
-                data={products}
+                title="Clients"
+                data={clients}
                 columns={columns}
                 localization={localization}
                 options={{ exportButton: true }}
@@ -98,7 +108,7 @@ function renderProductsTable(products, handleRowAdd, handleRowUpdate, iserror, e
 
 
 
-function Product() {
+function Client() {
 
     const [data, setData] = useState([]);
     const [errorMessages, setErrorMessages] = useState([]);
@@ -171,7 +181,7 @@ function Product() {
                 setErrorMessages([])
             })
             .catch(error => {
-                setErrorMessages(["Não foi possível atualizar o produto. Erro no servidor."])
+                setErrorMessages(["Não foi possível atualizar o cliente. Erro no servidor."])
                 setIserror(true)
                 resolve()
             })
@@ -185,4 +195,4 @@ function Product() {
 
 };
 
-export default Product;
+export default Client;

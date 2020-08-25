@@ -4,6 +4,7 @@ import { NavMenu } from './NavMenu';
 import { Route } from 'react-router';
 import { Home } from '../components/Home';
 import { Counter } from '../components/Counter';
+import Client from '../components/client/Client';
 import Product from '../components/product/Product'
 
 export class Layout extends Component {
@@ -15,8 +16,9 @@ export class Layout extends Component {
                 <NavMenu />
                 <Container >
                     <Route exact path='/' component={Home} />
-                    <Route path='/counter' component={Counter} />                    
+                    <Route path='/counter' component={Counter} />
                     <Route path='/product' component={Product} />
+                    <Route path='/client' component={Client} />
                 </Container>
             </div>
         );

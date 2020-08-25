@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Estoque.Models.CategoryModels
 {
-    public class Category : Base
+    public class CreateViewModel
     {
-        public Category()
+        public CreateViewModel()
         {
             Discount = 0;
         }

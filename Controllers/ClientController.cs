@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Estoque.Models.ClientModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Estoque.Controllers
@@ -17,6 +14,69 @@ namespace Estoque.Controllers
         public ClientController(IClientRepository repository)
         {
             this.repository = repository;
+        }
+
+        // GET: api/Product
+        [HttpGet]
+        public IEnumerable<Client> Get()
+        {
+            return repository.Browse();
+        }
+
+        // GET: api/Product/5
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var client = await repository.Read(id);
+            if (client == null)
+            {
+                return NotFound(id);
+            }
+            return Ok(client);
+        }
+
+        // POST: api/Product
+        [HttpPost]
+        public async Task<IActionResult> Post(CreateViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var c = new Client
+                {
+                    Name = model.Name,
+                    Address = model.Address,
+                    PhoneNumber = model.PhoneNumber
+                };
+
+                await repository.Add(c);
+                var url = Url.Action("Get", new { id = c.Id });
+                return Created(url, c);
+            }
+
+            return BadRequest(ModelState);
+        }
+
+        // PUT: api/Product/
+        [HttpPut]
+        public async Task<IActionResult> Put(EditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var c = await repository.Read(model.Id);
+                if (c == null)
+                {
+                    return NotFound(model.Id);
+                }
+
+                c.Status = model.Status;
+                c.Name = model.Name;
+                c.Address = model.Address;
+                c.PhoneNumber = model.PhoneNumber;
+
+                await repository.Edit(c);
+                return Ok(c);
+            }
+            return BadRequest(ModelState);
         }
 
 

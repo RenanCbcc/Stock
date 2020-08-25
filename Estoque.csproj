@@ -28,7 +28,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\src\components\client\" />
+    <Compile Remove="Migrations\20200824193332_Category.cs" />
+    <Compile Remove="Migrations\20200824193332_Category.Designer.cs" />
+    <Compile Remove="Migrations\20200824193857_Category.cs" />
+    <Compile Remove="Migrations\20200824193857_Category.Designer.cs" />
+    <Compile Remove="Migrations\20200825180236_Client.cs" />
+    <Compile Remove="Migrations\20200825180236_Client.Designer.cs" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

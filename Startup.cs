@@ -1,4 +1,5 @@
 using Estoque.Models;
+using Estoque.Models.CategoryModels;
 using Estoque.Models.ClientModels;
 using Estoque.Models.ProductModels;
 using Microsoft.AspNetCore.Builder;
@@ -41,6 +42,7 @@ namespace Estoque
             //Injection
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 
             services.AddControllersWithViews();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,6 +9,15 @@ namespace Estoque.Models.ProductModels
 {
     public class Product : Base
     {
+        public Product()
+        {
+            Discount = 0;
+        }
+
+        //[ForeignKey("Categories")]
+        //public int CategoryId { get; set; }
+
+
         [Range(minimum: 0, maximum: 100, ErrorMessage = "O desconto do produto deve estar entre 0 e 100.")]
         public float Discount { get; set; }
 
@@ -38,7 +48,7 @@ namespace Estoque.Models.ProductModels
         [Range(minimum: 1, maximum: 100, ErrorMessage = "A quantidade deve estar entre 1 e 100.")]
         public int Quantity { get; set; }
 
-        //public int CatgoryId { get; set; }
+
         //public int SupplierId { get; set; }
     }
 }

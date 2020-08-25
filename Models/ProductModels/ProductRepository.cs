@@ -11,8 +11,7 @@ namespace Estoque.Models.ProductModels
         Task<Product> Read(int Id);
         IEnumerable<Product> Browse();
         Task Add(Product product);
-        Task Edit(Product product);
-        IQueryable<Product> Search(SearchViewModel model);
+        Task Edit(Product product);        
     }
     public class ProductRepository : IProductRepository
     {
@@ -45,10 +44,6 @@ namespace Estoque.Models.ProductModels
         {
             return await context.Products.FindAsync(Id);
         }
-
-        public IQueryable<Product> Search(SearchViewModel model)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

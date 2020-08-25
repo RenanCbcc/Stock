@@ -1,26 +1,13 @@
-﻿using Estoque.Models.AccountModels;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Estoque.Models.ClientModels
 {
-    public class Client : Base
+    public class CreateViewModel
     {
-        public Client()
-        {
-            Status = Status.Ativo;
-            Debt = 0;
-        }
-
-        public DateTime LastPurchase { get; set; }
-
-        [Required]
-        public float Debt { get; set; }
-
-        [Required]
-        public Status Status { get; set; }
-
-
         [Required]
         [StringLength(maximumLength: 100, MinimumLength = 10,
         ErrorMessage = "O nome do cliente deve ter no mímino 9 caracteres e no máximo 50.")]

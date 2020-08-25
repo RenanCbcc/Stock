@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,11 +9,9 @@ namespace Estoque.Models.ClientModels
     public interface IClientRepository
     {
         Task<Client> Read(int Id);
-        IQueryable<Client> Browse();
+        IEnumerable<Client> Browse();
         Task Add(Client client);
         Task Edit(Client client);
-        IQueryable<Client> Search(SearchClientViewModel model);
-
     }
 
     public class ClientRepository : IClientRepository
@@ -24,29 +23,28 @@ namespace Estoque.Models.ClientModels
             this.context = context;
         }
 
-        public Task Add(Client client)
+        public async Task Add(Client client)
         {
-            throw new NotImplementedException();
+            await context.AddAsync(client);
+            await context.SaveChangesAsync();
         }
 
-        public IQueryable<Client> Browse()
+        public IEnumerable<Client> Browse()
         {
-            throw new NotImplementedException();
+            return context.Clients;
         }
 
-        public Task Edit(Client client)
+        public async Task Edit(Client alteredClient)
         {
-            throw new NotImplementedException();
+            var client = context.Clients.Attach(alteredClient);
+            client.State = EntityState.Modified;
+            await context.SaveChangesAsync();
         }
 
-        public Task<Client> Read(int Id)
+        public async Task<Client> Read(int Id)
         {
-            throw new NotImplementedException();
+            return await context.Clients.FindAsync(Id);
         }
 
-        public IQueryable<Client> Search(SearchClientViewModel modelo)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

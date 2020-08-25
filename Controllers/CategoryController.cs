@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Estoque.Models.ProductModels;
+using Estoque.Models.CategoryModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,18 +10,19 @@ namespace Estoque.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class CategoryController : ControllerBase
     {
-        private readonly IProductRepository repository;
+        private readonly ICategoryRepository repository;
 
-        public ProductController(IProductRepository repository)
+        public CategoryController(ICategoryRepository repository)
         {
             this.repository = repository;
         }
 
+
         // GET: api/Product
         [HttpGet]
-        public IEnumerable<Product> Get()
+        public IEnumerable<Category> Get()
         {
             return repository.Browse();
         }
@@ -30,12 +31,12 @@ namespace Estoque.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var product = await repository.Read(id);
-            if (product == null)
+            var category = await repository.Read(id);
+            if (category == null)
             {
                 return NotFound(id);
             }
-            return Ok(product);
+            return Ok(category);
         }
 
         // POST: api/Product
@@ -44,16 +45,10 @@ namespace Estoque.Controllers
         {
             if (ModelState.IsValid)
             {
-                var p = new Product
+                var p = new Category
                 {
-                    Discount = model.Discount,
-                    PurchasePrice = model.PurchasePrice,
-                    SalePrice = model.SalePrice,
-                    Description = model.Description,
-                    Code = model.Code,
-                    Quantity = model.Quantity,
-                    //CatgoryId = model.CatgoryId,
-                    //SupplierId = model.SupplierId
+                    Title = model.Title,
+                    Discount = model.Discount
                 };
 
                 await repository.Add(p);
@@ -70,19 +65,16 @@ namespace Estoque.Controllers
         {
             if (ModelState.IsValid)
             {
-                var p = await repository.Read(model.Id);
-                if (p == null)
+                var c = await repository.Read(model.Id);
+                if (c == null)
                 {
                     return NotFound(model.Id);
                 }
 
-                p.Discount = model.Discount;
-                p.SalePrice = model.SalePrice;
-                p.PurchasePrice = model.PurchasePrice;
-                p.Description = model.Description;
-                p.Quantity = model.Quantity;
-                await repository.Edit(p);
-                return Ok(p);
+                c.Title = model.Title;
+                c.Discount = model.Discount;
+                await repository.Edit(c);
+                return Ok(c);
             }
             return BadRequest(ModelState);
         }
