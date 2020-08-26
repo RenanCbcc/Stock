@@ -1,7 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 import MaterialTable from 'material-table';
 import Alert from '@material-ui/lab/Alert';
-import { Select, MenuItem } from "@material-ui/core";
 
 const baseURL = "api/Client";
 
@@ -11,16 +10,17 @@ function renderProductsTable(clients, handleRowAdd, handleRowUpdate, iserror, er
         [
             { title: "id", field: "id", hidden: true },
             {
-                title: 'Nome', field: 'name',
-                validate: rowData => rowData.name === '' ? '⚠️ Nome não pode ser vazio.' : ''
+                title: 'Nome', field: 'name', type: 'string',
+                validate: (rowData) => (rowData.name.length < 10 || rowData.name.length > 50) ?
+                    '⚠️ Nome deve ter entre 10 e 50 caracteres.' : ''
             },
             {
-                title: 'Endereço', field: 'address',
-                validate: rowData => (rowData.address === '' || rowData.address.length < 10 || rowData.address.length > 100)
+                title: 'Endereço', field: 'address', type: 'string',
+                validate: rowData => (rowData.address.length < 10 || rowData.address.length > 100)
                     ? '⚠️ Endereço deve ter entre 10 e 100 caracteres.' : ''
             },
             {
-                title: 'Telefone', field: 'phoneNumber',
+                title: 'Telefone', field: 'phoneNumber', type: 'string',
                 validate: rowData => (rowData.address === '' || rowData.phoneNumber.length !== 11)
                     ? '⚠️ Número de telefone deve ter 11 caracteres.' : ''
             },
@@ -29,7 +29,7 @@ function renderProductsTable(clients, handleRowAdd, handleRowUpdate, iserror, er
                 lookup: { 0: 'Ativo', 1: 'Inativo' }
             },
             {
-                title: 'Débito', field: 'debt', type: 'numeric', editable: 'never'
+                title: 'Débito', field: 'debt', type: 'currency', editable: 'never'
             },
             {
                 title: 'Última compra', field: 'lastPurchase', type: 'date', editable: 'never'
@@ -61,6 +61,9 @@ function renderProductsTable(clients, handleRowAdd, handleRowUpdate, iserror, er
             previousTooltip: 'Página anterior',
             nextTooltip: 'Próxima página',
             lastTooltip: 'Última página'
+        },
+        header: {
+            actions: 'Ações'
         }
     }
 

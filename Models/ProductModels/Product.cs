@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Estoque.Models.CategoryModels;
+using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Estoque.Models.ProductModels
 {
@@ -14,9 +11,8 @@ namespace Estoque.Models.ProductModels
             Discount = 0;
         }
 
-        //[ForeignKey("Categories")]
-        //public int CategoryId { get; set; }
-
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
 
         [Range(minimum: 0, maximum: 100, ErrorMessage = "O desconto do produto deve estar entre 0 e 100.")]
         public float Discount { get; set; }
@@ -35,8 +31,8 @@ namespace Estoque.Models.ProductModels
 
         [Required(ErrorMessage = "Produto precisa ter uma descrição.")]
         [DataType(DataType.Text)]
-        [StringLength(maximumLength: 50, MinimumLength = 4,
-        ErrorMessage = "A descrição do produto deve ter no mímino 4 caracteres e no máximo 50.")]
+        [StringLength(maximumLength: 50, MinimumLength = 5,
+        ErrorMessage = "A descrição do produto deve ter no mímino 5 caracteres e no máximo 50.")]
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Produto precisa ter um código.")]

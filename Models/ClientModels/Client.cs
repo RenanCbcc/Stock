@@ -22,8 +22,8 @@ namespace Estoque.Models.ClientModels
 
 
         [Required]
-        [StringLength(maximumLength: 100, MinimumLength = 10,
-        ErrorMessage = "O nome do cliente deve ter no mímino 9 caracteres e no máximo 50.")]
+        [StringLength(maximumLength: 50, MinimumLength = 10,
+        ErrorMessage = "O nome do cliente deve ter no mímino 10 caracteres e no máximo 50.")]
         [DataType(DataType.Text)]
         public string Name { get; set; }
         [Required]

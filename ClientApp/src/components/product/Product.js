@@ -10,11 +10,12 @@ function renderProductsTable(products, handleRowAdd, handleRowUpdate, iserror, e
             { title: "id", field: "id", hidden: true },
             {
                 title: 'Descrição', field: 'description', type: 'string',
-                validate: rowData => rowData.description === '' ? '⚠️ Descrição não pode ser vazia' : ''
+                validate: rowData => rowData.description === '' || rowData.description.length < 10 || rowData.description.length > 10
+                    ? '⚠️ Descrição não pode ser vazia' : ''
             },
             {
-                title: 'Código', field: 'code', editable: 'string',
-                validate: rowData => (rowData.code === '' || rowData.code.length < 9 || rowData.code.length > 13)
+                title: 'Código', field: 'code', type: 'string',
+                validate: rowData => rowData.code === '' || rowData.code.length < 9 || rowData.code.length > 13
                     ? '⚠️ Código deve ter entre 9 e 13 dígitos' : ''
             },
             {
@@ -60,6 +61,9 @@ function renderProductsTable(products, handleRowAdd, handleRowUpdate, iserror, e
             previousTooltip: 'Página anterior',
             nextTooltip: 'Próxima página',
             lastTooltip: 'Última página'
+        },
+        header: {
+            actions: 'Ações'
         }
     }
 

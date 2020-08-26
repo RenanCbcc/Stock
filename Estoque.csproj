@@ -34,6 +34,18 @@
     <Compile Remove="Migrations\20200824193857_Category.Designer.cs" />
     <Compile Remove="Migrations\20200825180236_Client.cs" />
     <Compile Remove="Migrations\20200825180236_Client.Designer.cs" />
+    <Compile Remove="Migrations\20200826190026_Category.cs" />
+    <Compile Remove="Migrations\20200826190026_Category.Designer.cs" />
+    <Compile Remove="Migrations\20200826190306_Category.cs" />
+    <Compile Remove="Migrations\20200826190306_Category.Designer.cs" />
+    <Compile Remove="Migrations\20200826190533_Category.cs" />
+    <Compile Remove="Migrations\20200826190533_Category.Designer.cs" />
+    <Compile Remove="Migrations\20200826190808_Category.cs" />
+    <Compile Remove="Migrations\20200826190808_Category.Designer.cs" />
+    <Compile Remove="Migrations\20200826190906_Category.cs" />
+    <Compile Remove="Migrations\20200826190906_Category.Designer.cs" />
+    <Compile Remove="Migrations\20200826193331_Category.cs" />
+    <Compile Remove="Migrations\20200826193331_Category.Designer.cs" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

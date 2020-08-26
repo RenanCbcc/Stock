@@ -29,22 +29,19 @@ namespace Estoque.Models.CategoryModels
 
         public IEnumerable<Category> Browse()
         {
-            return null;
-            //return context.Categories;
+            return context.Categories;
         }
 
         public async Task Edit(Category alteredCategory)
         {
-            //var category = context.Categories.Attach(alteredCategory);
-            
-            //category.State = EntityState.Modified;
+            var category = context.Categories.Attach(alteredCategory);
+            category.State = EntityState.Modified;
             await context.SaveChangesAsync();
         }
 
         public async Task<Category> Read(int Id)
         {
-            return null;
-            //return await context.Categories.FindAsync(Id);
+            return await context.Categories.FindAsync(Id);
         }
     }
 }
