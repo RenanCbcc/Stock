@@ -4,7 +4,7 @@ import Alert from '@material-ui/lab/Alert';
 
 const baseURL = "api/Product";
 
-function renderProductsTable(products, handleRowAdd, handleRowUpdate, iserror, errorMessages) {
+function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessages) {
     const columns =
         [
             { title: "id", field: "id", hidden: true },
@@ -34,6 +34,14 @@ function renderProductsTable(products, handleRowAdd, handleRowUpdate, iserror, e
                 title: 'Desconto', field: 'discount', type: 'numeric',
                 validate: rowData => (rowData.discount < 0 || rowData.discount > 100) ? '⚠️ Desconto deve ser >= 0 e <=100' : ''
             },
+            {
+                title: 'Categoria', field: 'categoryId', type: 'numeric',
+                lookup: { 1: 'Limpeza', 2: 'Roupas', 3: 'Sapatos' }
+            },
+            {
+                title: 'Fornecedor', field: 'supplierId', type: 'numeric',
+                lookup: { 1: 'Mariza', 2: 'Havainas' }
+            }
         ];
 
     const localization = {
@@ -81,10 +89,20 @@ function renderProductsTable(products, handleRowAdd, handleRowUpdate, iserror, e
             </div>
             <MaterialTable
                 title="Produtos"
-                data={products}
                 columns={columns}
                 localization={localization}
                 options={{ exportButton: true }}
+                data={query =>
+                    new Promise((resolve, reject) => {
+                        fetch(baseURL)
+                            .then(response => response.json())
+                            .then(result => {
+                                resolve({
+                                    data: result
+                                })
+                            }).catch(err => console.log(err))
+                    })
+                }
                 editable={{
                     onRowAdd: newData =>
                         new Promise((resolve) => {
@@ -105,9 +123,10 @@ function renderProductsTable(products, handleRowAdd, handleRowUpdate, iserror, e
 function Product() {
 
     const [data, setData] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [suppliers, setsuppliers] = useState([]);
     const [errorMessages, setErrorMessages] = useState([]);
     const [iserror, setIserror] = useState(false);
-    const [isloading, setIsLoading] = useState(true);
 
     const isOk = (response) => {
         if (response !== null && response.ok) {
@@ -116,17 +135,6 @@ function Product() {
             throw new Error(response.statusText);
         }
     }
-
-    useEffect(() => {
-        fetch(baseURL)
-            .then(res => isOk(res))
-            .then(response => response.json())
-            .then(data => {
-                setData(data);
-                setIsLoading(false);
-            })
-            .catch(err => console.log(err));
-    }, [])
 
 
     const handleRowAdd = (newData, resolve) => {
@@ -151,8 +159,6 @@ function Product() {
                 setIserror(true)
                 resolve()
             })
-
-
 
     }
 
@@ -180,12 +186,9 @@ function Product() {
                 resolve()
             })
 
-
     }
 
-    return (isloading ?
-        <p><em>Carregando...</em></p> :
-        renderProductsTable(data, handleRowAdd, handleRowUpdate, iserror, errorMessages));
+    return (renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessages));
 
 };
 

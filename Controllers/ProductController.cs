@@ -52,8 +52,8 @@ namespace Estoque.Controllers
                     Description = model.Description,
                     Code = model.Code,
                     Quantity = model.Quantity,
-                    //CatgoryId = model.CatgoryId,
-                    //SupplierId = model.SupplierId
+                    CategoryId = model.CategoryId,
+                    SupplierId = model.SupplierId
                 };
 
                 await repository.Add(p);

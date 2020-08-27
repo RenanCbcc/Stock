@@ -1,10 +1,10 @@
-﻿import React, { useState, useEffect } from 'react';
+﻿import React, { useState } from 'react';
 import MaterialTable from 'material-table';
 import Alert from '@material-ui/lab/Alert';
 
 const baseURL = "api/Category";
 
-function renderProductsTable(categories, handleRowAdd, handleRowUpdate, iserror, errorMessages) {
+function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessages) {
     const columns =
         [
             { title: "id", field: "id", hidden: true },
@@ -65,10 +65,20 @@ function renderProductsTable(categories, handleRowAdd, handleRowUpdate, iserror,
             </div>
             <MaterialTable
                 title="Categorias"
-                data={categories}
                 columns={columns}
                 localization={localization}
                 options={{ exportButton: true }}
+                data={query =>
+                    new Promise((resolve, reject) => {
+                        fetch(baseURL)
+                            .then(response => response.json())
+                            .then(result => {
+                                resolve({
+                                    data: result
+                                })
+                            }).catch(err => console.log(err))
+                    })
+                }
                 editable={{
                     onRowAdd: newData =>
                         new Promise((resolve) => {
@@ -91,7 +101,6 @@ function Category() {
     const [data, setData] = useState([]);
     const [errorMessages, setErrorMessages] = useState([]);
     const [iserror, setIserror] = useState(false);
-    const [isloading, setIsLoading] = useState(true);
 
     const isOk = (response) => {
         if (response !== null && response.ok) {
@@ -100,17 +109,6 @@ function Category() {
             throw new Error(response.statusText);
         }
     }
-
-    useEffect(() => {
-        fetch(baseURL)
-            .then(res => isOk(res))
-            .then(response => response.json())
-            .then(data => {
-                setData(data);
-                setIsLoading(false);
-            })
-            .catch(err => console.log(err));
-    }, [])
 
 
     const handleRowAdd = (newData, resolve) => {
@@ -167,9 +165,7 @@ function Category() {
 
     }
 
-    return (isloading ?
-        <p><em>Carregando...</em></p> :
-        renderProductsTable(data, handleRowAdd, handleRowUpdate, iserror, errorMessages));
+    return (renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessages));
 
 };
 
