@@ -2,6 +2,7 @@ using Estoque.Models;
 using Estoque.Models.CategoryModels;
 using Estoque.Models.ClientModels;
 using Estoque.Models.ProductModels;
+using Estoque.Models.SupplierModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -43,6 +44,7 @@ namespace Estoque
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ISupplierRepository, SupplierRepository>();
 
 
             services.AddControllersWithViews();

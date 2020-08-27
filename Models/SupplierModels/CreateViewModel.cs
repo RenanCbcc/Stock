@@ -1,13 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Estoque.Models.SupplierModels
 {
-    public class Supplier : Base
+    public class CreateViewModel
     {
         [Required(ErrorMessage = "Fornecedor precisa ter um nome.")]
         [DataType(DataType.Text)]
         [StringLength(maximumLength: 50, MinimumLength = 5,
-        ErrorMessage = "O nome do fornecedor deve ter no mímino 5 caracteres e no máximo 50.")]
+       ErrorMessage = "O nome do fornecedor deve ter no mímino 5 caracteres e no máximo 50.")]
         public string Name { get; set; }
 
         [DataType(DataType.EmailAddress)]

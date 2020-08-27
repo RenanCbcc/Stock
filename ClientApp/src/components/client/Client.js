@@ -22,7 +22,7 @@ function renderProductsTable(clients, handleRowAdd, handleRowUpdate, iserror, er
             {
                 title: 'Telefone', field: 'phoneNumber', type: 'string',
                 validate: rowData => (rowData.address === '' || rowData.phoneNumber.length !== 11)
-                    ? '⚠️ Número de telefone deve ter 11 caracteres.' : ''
+                    ? '⚠️ Número de telefone deve ter 11 dígitos.' : ''
             },
             {
                 title: 'Status', field: 'status', type: 'numeric',

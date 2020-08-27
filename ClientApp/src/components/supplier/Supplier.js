@@ -2,38 +2,27 @@
 import MaterialTable from 'material-table';
 import Alert from '@material-ui/lab/Alert';
 
-const baseURL = "api/Product";
+const baseURL = "api/Supplier";
 
 function renderProductsTable(products, handleRowAdd, handleRowUpdate, iserror, errorMessages) {
     const columns =
         [
             { title: "id", field: "id", hidden: true },
             {
-                title: 'Descrição', field: 'description', type: 'string',
-                validate: rowData => rowData.description.length < 10 || rowData.description.length > 50
+                title: 'Nome', field: 'name', type: 'string',
+                validate: rowData => rowData.name.length < 5 || rowData.name.length > 50
                     ? '⚠️ Descrição não pode ser vazia' : ''
             },
             {
-                title: 'Código', field: 'code', type: 'string',
-                validate: rowData => rowData.code.length < 9 || rowData.code.length > 13
-                    ? '⚠️ Código deve ter entre 9 e 13 dígitos' : ''
+                title: 'Email', field: 'email', type: 'string',
+                validate: rowData => rowData.email.length < 5 || rowData.code.length > 50
+                    ? '⚠️ Email deve ter entre 5 e 50 caracteres' : ''
             },
             {
-                title: 'Preço de compra', field: 'purchasePrice', type: 'currency',
-                validate: rowData => rowData.purchasePrice < 0 ? '⚠️ Preço de compra não pode ser menor que zero' : ''
-            },
-            {
-                title: 'Preço de venda', field: 'salePrice', type: 'currency',
-                validate: rowData => rowData.salePrice < 0 ? '⚠️ Preço de venda não pode ser menor que zero' : ''
-            },
-            {
-                title: 'Quantidade', field: 'quantity', type: 'numeric',
-                validate: rowData => rowData.quantity < 0 ? '⚠️ Quantidade não pode ser menor que zero' : ''
-            },
-            {
-                title: 'Desconto', field: 'discount', type: 'numeric',
-                validate: rowData => (rowData.discount < 0 || rowData.discount > 100) ? '⚠️ Desconto deve ser >= 0 e <=100' : ''
-            },
+                title: 'Telefone', field: 'phoneNumber', type: 'string',
+                validate: rowData => (rowData.address === '' || rowData.phoneNumber.length !== 11)
+                    ? '⚠️ Número de telefone deve ter 11 dígitos.' : ''
+            }
         ];
 
     const localization = {
@@ -80,7 +69,7 @@ function renderProductsTable(products, handleRowAdd, handleRowUpdate, iserror, e
                 }
             </div>
             <MaterialTable
-                title="Produtos"
+                title="Fornecedores"
                 data={products}
                 columns={columns}
                 localization={localization}
@@ -102,7 +91,7 @@ function renderProductsTable(products, handleRowAdd, handleRowUpdate, iserror, e
 
 
 
-function Product() {
+function Supplier() {
 
     const [data, setData] = useState([]);
     const [errorMessages, setErrorMessages] = useState([]);
@@ -175,7 +164,7 @@ function Product() {
                 setErrorMessages([])
             })
             .catch(error => {
-                setErrorMessages(["Não foi possível atualizar o produto. Erro no servidor."])
+                setErrorMessages(["Não foi possível atualizar o fornecedor. Erro no servidor."])
                 setIserror(true)
                 resolve()
             })
@@ -189,4 +178,4 @@ function Product() {
 
 };
 
-export default Product;
+export default Supplier;
