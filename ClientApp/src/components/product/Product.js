@@ -4,7 +4,7 @@ import Alert from '@material-ui/lab/Alert';
 
 const baseURL = "api/Product";
 
-function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessages) {
+function renderProductsTable(categories, suppliers, handleRowAdd, handleRowUpdate, iserror, errorMessages) {
     const columns =
         [
             { title: "id", field: "id", hidden: true },
@@ -36,11 +36,11 @@ function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessag
             },
             {
                 title: 'Categoria', field: 'categoryId', type: 'numeric',
-                lookup: { 1: 'Limpeza', 2: 'Roupas', 3: 'Sapatos' }
+                lookup: categories
             },
             {
                 title: 'Fornecedor', field: 'supplierId', type: 'numeric',
-                lookup: { 1: 'Mariza', 2: 'Havainas' }
+                lookup: suppliers
             }
         ];
 
@@ -123,8 +123,8 @@ function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessag
 function Product() {
 
     const [data, setData] = useState([]);
-    const [categories, setCategories] = useState([]);
-    const [suppliers, setsuppliers] = useState([]);
+    const [categories, setCategories] = useState({});
+    const [suppliers, setsuppliers] = useState({});
     const [errorMessages, setErrorMessages] = useState([]);
     const [iserror, setIserror] = useState(false);
 
@@ -135,6 +135,32 @@ function Product() {
             throw new Error(response.statusText);
         }
     }
+
+    useEffect(() => {
+        fetch('https://localhost:44308/api/Category')
+            .then(res => isOk(res))
+            .then(response => response.json())
+            .then(data => {
+                data = data.reduce((result, category) => {
+                    result[category.id] = category.title;
+                    return result;
+                }, {});                
+                setCategories(data)
+            }).catch(err => console.log(err));
+
+        fetch('https://localhost:44308/api/Supplier')
+            .then(res => isOk(res))
+            .then(response => response.json())
+            .then(data => {
+                data = data.reduce((result, suppliers) => {
+                    result[suppliers.id] = suppliers.name;
+                    return result;
+                }, {});
+                setsuppliers(data)
+            }).catch(err => console.log(err));
+
+
+    },[])
 
 
     const handleRowAdd = (newData, resolve) => {
@@ -187,8 +213,8 @@ function Product() {
             })
 
     }
-
-    return (renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessages));
+    
+    return (renderProductsTable(categories, suppliers, handleRowAdd, handleRowUpdate, iserror, errorMessages));
 
 };
 

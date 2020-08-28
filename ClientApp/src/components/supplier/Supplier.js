@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+﻿import React, { useState } from 'react';
 import MaterialTable from 'material-table';
 import Alert from '@material-ui/lab/Alert';
 
@@ -15,12 +15,12 @@ function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessag
             },
             {
                 title: 'Email', field: 'email', type: 'string',
-                validate: rowData => rowData.email.length < 5 || rowData.code.length > 50
+                validate: rowData => rowData.email.length < 5 || rowData.email.length > 50
                     ? '⚠️ Email deve ter entre 5 e 50 caracteres' : ''
             },
             {
                 title: 'Telefone', field: 'phoneNumber', type: 'string',
-                validate: rowData => (rowData.address === '' || rowData.phoneNumber.length !== 11)
+                validate: rowData => rowData.phoneNumber.length !== 11
                     ? '⚠️ Número de telefone deve ter 11 dígitos.' : ''
             }
         ];
