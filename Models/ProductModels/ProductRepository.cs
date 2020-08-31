@@ -9,7 +9,7 @@ namespace Estoque.Models.ProductModels
     public interface IProductRepository
     {
         Task<Product> Read(int Id);
-        IEnumerable<Product> Browse();
+        IQueryable<Product> Browse();
         Task Add(Product product);
         Task Edit(Product product);        
     }
@@ -28,7 +28,7 @@ namespace Estoque.Models.ProductModels
             await context.SaveChangesAsync();
         }
 
-        public IEnumerable<Product> Browse()
+        public IQueryable<Product> Browse()
         {
             return context.Products;
         }

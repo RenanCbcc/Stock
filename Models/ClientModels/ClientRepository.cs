@@ -9,7 +9,7 @@ namespace Estoque.Models.ClientModels
     public interface IClientRepository
     {
         Task<Client> Read(int Id);
-        IEnumerable<Client> Browse();
+        IQueryable<Client> Browse();
         Task Add(Client client);
         Task Edit(Client client);
     }
@@ -29,7 +29,7 @@ namespace Estoque.Models.ClientModels
             await context.SaveChangesAsync();
         }
 
-        public IEnumerable<Client> Browse()
+        public IQueryable<Client> Browse()
         {
             return context.Clients;
         }

@@ -91,14 +91,25 @@ function renderProductsTable(categories, suppliers, handleRowAdd, handleRowUpdat
                 title="Produtos"
                 columns={columns}
                 localization={localization}
-                options={{ exportButton: true }}
+                options={{
+                    exportButton: true,
+                    headerStyle: {
+                        backgroundColor: '#01579b',
+                        color: '#FFF'
+                    }
+                }}
                 data={query =>
                     new Promise((resolve, reject) => {
-                        fetch(baseURL)
+                        let url = 'api/Product?'
+                        url += 'per_page=' + query.pageSize
+                        url += '&page=' + (query.page + 1)
+                        fetch(url)
                             .then(response => response.json())
                             .then(result => {
                                 resolve({
-                                    data: result
+                                    data: result.data,
+                                    page: result.page - 1,
+                                    totalCount: result.total
                                 })
                             }).catch(err => console.log(err))
                     })
@@ -137,7 +148,7 @@ function Product() {
     }
 
     useEffect(() => {
-        fetch('https://localhost:44308/api/Category')
+        fetch('https://localhost:44308/api/Category/All')
             .then(res => isOk(res))
             .then(response => response.json())
             .then(data => {
@@ -148,7 +159,7 @@ function Product() {
                 setCategories(data)
             }).catch(err => console.log(err));
 
-        fetch('https://localhost:44308/api/Supplier')
+        fetch('https://localhost:44308/api/Supplier/All')
             .then(res => isOk(res))
             .then(response => response.json())
             .then(data => {

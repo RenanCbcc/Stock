@@ -84,14 +84,25 @@ function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessag
                 title="Clients"
                 columns={columns}
                 localization={localization}
-                options={{ exportButton: true }}
+                options={{
+                    exportButton: true,
+                    headerStyle: {
+                        backgroundColor: '#01579b',
+                        color: '#FFF'
+                    }
+                }}
                 data={query =>
                     new Promise((resolve, reject) => {
-                        fetch(baseURL)
+                        let url = 'api/Client?'
+                        url += 'per_page=' + query.pageSize
+                        url += '&page=' + (query.page + 1)
+                        fetch(url)
                             .then(response => response.json())
                             .then(result => {
                                 resolve({
-                                    data: result
+                                    data: result.data,
+                                    page: result.page - 1,
+                                    totalCount: result.total
                                 })
                             }).catch(err => console.log(err))
                     })
@@ -118,7 +129,7 @@ function Client() {
     const [data, setData] = useState([]);
     const [errorMessages, setErrorMessages] = useState([]);
     const [iserror, setIserror] = useState(false);
-    
+
     const isOk = (response) => {
         if (response !== null && response.ok) {
             return response;

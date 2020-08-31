@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Estoque.Models;
 using Estoque.Models.SupplierModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,14 +17,21 @@ namespace Estoque.Controllers
             this.repository = repository;
         }
 
-        // GET: api/Product
         [HttpGet]
+        public async Task<IActionResult> Get([FromQuery(Name = "page")] int page, [FromQuery(Name = "per_page")] int per_page)
+        {
+            var paginatedList = await PaginatedList<Supplier>.CreateAsync(repository.Browse(), page, per_page);
+            return Ok(new { Data = paginatedList, Page = paginatedList.PageIndex, Total = paginatedList.TotalPages });
+        }
+
+        [HttpGet]
+        [Route("All")]
         public IEnumerable<Supplier> Get()
         {
             return repository.Browse();
         }
 
-        // GET: api/Product/5
+        
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
@@ -35,7 +43,7 @@ namespace Estoque.Controllers
             return Ok(supplier);
         }
 
-        // POST: api/Product
+       
         [HttpPost]
         public async Task<IActionResult> Post(CreateViewModel model)
         {
@@ -56,7 +64,7 @@ namespace Estoque.Controllers
             return BadRequest(ModelState);
         }
 
-        // PUT: api/Product/
+       
         [HttpPut]
         public async Task<IActionResult> Put(EditViewModel model)
         {
@@ -77,7 +85,7 @@ namespace Estoque.Controllers
             return BadRequest(ModelState);
         }
 
-        // DELETE: api/ApiWithActions/5
+        
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

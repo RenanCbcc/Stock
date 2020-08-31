@@ -72,14 +72,25 @@ function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessag
                 title="Fornecedores"
                 columns={columns}
                 localization={localization}
-                options={{ exportButton: true }}
+                options={{
+                    exportButton: true,
+                    headerStyle: {
+                        backgroundColor: '#01579b',
+                        color: '#FFF'
+                    }
+                }}
                 data={query =>
                     new Promise((resolve, reject) => {
-                        fetch(baseURL)
+                        let url = 'api/Supplier?'
+                        url += 'per_page=' + query.pageSize
+                        url += '&page=' + (query.page + 1)
+                        fetch(url)
                             .then(response => response.json())
                             .then(result => {
                                 resolve({
-                                    data: result
+                                    data: result.data,
+                                    page: result.page - 1,
+                                    totalCount: result.total
                                 })
                             }).catch(err => console.log(err))
                     })

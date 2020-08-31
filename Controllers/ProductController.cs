@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Estoque.Models;
 using Estoque.Models.ProductModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Estoque.Controllers
@@ -19,11 +16,11 @@ namespace Estoque.Controllers
             this.repository = repository;
         }
 
-        // GET: api/Product
         [HttpGet]
-        public IEnumerable<Product> Get()
+        public async Task<IActionResult> Get([FromQuery(Name = "page")] int page, [FromQuery(Name = "per_page")] int per_page)
         {
-            return repository.Browse();
+            var paginatedList = await PaginatedList<Product>.CreateAsync(repository.Browse(), page, per_page);
+            return Ok(new { Data = paginatedList, Page = paginatedList.PageIndex, Total = paginatedList.TotalPages });
         }
 
         // GET: api/Product/5

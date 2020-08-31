@@ -1,6 +1,7 @@
 ﻿using Estoque.Models.SupplierModels;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Estoque.Models.SupplierModels
@@ -8,7 +9,7 @@ namespace Estoque.Models.SupplierModels
     public interface ISupplierRepository
     {
         Task<Supplier> Read(int Id);
-        IEnumerable<Supplier> Browse();
+        IQueryable<Supplier> Browse();
         Task Add(Supplier supplier);
         Task Edit(Supplier supplier);
     }
@@ -26,7 +27,7 @@ namespace Estoque.Models.SupplierModels
             await context.SaveChangesAsync();
         }
 
-        public IEnumerable<Supplier> Browse()
+        public IQueryable<Supplier> Browse()
         {
             return context.Suppliers;
         }

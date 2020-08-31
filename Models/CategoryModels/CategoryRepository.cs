@@ -9,7 +9,7 @@ namespace Estoque.Models.CategoryModels
     public interface ICategoryRepository
     {
         Task<Category> Read(int Id);
-        IEnumerable<Category> Browse();
+        IQueryable<Category> Browse();
         Task Add(Category category);
         Task Edit(Category category);
     }
@@ -27,7 +27,7 @@ namespace Estoque.Models.CategoryModels
             await context.SaveChangesAsync();
         }
 
-        public IEnumerable<Category> Browse()
+        public IQueryable<Category> Browse()
         {
             return context.Categories;
         }
