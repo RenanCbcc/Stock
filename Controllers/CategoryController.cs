@@ -22,7 +22,7 @@ namespace Estoque.Controllers
         public async Task<IActionResult> Get([FromQuery(Name = "page")] int page, [FromQuery(Name = "per_page")] int per_page)
         {
             var paginatedList = await PaginatedList<Category>.CreateAsync(repository.Browse(), page, per_page);
-            return Ok(new { Data = paginatedList, Page = paginatedList.PageIndex, Total = paginatedList.TotalPages });
+            return Ok(new { Data = paginatedList, Page = paginatedList.PageIndex, Total = paginatedList.Total });
         }
 
         [HttpGet]

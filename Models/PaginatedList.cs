@@ -10,6 +10,7 @@ namespace Estoque.Models
     {
         public int PageIndex { get; private set; }
         public int TotalPages { get; set; }
+        public int Total { get; set; }
         public bool PreviousPage
         {
             get
@@ -27,6 +28,7 @@ namespace Estoque.Models
 
         public PaginatedList(List<T> items, int count, int pageIndex, int pageSize)
         {
+            Total = count;
             PageIndex = pageIndex;
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
             this.AddRange(items);

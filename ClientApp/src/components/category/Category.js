@@ -21,11 +21,21 @@ function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessag
         ];
 
     const localization = {
+        header: {
+            actions: 'Ações'
+        },
+        grouping: {
+            placeholder: "Tirer l'entête ...",
+            groupedBy: 'Agroupar por:'
+        },
         body: {
             emptyDataSourceMessage: 'Nenhum registro para exibir',
             addTooltip: 'Adicionar',
             deleteTooltip: 'Apagar',
             editTooltip: 'Editar',
+            filterRow: {
+                filterTooltip: 'Filtrar'
+            },
             editRow: {
                 deleteText: 'Voulez-vous supprimer cette ligne?',
                 cancelTooltip: 'Cancelar',
@@ -33,22 +43,30 @@ function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessag
             }
         },
         toolbar: {
+            addRemoveColumns: 'Ajouter ou supprimer des colonnes',
+            nRowsSelected: '{0} Linha(s) selecionada(s)',
+            showColumnsTitle: 'Ver as colunas',
+            showColumnsAriaLabel: 'Ver as colunas',
             searchTooltip: 'Pesquisar',
             searchPlaceholder: 'Pesquisar',
             exportTitle: 'Exportar',
             exportAriaLabel: 'Exportar',
+
         },
         pagination: {
-            labelRowsSelect: 'linhas',
-            labelDisplayedRows: '{count} de {from}-{to}',
+            labelDisplayedRows: '{from}-{to} de {count}',
+            labelRowsSelect: 'Linhas',
+            labelRowsPerPage: 'Linhas por página:',
+            firstAriaLabel: 'Primeira página',
             firstTooltip: 'Primeira página',
+            previousAriaLabel: 'Página anterior',
             previousTooltip: 'Página anterior',
+            nextAriaLabel: 'Próxima página',
             nextTooltip: 'Próxima página',
+            lastAriaLabel: 'Última página',
             lastTooltip: 'Última página'
-        },
-        header: {
-            actions: 'Ações'
         }
+
     }
 
     return (
@@ -68,7 +86,7 @@ function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessag
                 columns={columns}
                 localization={localization}
                 options={{
-                    search: true,
+                    sorting: true,
                     exportButton: true,
                     headerStyle: {
                         backgroundColor: '#01579b',
@@ -79,12 +97,12 @@ function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessag
                     new Promise((resolve, reject) => {
                         let url = 'api/Category?'
                         url += 'per_page=' + query.pageSize
-                        url += '&page=' + (query.page + 1)
+                        url += '&page=' + (query.page + 1)                        
                         fetch(url)
                             .then(response => response.json())
                             .then(result => {
                                 resolve({
-                                    data: result.data,
+                                    data: result.data.filter(p => p.title.toLowerCase().includes(query.search.toLowerCase())),
                                     page: result.page - 1,
                                     totalCount: result.total
                                 })

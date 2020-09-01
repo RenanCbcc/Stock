@@ -100,7 +100,13 @@ function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessag
                             .then(response => response.json())
                             .then(result => {
                                 resolve({
-                                    data: result.data,
+                                    data: result
+                                        .data
+                                        .filter(p =>
+                                            p.name.toLowerCase().includes(query.search.toLowerCase()) ||
+                                            p.address.toLowerCase().includes(query.search.toLowerCase()) ||
+                                            p.phoneNumber.includes(query.search)
+                                        ),
                                     page: result.page - 1,
                                     totalCount: result.total
                                 })

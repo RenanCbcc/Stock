@@ -107,7 +107,7 @@ function renderProductsTable(categories, suppliers, handleRowAdd, handleRowUpdat
                             .then(response => response.json())
                             .then(result => {
                                 resolve({
-                                    data: result.data,
+                                    data: result.data.filter(p => p.description.toLowerCase().includes(query.search.toLowerCase())),
                                     page: result.page - 1,
                                     totalCount: result.total
                                 })
