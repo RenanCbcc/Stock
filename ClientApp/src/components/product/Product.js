@@ -75,6 +75,31 @@ function renderProductsTable(categories, suppliers, handleRowAdd, handleRowUpdat
         }
     }
 
+    const operations = (query, data) => {
+        //Searching
+        data = data.filter(p =>
+            p.description.toLowerCase().includes(query.search.toLowerCase()) ||
+            p.code.includes(query.search) ||
+            p.purchasePrice.includes(query.search) ||
+            p.salePrice.includes(query.search)
+        );
+        //Sorting 
+        if (query.orderBy != null) {
+            let field = query.orderBy.field;
+            data.sort(function (a, b) {
+                if (a[field] > b[field]) {
+                    return 1;
+                }
+                if (a[field] < b[field]) {
+                    return -1;
+                }
+                // a must be equal to b
+                return 0;
+            });
+        }
+        return data;
+    };
+
     return (
         <>
             <div>
@@ -107,7 +132,7 @@ function renderProductsTable(categories, suppliers, handleRowAdd, handleRowUpdat
                             .then(response => response.json())
                             .then(result => {
                                 resolve({
-                                    data: result.data.filter(p => p.description.toLowerCase().includes(query.search.toLowerCase())),
+                                    data: operations(query, result.data),
                                     page: result.page - 1,
                                     totalCount: result.total
                                 })
@@ -155,7 +180,7 @@ function Product() {
                 data = data.reduce((result, category) => {
                     result[category.id] = category.title;
                     return result;
-                }, {});                
+                }, {});
                 setCategories(data)
             }).catch(err => console.log(err));
 
@@ -171,7 +196,7 @@ function Product() {
             }).catch(err => console.log(err));
 
 
-    },[])
+    }, [])
 
 
     const handleRowAdd = (newData, resolve) => {
@@ -224,7 +249,7 @@ function Product() {
             })
 
     }
-    
+
     return (renderProductsTable(categories, suppliers, handleRowAdd, handleRowUpdate, iserror, errorMessages));
 
 };

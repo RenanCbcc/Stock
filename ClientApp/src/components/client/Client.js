@@ -66,7 +66,29 @@ function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessag
             actions: 'Ações'
         }
     }
-
+    const operations = (query, data) => {
+        //Searching
+        data = data.filter(p =>
+            p.name.toLowerCase().includes(query.search.toLowerCase()) ||
+            p.address.toLowerCase().includes(query.search.toLowerCase()) ||
+            p.phoneNumber.includes(query.search)
+        )
+        //Sorting 
+        if (query.orderBy != null) {
+            let field = query.orderBy.field;
+            data.sort(function (a, b) {
+                if (a[field] > b[field]) {
+                    return 1;
+                }
+                if (a[field] < b[field]) {
+                    return -1;
+                }
+                // a must be equal to b
+                return 0;
+            });
+        }
+        return data;
+    };
 
     return (
         <>
@@ -100,13 +122,7 @@ function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessag
                             .then(response => response.json())
                             .then(result => {
                                 resolve({
-                                    data: result
-                                        .data
-                                        .filter(p =>
-                                            p.name.toLowerCase().includes(query.search.toLowerCase()) ||
-                                            p.address.toLowerCase().includes(query.search.toLowerCase()) ||
-                                            p.phoneNumber.includes(query.search)
-                                        ),
+                                    data: operations(query, result.data),
                                     page: result.page - 1,
                                     totalCount: result.total
                                 })
@@ -145,7 +161,6 @@ function Client() {
     }
 
     const handleRowAdd = (newData, resolve) => {
-
         fetch(baseURL, {
             method: 'Post',
             headers: { 'Content-type': 'application/json' },
@@ -172,6 +187,7 @@ function Client() {
     }
 
     const handleRowUpdate = (newData, oldData, resolve) => {
+        newData.status = Number(newData.status);
         fetch(baseURL,
             {
                 method: 'Put',

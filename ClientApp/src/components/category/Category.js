@@ -69,6 +69,26 @@ function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessag
 
     }
 
+    const operations = (query, data) => {
+        //Searching
+        data = data.filter(p => p.title.toLowerCase().includes(query.search.toLowerCase()))        
+        //Sorting 
+        if (query.orderBy != null) {            
+            let field = query.orderBy.field;
+            data.sort(function (a, b) {
+                if (a[field] > b[field]) {
+                    return 1;
+                }
+                if (a[field] < b[field]) {
+                    return -1;
+                }
+                // a must be equal to b
+                return 0;
+            });
+        }        
+        return data;
+    };
+
     return (
         <>
             <div>
@@ -97,12 +117,12 @@ function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessag
                     new Promise((resolve, reject) => {
                         let url = 'api/Category?'
                         url += 'per_page=' + query.pageSize
-                        url += '&page=' + (query.page + 1)                        
+                        url += '&page=' + (query.page + 1)
                         fetch(url)
                             .then(response => response.json())
                             .then(result => {
                                 resolve({
-                                    data: result.data.filter(p => p.title.toLowerCase().includes(query.search.toLowerCase())),
+                                    data: operations(query, result.data),
                                     page: result.page - 1,
                                     totalCount: result.total
                                 })
