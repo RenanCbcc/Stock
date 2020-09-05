@@ -10,17 +10,17 @@ function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessag
             { title: "id", field: "id", hidden: true },
             {
                 title: 'Nome', field: 'name', type: 'string',
-                validate: rowData => rowData.name.length < 5 || rowData.name.length > 50
+                validate: rowData => rowData.name === ""
                     ? '⚠️ Descrição não pode ser vazia' : ''
             },
             {
                 title: 'Email', field: 'email', type: 'string',
-                validate: rowData => rowData.email.length < 5 || rowData.email.length > 50
+                validate: rowData => rowData.email === ""
                     ? '⚠️ Email deve ter entre 5 e 50 caracteres' : ''
             },
             {
                 title: 'Telefone', field: 'phoneNumber', type: 'string',
-                validate: rowData => rowData.phoneNumber.length !== 11
+                validate: rowData => rowData.phoneNumber === ""
                     ? '⚠️ Número de telefone deve ter 11 dígitos.' : ''
             }
         ];

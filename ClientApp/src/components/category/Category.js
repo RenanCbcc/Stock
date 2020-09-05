@@ -10,7 +10,7 @@ function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessag
             { title: "id", field: "id", hidden: true },
             {
                 title: 'Título', field: 'title', type: 'string',
-                validate: rowData => rowData.title.length < 5 || rowData.title.length > 25
+                validate: rowData => rowData.title === ""
                     ? '⚠️ Título deve ter entre 5 e 25 caracteres' : ''
             },
             {

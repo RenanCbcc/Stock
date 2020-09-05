@@ -10,12 +10,12 @@ function renderProductsTable(categories, suppliers, handleRowAdd, handleRowUpdat
             { title: "id", field: "id", hidden: true },
             {
                 title: 'Descrição', field: 'description', type: 'string',
-                validate: rowData => rowData.description.length < 10 || rowData.description.length > 50
+                validate: rowData => rowData.description === ""
                     ? '⚠️ Descrição não pode ser vazia' : ''
             },
             {
                 title: 'Código', field: 'code', type: 'string',
-                validate: rowData => rowData.code.length < 9 || rowData.code.length > 13
+                validate: rowData => rowData.code === ""
                     ? '⚠️ Código deve ter entre 9 e 13 dígitos' : ''
             },
             {

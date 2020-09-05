@@ -3,10 +3,6 @@ using Estoque.Models.ClientModels;
 using Estoque.Models.ProductModels;
 using Estoque.Models.SupplierModels;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Estoque.Models
 {
@@ -19,7 +15,7 @@ namespace Estoque.Models
 
         public StockContext(DbContextOptions<StockContext> options) : base(options)
         {
-
+            this.Database.EnsureCreated();
         }
     }
 }

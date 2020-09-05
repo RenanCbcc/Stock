@@ -11,17 +11,17 @@ function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessag
             { title: "id", field: "id", hidden: true },
             {
                 title: 'Nome', field: 'name', type: 'string',
-                validate: (rowData) => (rowData.name.length < 10 || rowData.name.length > 50) ?
+                validate: (rowData) => rowData.name === ""  ?
                     '⚠️ Nome deve ter entre 10 e 50 caracteres.' : ''
             },
             {
                 title: 'Endereço', field: 'address', type: 'string',
-                validate: rowData => (rowData.address.length < 10 || rowData.address.length > 100)
+                validate: rowData => rowData.address === ""
                     ? '⚠️ Endereço deve ter entre 10 e 100 caracteres.' : ''
             },
             {
                 title: 'Telefone', field: 'phoneNumber', type: 'string',
-                validate: rowData => (rowData.address === '' || rowData.phoneNumber.length !== 11)
+                validate: rowData => rowData.phoneNumber === ''
                     ? '⚠️ Número de telefone deve ter 11 dígitos.' : ''
             },
             {
