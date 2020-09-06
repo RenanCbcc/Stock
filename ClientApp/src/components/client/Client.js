@@ -11,7 +11,7 @@ function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessag
             { title: "id", field: "id", hidden: true },
             {
                 title: 'Nome', field: 'name', type: 'string',
-                validate: (rowData) => rowData.name === ""  ?
+                validate: (rowData) => rowData.name === "" ?
                     '⚠️ Nome deve ter entre 10 e 50 caracteres.' : ''
             },
             {
@@ -147,7 +147,6 @@ function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessag
 
 
 function Client() {
-
     const [data, setData] = useState([]);
     const [errorMessages, setErrorMessages] = useState([]);
     const [iserror, setIserror] = useState(false);

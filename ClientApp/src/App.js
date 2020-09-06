@@ -1,9 +1,9 @@
 import React from 'react';
-import { Layout } from './components/Layout';
-import './custom.css'
+import Dashboard from './components/Dashboard';
+
 
 function App() {
-    return (<Layout />);
+    return (<Dashboard />);
 }
 
 export default App
