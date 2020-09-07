@@ -25,19 +25,19 @@ function Report() {
             {/* Chart */}
             <Grid item xs={12} md={8} lg={9}>
                 <Paper className={fixedHeightPaper}>
-                    <h3>Chart</h3>
+                    <h3>Gráfico</h3>
                 </Paper>
             </Grid>
             {/* Recent Deposits */}
             <Grid item xs={12} md={4} lg={3}>
                 <Paper className={fixedHeightPaper}>
-                    <h3>Recent Deposits</h3>
+                    <h3>Ganhos</h3>
                 </Paper>
             </Grid>
             {/* Recent Orders */}
             <Grid item xs={12}>
                 <Paper className={classes.paper}>
-                    <h3>Recent Orders</h3>
+                    <h3>Pedidos recente</h3>
                 </Paper>
             </Grid>
         </Grid>

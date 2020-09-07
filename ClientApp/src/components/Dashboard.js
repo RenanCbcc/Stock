@@ -1,6 +1,6 @@
-﻿import React from 'react';
+﻿import React, { useState } from 'react';
 import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -15,6 +15,9 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 import Container from '@material-ui/core/Container';
+import Switch from "@material-ui/core/Switch";
+import { orange, lightBlue, deepPurple, deepOrange } from "@material-ui/core/colors";
+
 import Client from '../components/client/Client';
 import Product from '../components/product/Product'
 import Category from '../components/category/Category'
@@ -105,7 +108,25 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
     const classes = useStyles();
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = useState(true);
+    const [darkState, setDarkState] = useState(false);
+    const palletType = darkState ? "dark" : "light";
+    const mainPrimaryColor = darkState ? orange[500] : lightBlue[500];
+    const mainSecondaryColor = darkState ? deepOrange[900] : deepPurple[500];
+    const darkTheme = createMuiTheme({
+        palette: {
+            type: palletType,
+            primary: {
+                main: mainPrimaryColor
+            },
+            secondary: {
+                main: mainSecondaryColor
+            }
+        }
+    });
+    const handleThemeChange = () => {
+        setDarkState(!darkState);
+    };
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -114,55 +135,61 @@ export default function Dashboard() {
     };
 
     return (
-        <div className={classes.root}>
-            <CssBaseline />
-            <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
-                <Toolbar className={classes.toolbar}>
-                    <IconButton
-                        edge="start"
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerOpen}
-                        className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography component="h1" variant="h6" color="inherit" noWrap
-                        className={classes.title}>
-                        Estoque
+        <ThemeProvider theme={darkTheme}>
+            <div className={classes.root}>
+                <CssBaseline />
+                <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
+                    <Toolbar className={classes.toolbar}>
+                        <IconButton
+                            edge="start"
+                            color="inherit"
+                            aria-label="open drawer"
+                            onClick={handleDrawerOpen}
+                            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        <Typography component="h1" variant="h6" color="inherit" noWrap
+                            className={classes.title}>
+                            Estoque
                     </Typography>
-                    <IconButton color="inherit">
-                        <Badge badgeContent={4} color="secondary">
-                            <NotificationsIcon />
-                        </Badge>
-                    </IconButton>
-                </Toolbar>
-            </AppBar>
+                        <ThemeProvider theme={darkTheme}>
+                            <div> Tema </div>
+                            <Switch checked={darkState} onChange={handleThemeChange} />
+                        </ThemeProvider>
+                        <IconButton color="inherit">
+                            <Badge badgeContent={4} color="secondary">
+                                <NotificationsIcon />
+                            </Badge>
+                        </IconButton>
+                    </Toolbar>
+                </AppBar>
 
-            <Drawer variant="permanent" open={open} classes={{
-                paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-            }}
-            >
-                <div className={classes.toolbarIcon}>
-                    <IconButton onClick={handleDrawerClose}>
-                        <ChevronLeftIcon />
-                    </IconButton>
-                </div>
-                <Divider />
-                <List>{mainListItems}</List>
-                <Divider />
-                <List>{secondaryListItems}</List>
-            </Drawer>
-            <main className={classes.content}>
-                <div className={classes.appBarSpacer} />
-                <Container maxWidth="lg" className={classes.container}>
-                    <Route exact path='/' component={Report} />
-                    <Route path='/supplier' component={Supplier} />
-                    <Route path='/category' component={Category} />
-                    <Route path='/product' component={Product} />
-                    <Route path='/client' component={Client} />
-                </Container>
-            </main>
-        </div>
+                <Drawer variant="permanent" open={open} classes={{
+                    paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+                }}
+                >
+                    <div className={classes.toolbarIcon}>
+                        <IconButton onClick={handleDrawerClose}>
+                            <ChevronLeftIcon />
+                        </IconButton>
+                    </div>
+                    <Divider />
+                    <List>{mainListItems}</List>
+                    <Divider />
+                    <List>{secondaryListItems}</List>
+                </Drawer>
+                <main className={classes.content}>
+                    <div className={classes.appBarSpacer} />
+                    <Container maxWidth="lg" className={classes.container}>
+                        <Route exact path='/' component={Report} />
+                        <Route path='/supplier' component={Supplier} />
+                        <Route path='/category' component={Category} />
+                        <Route path='/product' component={Product} />
+                        <Route path='/client' component={Client} />
+                    </Container>
+                </main>
+            </div>
+        </ThemeProvider>
     );
 }

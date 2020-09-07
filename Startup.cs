@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace Estoque
 {
@@ -32,11 +33,12 @@ namespace Estoque
                 if (env.IsDevelopment())
                 {
                     options.UseSqlServer(configuration.GetConnectionString("SqlServerConnection"));
-
                 }
                 if (env.IsProduction())
                 {
-                    options.UseNpgsql(configuration.GetConnectionString("PostgresConnection"));
+                    var connectionString = Environment
+                        .GetEnvironmentVariable("PostgresqlConnection", EnvironmentVariableTarget.Machine);
+                    options.UseNpgsql(connectionString);
                 }
             });
 
