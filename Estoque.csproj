@@ -50,6 +50,14 @@
     <Compile Remove="Migrations\20200826190906_Category.Designer.cs" />
     <Compile Remove="Migrations\20200826193331_Category.cs" />
     <Compile Remove="Migrations\20200826193331_Category.Designer.cs" />
+    <Compile Remove="Migrations\20200928182711_OrdersItems.cs" />
+    <Compile Remove="Migrations\20200928182711_OrdersItems.Designer.cs" />
+    <Compile Remove="Migrations\20200928183005_OrdersItems.cs" />
+    <Compile Remove="Migrations\20200928183005_OrdersItems.Designer.cs" />
+    <Compile Remove="Migrations\20200928183100_OrdersItems.cs" />
+    <Compile Remove="Migrations\20200928183100_OrdersItems.Designer.cs" />
+    <Compile Remove="Migrations\20200928213001_ItemsList.cs" />
+    <Compile Remove="Migrations\20200928213001_ItemsList.Designer.cs" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

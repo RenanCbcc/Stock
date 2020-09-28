@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Estoque.Models;
 using Estoque.Models.ClientModels;
 using Microsoft.AspNetCore.Mvc;

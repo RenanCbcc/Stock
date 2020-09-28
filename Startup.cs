@@ -1,6 +1,7 @@
 using Estoque.Models;
 using Estoque.Models.CategoryModels;
 using Estoque.Models.ClientModels;
+using Estoque.Models.OrderModels;
 using Estoque.Models.ProductModels;
 using Estoque.Models.SupplierModels;
 using Microsoft.AspNetCore.Builder;
@@ -36,9 +37,7 @@ namespace Estoque
                 }
                 if (env.IsProduction())
                 {
-                    var connectionString = Environment
-                        .GetEnvironmentVariable("PostgresqlConnection", EnvironmentVariableTarget.Machine);
-                    options.UseNpgsql(connectionString);
+                    options.UseNpgsql(configuration.GetConnectionString("PostgresqlConnection"));
                 }
             });
 
@@ -47,7 +46,7 @@ namespace Estoque
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ISupplierRepository, SupplierRepository>();
-
+            services.AddScoped<IOrderRepository, OrderRepository>();
 
             services.AddControllersWithViews();
 
@@ -61,7 +60,7 @@ namespace Estoque
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (env.IsProduction())
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -93,6 +92,7 @@ namespace Estoque
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
+
             });
         }
     }

@@ -18,10 +18,8 @@ namespace Estoque.Models.ProductModels
         public int SupplierId { get; set; }
         public Supplier Supplier { get; set; }
 
-
         [Range(minimum: 0, maximum: 100, ErrorMessage = "O desconto do produto deve estar entre 0 e 100.")]
         public float Discount { get; set; }
-
 
         [Required(ErrorMessage = "Produto precisa ter um valor.")]
         [DataType(DataType.Currency)]
@@ -32,7 +30,6 @@ namespace Estoque.Models.ProductModels
         [DataType(DataType.Currency)]
         [Range(minimum: 1, maximum: 1000, ErrorMessage = "O valor da venda deve estar entre R$ 1,0 e R$ 1000,0.")]
         public float SalePrice { get; set; }
-
 
         [Required(ErrorMessage = "Produto precisa ter uma descrição.")]
         [DataType(DataType.Text)]
@@ -48,8 +45,6 @@ namespace Estoque.Models.ProductModels
         [Required(ErrorMessage = "Produto precisa ter uma quantidade.")]
         [Range(minimum: 1, maximum: 100, ErrorMessage = "A quantidade deve estar entre 1 e 100.")]
         public int Quantity { get; set; }
-
-
 
     }
 }

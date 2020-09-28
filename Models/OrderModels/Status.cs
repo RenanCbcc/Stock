@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Estoque.Models.AccountModels
+namespace Estoque.Models.OrderModels
 {
     public enum Status
     {
-        Inativo, Ativo
+        Pago, Pendende
     }
 }

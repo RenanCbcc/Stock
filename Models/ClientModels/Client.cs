@@ -12,9 +12,11 @@ namespace Estoque.Models.ClientModels
             Debt = 0;
         }
 
+        [DataType(DataType.DateTime)]
         public DateTime LastPurchase { get; set; }
 
         [Required]
+        [DataType(DataType.Currency)]
         public float Debt { get; set; }
 
         [Required]

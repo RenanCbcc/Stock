@@ -6,10 +6,10 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import PeopleIcon from '@material-ui/icons/People';
-import BarChartIcon from '@material-ui/icons/BarChart';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import CategoryIcon from '@material-ui/icons/Category';
+import StoreIcon from '@material-ui/icons/Store';
 import { Link } from "react-router-dom";
 
 export const mainListItems = (
@@ -32,11 +32,11 @@ export const mainListItems = (
             </ListItemIcon>
             <ListItemText primary="Clientes" />
         </ListItem>
-        <ListItem button component={Link} to="/report">
+        <ListItem button component={Link} to="/product">
             <ListItemIcon>
-                <BarChartIcon />
+                <StoreIcon />
             </ListItemIcon>
-            <ListItemText primary="Relatórios" />
+            <ListItemText primary="Produtos" />
         </ListItem>
 
         <ListItem button component={Link} to="/category">
