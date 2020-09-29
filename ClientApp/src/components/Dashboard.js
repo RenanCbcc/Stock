@@ -23,6 +23,7 @@ import Product from '../components/product/Product'
 import Category from '../components/category/Category'
 import Supplier from '../components/supplier/Supplier'
 import Report from '../components/report/Report'
+import Sale from '../components/sale/Sale'
 
 import { Route } from "react-router-dom";
 
@@ -187,6 +188,7 @@ export default function Dashboard() {
                         <Route path='/category' component={Category} />
                         <Route path='/product' component={Product} />
                         <Route path='/client' component={Client} />
+                        <Route path='/sale' component={Sale} />
                     </Container>
                 </main>
             </div>
