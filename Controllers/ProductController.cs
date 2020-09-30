@@ -23,6 +23,18 @@ namespace Estoque.Controllers
             return Ok(new { Data = paginatedList, Page = paginatedList.PageIndex, Total = paginatedList.Total });
         }
 
+        [HttpGet("{id}")]
+        [Route("Code")]
+        public async Task<IActionResult> Code(string code)
+        {
+            var product = await repository.Read(code);
+            if (product == null)
+            {
+                return NotFound(code);
+            }
+            return Ok(product);
+        }
+
         // GET: api/Product/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)

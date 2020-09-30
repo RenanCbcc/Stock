@@ -9,9 +9,10 @@ namespace Estoque.Models.ProductModels
     public interface IProductRepository
     {
         Task<Product> Read(int Id);
+        Task<Product> Read(string Code);
         IQueryable<Product> Browse();
         Task Add(Product product);
-        Task Edit(Product product);        
+        Task Edit(Product product);
     }
     public class ProductRepository : IProductRepository
     {
@@ -44,6 +45,11 @@ namespace Estoque.Models.ProductModels
         {
             return await context.Products.FindAsync(Id);
         }
-       
+
+        public async Task<Product> Read(string Code)
+        {
+            return await context.Products.FirstOrDefaultAsync(p => p.Code == Code);
+        }
+
     }
 }

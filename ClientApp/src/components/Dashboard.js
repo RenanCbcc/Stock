@@ -23,7 +23,7 @@ import Product from '../components/product/Product'
 import Category from '../components/category/Category'
 import Supplier from '../components/supplier/Supplier'
 import Report from '../components/report/Report'
-import Sale from '../components/sale/Sale'
+import { Sale } from '../components/sale/Sale'
 
 import { Route } from "react-router-dom";
 
