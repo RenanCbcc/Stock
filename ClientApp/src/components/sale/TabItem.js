@@ -30,10 +30,14 @@ export function TabItem() {
                     <Tab label="Busca manual" />
                 </Tabs>
             </AppBar>
-                {selectedTab === 0 && <AutomaticTabPanel />}
+            {selectedTab === 0 && <AutomaticTabPanel onAdd={test} />}
                 {selectedTab === 1 && <ManualTabPanel />}
             
         </div>
     )
 
+}
+
+function test(data) {
+    console.log(data)
 }
