@@ -181,7 +181,7 @@ function Product() {
                     result[category.id] = category.title;
                     return result;
                 }, {});
-                setCategories(data)
+                setCategories(data)                
             }).catch(err => console.log(err));
 
         fetch('https://localhost:44308/api/Supplier/All')

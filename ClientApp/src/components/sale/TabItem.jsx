@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export function TabItem() {
+export function TabItem(props) {
     const [selectedTab, setSelectedTab] = useState(0);
 
     const handleTabChange = (event, newValue) => {
@@ -30,14 +30,11 @@ export function TabItem() {
                     <Tab label="Busca manual" />
                 </Tabs>
             </AppBar>
-            {selectedTab === 0 && <AutomaticTabPanel onAdd={test} />}
-                {selectedTab === 1 && <ManualTabPanel />}
-            
+            {selectedTab === 0 && <AutomaticTabPanel onAdd={props.onAdd} />}
+            {selectedTab === 1 && <ManualTabPanel onAdd={props.onAdd} />}
         </div>
-    )
+    );
 
 }
 
-function test(data) {
-    console.log(data)
-}
+

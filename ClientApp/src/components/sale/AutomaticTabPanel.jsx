@@ -3,8 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
-const baseURL = "api/Product/Code?code=";
-
 const useStyles = makeStyles((theme) => ({
     text: {
         '& > *': {
@@ -51,7 +49,12 @@ export function AutomaticTabPanel(props) {
 
     const onSubmit = (event) => {
         event.preventDefault();
-        props.OnAdd({ code, description, price, quantity });
+        props.onAdd({ code, description, price, quantity });
+
+        setCode('');
+        setDescription('');
+        setPrice('');
+        setQuantity('');
     }
 
     return (
@@ -104,7 +107,7 @@ export function AutomaticTabPanel(props) {
                 error={!quantityerror.quantity.valid}
                 helperText={quantityerror.quantity.text}
                 onChange={(event) => {
-                    let q = event.target.value;                    
+                    let q = event.target.value;
                     if (q <= 0) {
                         setQuantityErrors(
                             {

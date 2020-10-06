@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Alert from '@material-ui/lab/Alert';
@@ -14,7 +14,11 @@ export function Sale() {
     const [data, setData] = useState([]);
     const [errorMessages, setErrorMessages] = useState([]);
     const [iserror, setIserror] = useState(false);
+    const [product, setProduct] = useState({});
 
+    useEffect(() => {
+        console.log(product);
+    });
 
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -26,6 +30,10 @@ export function Sale() {
             color: theme.palette.text.secondary,
         },
     }));
+
+    const onAdd = (product) => {
+        setProduct(product);
+    }
 
     const classes = useStyles();
     return (<>
@@ -45,12 +53,14 @@ export function Sale() {
                     <TableItem />
                 </Grid>
                 <Grid item xs={4}>
-                    <TabItem />
+                    <TabItem onAdd={onAdd} />
                 </Grid>
             </Grid>
         </div>
     </>
-    )
+    );
 
 };
+
+
 

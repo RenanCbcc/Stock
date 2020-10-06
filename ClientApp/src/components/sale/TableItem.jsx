@@ -2,7 +2,7 @@
 import MaterialTable from 'material-table';
 
 export function TableItem() {
-    const [data, setData] = useState([]);
+    const [products, setProduct] = useState([]);
 
     const isOk = (response) => {
         if (response !== null && response.ok) {
