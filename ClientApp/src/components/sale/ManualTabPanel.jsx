@@ -35,16 +35,27 @@ const useInputStyles = makeStyles((theme) => ({
 export function ManualTabPanel(props) {
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = React.useState([]);
+    const [currentCategory, setcurrentCategory] = useState('');
+    const [currentProduct, setcurrentProduct] = React.useState('');
     const [price, setPrice] = useState('');
     const [quantity, setQuantity] = useState('');
     const [quantityerror, setQuantityErrors] = useState({ quantity: { valid: true, text: "" } });
 
     const handleCategoryChange = (event) => {
-        console.log(event.target.value)
+        let categoryId = event.target.value;
+        setcurrentCategory(categoryId)
+        fetch(`api/Product/ByCategory?id=${categoryId}`)
+            .then(res => isOk(res))
+            .then(response => response.json())
+            .then(data => { setProducts(data) })
+            .catch(err => console.log(err));
     };
 
     const handleProductChange = (event) => {
-        
+        let productId = event.target.value;
+        setcurrentProduct(productId)
+        let p = products.find(p => p.id === productId);
+        setPrice(p.salePrice);
     };
 
     const selectStyles = useSelectStyles();
@@ -52,10 +63,13 @@ export function ManualTabPanel(props) {
 
     const onSubmit = (event) => {
         event.preventDefault();
-        //props.onAdd({ code, description, price, quantity });
-
+        let p = products.find(p => p.id === currentProduct)
+        let code = p.code;
+        let description = p.description;
+        setcurrentProduct('')
         setPrice('');
         setQuantity('');
+        props.onAdd({ code, description, price, quantity });
     }
 
     const isOk = (response) => {
@@ -67,6 +81,7 @@ export function ManualTabPanel(props) {
     }
 
     useEffect(() => {
+        console.log("useEffect");
         fetch('https://localhost:44308/api/Category/All')
             .then(res => isOk(res))
             .then(response => response.json())
@@ -77,19 +92,14 @@ export function ManualTabPanel(props) {
     return (
         <form className={inputStyles.text} autoComplete="off"
             onSubmit={onSubmit}>
-
             <FormControl variant="outlined" className={selectStyles.formControl}>
                 <InputLabel id="demo-simple-select-label">Categoria</InputLabel>
                 <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={categories}
+                    value={currentCategory}
                     onChange={handleCategoryChange}
                 >
-                    <MenuItem value="">
-                        <em>None</em>
-                    </MenuItem>
-
                     {categories.map((category) =>
                         <MenuItem value={category.id}>{category.title}</MenuItem>
                     )}
@@ -101,12 +111,12 @@ export function ManualTabPanel(props) {
                 <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={products}
+                    value={currentProduct}
                     onChange={handleProductChange}
                 >
-                    <MenuItem value={10}>Calçados</MenuItem>
-                    <MenuItem value={20}>Roupas</MenuItem>
-                    <MenuItem value={30}>Cosmesticos</MenuItem>
+                    {products.map((product) =>
+                        <MenuItem value={product.id}>{product.description}</MenuItem>
+                    )}
                 </Select>
             </FormControl>
             <TextField

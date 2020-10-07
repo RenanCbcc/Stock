@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Estoque.Models;
 using Estoque.Models.ProductModels;
 using Microsoft.AspNetCore.Mvc;
@@ -23,9 +24,9 @@ namespace Estoque.Controllers
             return Ok(new { Data = paginatedList, Page = paginatedList.PageIndex, Total = paginatedList.Total });
         }
 
-        [HttpGet("{id}")]
+
         [Route("Code")]
-        public async Task<IActionResult> Code(string code)
+        public async Task<IActionResult> Code([FromQuery(Name = "code")] string code)
         {
             var product = await repository.Read(code);
             if (product == null)
@@ -33,6 +34,12 @@ namespace Estoque.Controllers
                 return NotFound(code);
             }
             return Ok(product);
+        }
+
+        [Route("ByCategory")]
+        public IEnumerable<Product> ByCategory([FromQuery(Name = "id")] int id)
+        {
+            return repository.Browse(id);
         }
 
         // GET: api/Product/5

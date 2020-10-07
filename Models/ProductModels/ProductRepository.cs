@@ -11,6 +11,7 @@ namespace Estoque.Models.ProductModels
         Task<Product> Read(int Id);
         Task<Product> Read(string Code);
         IQueryable<Product> Browse();
+        IEnumerable<Product> Browse(int id);
         Task Add(Product product);
         Task Edit(Product product);
     }
@@ -32,6 +33,11 @@ namespace Estoque.Models.ProductModels
         public IQueryable<Product> Browse()
         {
             return context.Products;
+        }
+
+        public IEnumerable<Product> Browse(int id)
+        {
+            return context.Products.Where(p => p.CategoryId == id).ToList();
         }
 
         public async Task Edit(Product alteredProduct)

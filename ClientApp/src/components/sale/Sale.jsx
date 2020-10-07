@@ -11,13 +11,12 @@ const baseURL = "api/Client";
 
 
 export function Sale() {
-    const [data, setData] = useState([]);
     const [errorMessages, setErrorMessages] = useState([]);
     const [iserror, setIserror] = useState(false);
     const [product, setProduct] = useState({});
 
     useEffect(() => {
-        console.log(product);
+        
     });
 
     const useStyles = makeStyles((theme) => ({
