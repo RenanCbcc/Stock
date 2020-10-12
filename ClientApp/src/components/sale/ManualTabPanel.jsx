@@ -69,7 +69,7 @@ export function ManualTabPanel(props) {
         setcurrentProduct('')
         setPrice('');
         setQuantity('');
-        props.onAdd({ code, description, price, quantity });
+        props.onAdd({ code, description, price, quantity, subtotal: price * quantity });
     }
 
     const isOk = (response) => {

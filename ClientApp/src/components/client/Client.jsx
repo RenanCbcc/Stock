@@ -180,9 +180,6 @@ function Client() {
                 setIserror(true)
                 resolve()
             })
-
-
-
     }
 
     const handleRowUpdate = (newData, oldData, resolve) => {
@@ -209,7 +206,6 @@ function Client() {
                 setIserror(true)
                 resolve()
             })
-
 
     }
 

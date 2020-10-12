@@ -49,7 +49,7 @@ export function AutomaticTabPanel(props) {
 
     const onSubmit = (event) => {
         event.preventDefault();
-        props.onAdd({ code, description, price, quantity });
+        props.onAdd({ code, description, price, quantity, subtotal: price * quantity });
 
         setCode('');
         setDescription('');
