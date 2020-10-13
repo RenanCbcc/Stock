@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 export function AutomaticTabPanel(props) {
+    const [productid, setProductid] = useState('');
     const [code, setCode] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
@@ -41,6 +42,7 @@ export function AutomaticTabPanel(props) {
             .then(res => isOk(res))
             .then(res => res.json())
             .then((product) => {
+                setProductid(product.id);
                 setDescription(product.description);
                 setPrice(product.salePrice);
             })
@@ -49,8 +51,9 @@ export function AutomaticTabPanel(props) {
 
     const onSubmit = (event) => {
         event.preventDefault();
-        props.onAdd({ code, description, price, quantity, subtotal: price * quantity });
+        props.onAdd({ productid, code, description, price, quantity, subtotal: price * quantity });
 
+        setProductid('');
         setCode('');
         setDescription('');
         setPrice('');

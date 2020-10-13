@@ -1,16 +1,10 @@
-﻿import React, { useState, useEffect } from 'react';
+﻿import React from 'react';
 import MaterialTable from 'material-table';
 
-const isOk = (response) => {
-    if (response !== null && response.ok) {
-        return response;
-    } else {
-        throw new Error(response.statusText);
-    }
-}
 
 const columns =
     [
+        { title: "id", field: "productid", hidden: true },
         {
             title: 'Produto', field: 'description', type: 'string', editable: 'never'
         },
@@ -57,6 +51,7 @@ const localization = {
     }
 }
 
+
 export function TableItem(props) {
 
     return (
@@ -72,14 +67,22 @@ export function TableItem(props) {
                     color: '#FFF'
                 }
             }}
+            actions={[
+                {
+                    icon: 'save',
+                    tooltip: 'Salvar items',
+                    isFreeAction: true,
+                    onClick: (event) => { props.onSaveItems() }
+                }
+            ]}
             editable={{
                 onRowUpdate: (newData, oldData) =>
                     new Promise((resolve) => {
-                        props.onRowUpdate(newData, oldData, resolve);                        
+                        props.onRowUpdate(newData, oldData, resolve);
                     }),
                 onRowDelete: (oldData) =>
                     new Promise((resolve) => {
-                        props.onRowDelete(oldData, resolve);                        
+                        props.onRowDelete(oldData, resolve);
                     }),
             }}
         />

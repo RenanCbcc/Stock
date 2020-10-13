@@ -64,12 +64,12 @@ export function ManualTabPanel(props) {
     const onSubmit = (event) => {
         event.preventDefault();
         let p = products.find(p => p.id === currentProduct)
-        let code = p.code;
+        let productid = p.id;        
         let description = p.description;
         setcurrentProduct('')
         setPrice('');
         setQuantity('');
-        props.onAdd({ code, description, price, quantity, subtotal: price * quantity });
+        props.onAdd({ productid, description, price, quantity, subtotal: price * quantity });
     }
 
     const isOk = (response) => {

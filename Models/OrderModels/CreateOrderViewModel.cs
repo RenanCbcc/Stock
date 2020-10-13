@@ -12,10 +12,7 @@ namespace Estoque.Models.OrderModels
         }
 
         public int CLientId { get; set; }
-
-        [Required]
-        public Status Status { get; set; }
-
+        
         [Required]
         public HashSet<Item> Items { get; set; }
     }

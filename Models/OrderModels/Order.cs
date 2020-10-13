@@ -10,6 +10,7 @@ namespace Estoque.Models.OrderModels
         public Order()
         {
             this.Items = new HashSet<Item>();
+            this.Status = Status.Pendende;
         }
         public int CLientId { get; set; }
         public Client Client { get; set; }

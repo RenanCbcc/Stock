@@ -17,15 +17,9 @@ import { mainListItems, secondaryListItems } from './listItems';
 import Container from '@material-ui/core/Container';
 import Switch from "@material-ui/core/Switch";
 import { orange, lightBlue, deepPurple, deepOrange } from "@material-ui/core/colors";
+import Routes from '../components/Routes'
 
-import Client from '../components/client/Client';
-import Product from '../components/product/Product'
-import Category from '../components/category/Category'
-import Supplier from '../components/supplier/Supplier'
-import Report from '../components/report/Report'
-import { Sale } from '../components/sale/Sale'
 
-import { Route } from "react-router-dom";
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -166,9 +160,10 @@ export default function Dashboard() {
                     </Toolbar>
                 </AppBar>
 
-                <Drawer variant="permanent" open={open} classes={{
-                    paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-                }}
+                <Drawer variant="permanent" open={open}
+                    classes={{
+                        paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+                    }}
                 >
                     <div className={classes.toolbarIcon}>
                         <IconButton onClick={handleDrawerClose}>
@@ -182,14 +177,11 @@ export default function Dashboard() {
                 </Drawer>
                 <main className={classes.content}>
                     <div className={classes.appBarSpacer} />
+
                     <Container maxWidth="lg" className={classes.container}>
-                        <Route exact path='/' component={Report} />
-                        <Route path='/supplier' component={Supplier} />
-                        <Route path='/category' component={Category} />
-                        <Route path='/product' component={Product} />
-                        <Route path='/client' component={Client} />
-                        <Route path='/sale' component={Sale} />
+                        <Routes />
                     </Container>
+
                 </main>
             </div>
         </ThemeProvider>

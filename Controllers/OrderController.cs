@@ -59,24 +59,22 @@ namespace Estoque.Controllers
                 var o = new Order
                 {
                     CLientId = model.CLientId,
-                    Status = model.Status,
                     Items = model.Items,
                     Date = DateTime.Now,
                 };
 
-                if (o.Status == Status.Pendende)
-                {
-                    foreach (var item in model.Items)
-                    {
-                        var p = await productRepository.Read(item.ProductId);
-                        if (p == null)
-                        {
-                            return NotFound($"Produto com Id {item.ProductId} não foi encontrado.");
-                        }
 
-                        o.Value += p.SalePrice * item.Quantity;
+                foreach (var item in model.Items)
+                {
+                    var p = await productRepository.Read(item.ProductId);
+                    if (p == null)
+                    {
+                        return NotFound($"Produto com Id {item.ProductId} não foi encontrado.");
                     }
+                    p.Quantity -= item.Quantity;
+                    o.Value += p.SalePrice * item.Quantity;
                 }
+
 
                 await orderRepository.Add(o);
                 var url = Url.Action("Get", new { id = o.Id });
