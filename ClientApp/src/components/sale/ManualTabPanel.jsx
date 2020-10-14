@@ -33,6 +33,7 @@ const useInputStyles = makeStyles((theme) => ({
 }));
 
 export function ManualTabPanel(props) {
+    const [disabled, setDisabled] = useState(true);
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = React.useState([]);
     const [currentCategory, setcurrentCategory] = useState('');
@@ -56,6 +57,7 @@ export function ManualTabPanel(props) {
         setcurrentProduct(productId)
         let p = products.find(p => p.id === productId);
         setPrice(p.salePrice);
+
     };
 
     const selectStyles = useSelectStyles();
@@ -64,7 +66,7 @@ export function ManualTabPanel(props) {
     const onSubmit = (event) => {
         event.preventDefault();
         let p = products.find(p => p.id === currentProduct)
-        let productid = p.id;        
+        let productid = p.id;
         let description = p.description;
         setcurrentProduct('')
         setPrice('');
@@ -81,13 +83,20 @@ export function ManualTabPanel(props) {
     }
 
     useEffect(() => {
-        console.log("useEffect");
-        fetch('https://localhost:44308/api/Category/All')
+        fetch('/api/Category/All')
             .then(res => isOk(res))
             .then(response => response.json())
             .then(data => { setCategories(data) })
             .catch(err => console.log(err));
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        if (currentCategory.length === 0 || currentProduct.length === 0 || quantity.length <= 0) {
+            setDisabled(true);
+        } else {
+            setDisabled(false);
+        }
+    });
 
     return (
         <form className={inputStyles.text} autoComplete="off"
@@ -152,7 +161,7 @@ export function ManualTabPanel(props) {
             />
 
             <div className={inputStyles.button}>
-                <Button type="submit" variant="contained" color="primary">Adicionar</Button>
+                <Button disabled={disabled} type="submit" variant="contained" color="primary">Adicionar</Button>
             </div>
         </form>
 

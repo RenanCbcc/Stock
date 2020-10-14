@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 export function AutomaticTabPanel(props) {
+    const [disabled, setDisabled] = useState(true);
     const [productid, setProductid] = useState('');
     const [code, setCode] = useState('');
     const [description, setDescription] = useState('');
@@ -27,6 +28,14 @@ export function AutomaticTabPanel(props) {
     const [codeerror, setCodeError] = useState({ code: { valid: true, text: "" } });
     const [quantityerror, setQuantityErrors] = useState({ quantity: { valid: true, text: "" } });
     const classes = useStyles();
+
+    useEffect(() => {
+        if (code.length === 0 || description.length === 0 || quantity.length <= 0) {
+            setDisabled(true);
+        } else {
+            setDisabled(false);
+        }
+    });
 
     const isOk = (response) => {
         if (response !== null && response.ok) {
@@ -46,7 +55,7 @@ export function AutomaticTabPanel(props) {
                 setDescription(product.description);
                 setPrice(product.salePrice);
             })
-            .catch(err => { throw new Error(err) });
+            .catch(err => { console.log(new Error(err)) });
     }
 
     const onSubmit = (event) => {
@@ -129,7 +138,7 @@ export function AutomaticTabPanel(props) {
 
             <div className={classes.button}>
                 <Button variant="contained" onClick={onClick}>Buscar</Button>
-                <Button type="submit" variant="contained" color="primary">Adicionar</Button>
+                <Button disabled={disabled} type="submit" variant="contained" color="primary">Adicionar</Button>
             </div>
         </form>
     )

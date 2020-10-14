@@ -196,7 +196,7 @@ export default function Client(props) {
                     {
                         icon: () => <AddShoppingCartIcon />,
                         tooltip: 'Nova venda',
-                        onClick: (event, rowData) => props.history.push(`/sale/${rowData.id}`)
+                        onClick: (event, rowData) => props.history.push(`/sale/client/${rowData.id}`)
                     }
                 ]}
                 editable={{
