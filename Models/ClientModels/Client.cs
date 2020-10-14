@@ -38,7 +38,7 @@ namespace Estoque.Models.ClientModels
         [Required]
         [StringLength(maximumLength: 11, MinimumLength = 11,
         ErrorMessage = "O número de telefone deve ter exatamente 11 caracteres.")]
-        [DataType(DataType.PhoneNumber)]
+        [DataType(DataType.PhoneNumber)]        
         public string PhoneNumber { get; set; }
 
     }

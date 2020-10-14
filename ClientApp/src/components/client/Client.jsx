@@ -9,7 +9,7 @@ const isOk = (response) => {
     if (response !== null && response.ok) {
         return response;
     } else {
-        throw new Error(response.statusText);
+        throw Error(response.status);
     }
 }
 
@@ -99,7 +99,7 @@ const operations = (query, data) => {
 
 export default function Client(props) {
     const [data, setData] = useState([]);
-    const [errorMessages, setErrorMessages] = useState([]);
+    const [errorMessages, setErrorMessages] = useState('');
     const [iserror, setIserror] = useState(false);
 
 
@@ -120,7 +120,7 @@ export default function Client(props) {
                 setIserror(false)
             })
             .catch(error => {
-                setErrorMessages([`Não foi possível enviar os dados ao servidor. ${error}`])
+                setErrorMessages(`Não foi possível enviar os dados ao servidor. ${error}`)
                 setIserror(true)
                 resolve()
             })
@@ -146,7 +146,7 @@ export default function Client(props) {
                 setErrorMessages([])
             })
             .catch(error => {
-                setErrorMessages(["Não foi possível atualizar o cliente. Erro no servidor."])
+                setErrorMessages(`Não foi possível atualizar o cliente. ${error}`)
                 setIserror(true)
                 resolve()
             })
@@ -157,12 +157,7 @@ export default function Client(props) {
         <>
             <div>
                 {iserror &&
-                    <Alert
-                        severity="error">
-                        {errorMessages.map((msg, i) => {
-                            return <div key={i}>{msg}</div>
-                        })}
-                    </Alert>
+                    <Alert severity="error">{errorMessages}</Alert>
                 }
             </div>
             <MaterialTable

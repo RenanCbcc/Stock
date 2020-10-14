@@ -6,20 +6,22 @@ import Alert from '@material-ui/lab/Alert';
 import { TableItem } from './TableItem';
 import { TabItem } from './TabItem';
 
-const baseURL = "";
+const baseURL = "api/Order";
 
 const isOk = (response) => {
     if (response !== null && response.ok) {
         return response;
     } else {
-        throw new Error(response.statusText);
+        throw Error(response.status);
     }
 }
 
 
 export default function Sale(props) {
-    const [errorMessages, setErrorMessages] = useState([]);
+    const [errorMessages, setErrorMessages] = useState('');
+    const [successMessages, setSuccessMessages] = useState('');
     const [iserror, setIserror] = useState(false);
+    const [ismessage, setIsmessage] = useState(false);
     const [products, setProducts] = useState([]);
     const clientId = props.match.params.clientId;
 
@@ -39,25 +41,33 @@ export default function Sale(props) {
     }
 
     const handleSaveItems = () => {
-        let order = {
-            clientId: clientId,
-            items: products.map(p => ({ 'ProductId': p.productid, 'Quantity': p.quantity }))
+        if (products.length === 0) {
+            setErrorMessages(`Erro. Pedido deve ter ao menos um item.`);
+            setIserror(true);
+        } else {
+            let order = {
+                clientId: Number(clientId),
+                items: products.map(p => ({ 'ProductId': Number(p.productid), 'Quantity': Number(p.quantity) }))
+            }
+            fetch(baseURL, {
+                method: 'Post',
+                headers: { 'Content-type': 'application/json' },
+                body: JSON.stringify(order)
+            })
+                .then(response => isOk(response))
+                .then(response => response.json())
+                .then(result => {                    
+                    setProducts([]);
+                    setErrorMessages([]);
+                    setSuccessMessages(`Pedido registrado com sucesso!. ${result.status}`);
+                    setIserror(false);
+                    setIsmessage(true);
+                }).catch(error => {
+                    setErrorMessages(`Não foi possível enviar os dados para o servidor. ${error}`);
+                    setIserror(true);
+                });
         }
-        fetch(baseURL, {
-            method: 'Post',
-            headers: { 'Content-type': 'application/json' },
-            body: JSON.stringify(order)
-        })
-            .then(response => isOk(response))
-            .then(response => response.json())
-            .then(result => {
-                setErrorMessages([])
-                setIserror(false)
-            })
-            .catch(error => {
-                setErrorMessages([`Não foi possível enviar os dados ao servidor. ${error}`])
-                setIserror(true)
-            })
+
     }
     const handleRowUpdate = (newData, oldData, resolve) => {
         let objIndex = products.findIndex(p => p.code == oldData.code);
@@ -77,13 +87,12 @@ export default function Sale(props) {
     return (<>
         <div>
             {iserror &&
-                <Alert
-                    severity="error">
-                    {errorMessages.map((msg, i) => {
-                        return <div key={i}>{msg}</div>
-                    })}
-                </Alert>
+                <Alert severity="error">{errorMessages}</Alert>
             }
+            {ismessage &&
+                <Alert severity="success">{successMessages}</Alert>
+            }
+
         </div>
         <div className={classes.root}>
             <Grid container spacing={3}>

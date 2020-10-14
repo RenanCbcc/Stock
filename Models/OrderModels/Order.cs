@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Estoque.Models.OrderModels
 {
@@ -23,6 +24,7 @@ namespace Estoque.Models.OrderModels
         public Status Status { get; set; }
 
         [Required]
+        [JsonIgnore]
         public HashSet<Item> Items { get; set; }
 
     }

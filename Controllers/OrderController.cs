@@ -44,7 +44,6 @@ namespace Estoque.Controllers
             return Ok(order);
         }
 
-
         [HttpPost]
         public async Task<IActionResult> Post(CreateOrderViewModel model)
         {
@@ -63,7 +62,6 @@ namespace Estoque.Controllers
                     Date = DateTime.Now,
                 };
 
-
                 foreach (var item in model.Items)
                 {
                     var p = await productRepository.Read(item.ProductId);
@@ -72,13 +70,14 @@ namespace Estoque.Controllers
                         return NotFound($"Produto com Id {item.ProductId} não foi encontrado.");
                     }
                     p.Quantity -= item.Quantity;
-                    o.Value += p.SalePrice * item.Quantity;
+                    o.Value += p.SalePrice * item.Quantity;                    
                 }
 
 
                 await orderRepository.Add(o);
                 var url = Url.Action("Get", new { id = o.Id });
-                return Created(url, o);
+                var created = Created(url, o);
+                return created;
             }
 
             return BadRequest(ModelState);

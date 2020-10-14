@@ -7,7 +7,7 @@ const columns =
     [
         { title: "id", field: "id", hidden: true },
         {
-            title: 'Cliente', field: 'name', type: 'string'
+            title: 'Cliente', field: 'client.name', type: 'string'
         },
         {
             title: 'Valor', field: 'value', type: 'currency'

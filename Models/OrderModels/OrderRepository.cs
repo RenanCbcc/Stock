@@ -29,7 +29,7 @@ namespace Estoque.Models.OrderModels
 
         public IQueryable<Order> Browse()
         {
-            return context.Orders;
+            return context.Orders.Include(o => o.Client);
         }
 
         public async Task Edit(Order alteredOrder)
