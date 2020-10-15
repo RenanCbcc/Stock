@@ -27,12 +27,13 @@ namespace Estoque.Controllers
 
         [HttpGet]
         [Route("All")]
-        public IEnumerable<Category> All()
+        public async Task<IActionResult> All()
         {
-            return repository.Browse();
+            var items = await repository.All();
+            return Ok(items);
         }
 
-        
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
@@ -44,7 +45,7 @@ namespace Estoque.Controllers
             return Ok(category);
         }
 
-        
+
         [HttpPost]
         public async Task<IActionResult> Post(CreateViewModel model)
         {
@@ -64,7 +65,7 @@ namespace Estoque.Controllers
             return BadRequest(ModelState);
         }
 
-        
+
         [HttpPut]
         public async Task<IActionResult> Put(EditViewModel model)
         {
@@ -84,7 +85,7 @@ namespace Estoque.Controllers
             return BadRequest(ModelState);
         }
 
-       
+
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

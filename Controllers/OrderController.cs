@@ -69,8 +69,16 @@ namespace Estoque.Controllers
                     {
                         return NotFound($"Produto com Id {item.ProductId} não foi encontrado.");
                     }
+                    if (item.Quantity > p.Quantity)
+                    {
+                        return BadRequest("Quantidade em estoque insuficiente.");
+                    }
+
+                    item.Discound = p.Discount;
+                    item.Value = p.SalePrice;
                     p.Quantity -= item.Quantity;
-                    o.Value += p.SalePrice * item.Quantity;                    
+                    var total = (p.SalePrice * item.Quantity);
+                    o.Value += total - (total * p.Discount);
                 }
 
 

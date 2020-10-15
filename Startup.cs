@@ -46,6 +46,7 @@ namespace Estoque
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ISupplierRepository, SupplierRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IItemRepository, ItemRepository>();
 
             services.AddControllersWithViews();
 

@@ -9,6 +9,7 @@ namespace Estoque.Models.CategoryModels
     public interface ICategoryRepository
     {
         Task<Category> Read(int Id);
+        Task<IEnumerable<Category>> All();
         IQueryable<Category> Browse();
         Task Add(Category category);
         Task Edit(Category category);
@@ -25,6 +26,11 @@ namespace Estoque.Models.CategoryModels
         {
             await context.AddAsync(category);
             await context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Category>> All()
+        {
+            return await context.Categories.ToListAsync();
         }
 
         public IQueryable<Category> Browse()

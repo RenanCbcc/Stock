@@ -40,6 +40,7 @@ export function ManualTabPanel(props) {
     const [currentProduct, setcurrentProduct] = React.useState('');
     const [price, setPrice] = useState('');
     const [quantity, setQuantity] = useState('');
+    const [quantityAvailable, setQuantityAvailable] = useState('');
     const [quantityerror, setQuantityErrors] = useState({ quantity: { valid: true, text: "" } });
 
     const handleCategoryChange = (event) => {
@@ -57,7 +58,7 @@ export function ManualTabPanel(props) {
         setcurrentProduct(productId)
         let p = products.find(p => p.id === productId);
         setPrice(p.salePrice);
-
+        setQuantityAvailable(p.quantity);
     };
 
     const selectStyles = useSelectStyles();
@@ -71,6 +72,7 @@ export function ManualTabPanel(props) {
         setcurrentProduct('')
         setPrice('');
         setQuantity('');
+        setQuantityAvailable('');
         props.onAdd({ productid, description, price, quantity, subtotal: price * quantity });
     }
 
@@ -91,7 +93,7 @@ export function ManualTabPanel(props) {
     }, []);
 
     useEffect(() => {
-        if (currentCategory.length === 0 || currentProduct.length === 0 || quantity.length <= 0) {
+        if (currentCategory.length === 0 || currentProduct.length === 0 || quantity <= 0 || quantity > quantityAvailable) {
             setDisabled(true);
         } else {
             setDisabled(false);
@@ -144,13 +146,13 @@ export function ManualTabPanel(props) {
                 helperText={quantityerror.quantity.text}
                 onChange={(event) => {
                     let q = event.target.value;
-                    if (q <= 0) {
+                    if (q <= 0 || q > quantityAvailable) {
                         setQuantityErrors(
                             {
                                 quantity:
                                 {
                                     valid: false,
-                                    text: "A quantidade precisa ser maior que 0."
+                                    text: `A quantidade precisa ser maior que 0 e menor que ${quantityAvailable}`
                                 }
                             });
                     } else {

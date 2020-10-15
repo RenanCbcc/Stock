@@ -7,12 +7,12 @@ namespace Estoque.Models.OrderModels
     {
 
         public int OrderId { get; set; }
-        public Order Order { get; set; }
-
         public int ProductId { get; set; }
         public Product Product { get; set; }
-
         public int Quantity { get; set; }
+        public float Discound { get; set; }
+        public float Value { get; set; }
+
 
         public override bool Equals(object obj)
         {

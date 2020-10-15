@@ -25,12 +25,13 @@ export function AutomaticTabPanel(props) {
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
     const [quantity, setQuantity] = useState('');
+    const [quantityAvailable, setQuantityAvailable] = useState('');
     const [codeerror, setCodeError] = useState({ code: { valid: true, text: "" } });
     const [quantityerror, setQuantityErrors] = useState({ quantity: { valid: true, text: "" } });
     const classes = useStyles();
 
     useEffect(() => {
-        if (code.length === 0 || description.length === 0 || quantity.length <= 0) {
+        if (code.length === 0 || description.length === 0 || quantity <= 0 || quantity > quantityAvailable) {
             setDisabled(true);
         } else {
             setDisabled(false);
@@ -54,8 +55,9 @@ export function AutomaticTabPanel(props) {
                 setProductid(product.id);
                 setDescription(product.description);
                 setPrice(product.salePrice);
+                setQuantityAvailable(product.quantity);
             })
-            .catch(err => { console.log(new Error(err)) });
+            .catch(err => { console.log(err) });
     }
 
     const onSubmit = (event) => {
@@ -67,6 +69,7 @@ export function AutomaticTabPanel(props) {
         setDescription('');
         setPrice('');
         setQuantity('');
+        setQuantityAvailable('');
     }
 
     return (
@@ -126,7 +129,7 @@ export function AutomaticTabPanel(props) {
                                 quantity:
                                 {
                                     valid: false,
-                                    text: "A quantidade precisa ser maior que 0."
+                                    text: `A quantidade precisa ser maior que 0 e menor que ${quantityAvailable}`
                                 }
                             });
                     } else {
