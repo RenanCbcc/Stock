@@ -2,6 +2,7 @@
 import MaterialTable from 'material-table';
 import Alert from '@material-ui/lab/Alert';
 import PaymentIcon from '@material-ui/icons/Payment';
+import Items from './Items';
 
 const columns =
     [
@@ -125,6 +126,11 @@ export default function Order(props) {
                         onClick: (event, rowData) => props.history.push(`/sale/${rowData.id}`)
                     }
                 ]}
+                detailPanel={rowData => {
+                    return (
+                        <Items orderId={rowData.id} />
+                    )
+                }}
             />
         </>
     )
