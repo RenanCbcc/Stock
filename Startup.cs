@@ -2,6 +2,7 @@ using Estoque.Models;
 using Estoque.Models.CategoryModels;
 using Estoque.Models.ClientModels;
 using Estoque.Models.OrderModels;
+using Estoque.Models.PaymentModels;
 using Estoque.Models.ProductModels;
 using Estoque.Models.SupplierModels;
 using Microsoft.AspNetCore.Builder;
@@ -47,6 +48,7 @@ namespace Estoque
             services.AddScoped<ISupplierRepository, SupplierRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IItemRepository, ItemRepository>();
+            services.AddScoped<IPaymentRepository, PaymentRepository>();
 
             services.AddControllersWithViews();
 

@@ -10,6 +10,7 @@ import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import CategoryIcon from '@material-ui/icons/Category';
 import StoreIcon from '@material-ui/icons/Store';
+import PaymentIcon from '@material-ui/icons/Payment';
 import { Link } from "react-router-dom";
 
 export const mainListItems = (
@@ -37,6 +38,13 @@ export const mainListItems = (
                 <StoreIcon />
             </ListItemIcon>
             <ListItemText primary="Produtos" />
+        </ListItem>
+
+        <ListItem button component={Link} to="/payment">
+            <ListItemIcon>
+                <PaymentIcon />
+            </ListItemIcon>
+            <ListItemText primary="Pagamentos" />
         </ListItem>
 
         <ListItem button component={Link} to="/category">

@@ -8,6 +8,8 @@ import Supplier from '../components/supplier/Supplier'
 import Report from '../components/report/Report'
 import Sale from '../components/sale/Sale'
 import Order from '../components/order/Order'
+import Payment from "./payment/Payment";
+import Payments from "./payment/Payments";
 
 export default function Routes() {
     return (
@@ -19,6 +21,8 @@ export default function Routes() {
             <Route path='/client' component={Client} />
             <Route path='/order' component={Order} />
             <Route path='/sale/client/:clientId' component={Sale} />
+            <Route path='/payment/client/:clientId' component={Payment} />
+            <Route path='/payment' component={Payments} />
         </Switch>
     )
 

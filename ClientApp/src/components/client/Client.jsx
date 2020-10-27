@@ -2,6 +2,7 @@
 import MaterialTable from 'material-table';
 import Alert from '@material-ui/lab/Alert';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import PaymentIcon from '@material-ui/icons/Payment';
 
 const baseURL = "api/Client";
 
@@ -192,6 +193,14 @@ export default function Client(props) {
                         icon: () => <AddShoppingCartIcon />,
                         tooltip: 'Nova venda',
                         onClick: (event, rowData) => props.history.push(`/sale/client/${rowData.id}`)
+                    }
+                    , {
+                        icon: () => <PaymentIcon />,
+                        tooltip: 'Pagar',
+                        onClick: (event, rowData) =>
+                            props
+                                .history
+                                .push(`/payment/client/${rowData.id}`)
                     }
                 ]}
                 editable={{

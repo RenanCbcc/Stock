@@ -10,6 +10,7 @@ namespace Estoque.Models.OrderModels
         IQueryable<Order> Browse();
         Task Add(Order order);
         Task Edit(Order order);
+        Task<float> Total(int id);
     }
 
     public class OrderRepository : IOrderRepository
@@ -42,6 +43,11 @@ namespace Estoque.Models.OrderModels
         public async Task<Order> Read(int Id)
         {
             return await context.Orders.FindAsync(Id);
+        }
+
+        public async Task<float> Total(int id)
+        {
+            return await context.Orders.Where(o => o.CLientId == id).SumAsync(o => o.Value);
         }
     }
 }

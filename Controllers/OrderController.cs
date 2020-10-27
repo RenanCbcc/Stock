@@ -49,13 +49,13 @@ namespace Estoque.Controllers
         {
             if (ModelState.IsValid)
             {
-                var c = await clientRepository.Read(model.CLientId);
-                if (c == null)
+                var client = await clientRepository.Read(model.CLientId);
+                if (client == null)
                 {
                     return NotFound($"Cliente com Id {model.CLientId} não foi encontrado.");
                 }
 
-                var o = new Order
+                var order = new Order
                 {
                     CLientId = model.CLientId,
                     Items = model.Items,
@@ -78,18 +78,25 @@ namespace Estoque.Controllers
                     item.Value = p.SalePrice;
                     p.Quantity -= item.Quantity;
                     var total = (p.SalePrice * item.Quantity);
-                    o.Value += total - (total * p.Discount);
+                    order.Value += total - (total * p.Discount);
                 }
 
+                client.Debt += order.Value;
 
-                await orderRepository.Add(o);
-                var url = Url.Action("Get", new { id = o.Id });
-                var created = Created(url, o);
+                await orderRepository.Add(order);
+                var url = Url.Action("Get", new { id = order.Id });
+                var created = Created(url, order);
                 return created;
             }
 
             return BadRequest(ModelState);
         }
 
+        [Route("ClientAmount")]
+        public async Task<IActionResult> ClientAmount([FromQuery(Name = "clientId")] int clientId)
+        {
+            var amount = await orderRepository.Total(clientId);
+            return Ok(amount);
+        }
     }
 }

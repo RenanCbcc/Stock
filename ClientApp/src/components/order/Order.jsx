@@ -7,6 +7,7 @@ import Items from './Items';
 const columns =
     [
         { title: "id", field: "id", hidden: true },
+        { title: "cLientId", field: "cLientId", hidden: true },
         {
             title: 'Cliente', field: 'client.name', type: 'string'
         },
@@ -123,7 +124,10 @@ export default function Order(props) {
                     {
                         icon: () => <PaymentIcon />,
                         tooltip: 'Pagar',
-                        onClick: (event, rowData) => props.history.push(`/sale/${rowData.id}`)
+                        onClick: (event, rowData) =>
+                            props
+                                .history
+                                .push(`/payment/client/${rowData.cLientId}`)
                     }
                 ]}
                 detailPanel={rowData => {
