@@ -10,37 +10,48 @@ function renderProductsTable(categories, suppliers, handleRowAdd, handleRowUpdat
             { title: "id", field: "id", hidden: true },
             {
                 title: 'Descrição', field: 'description', type: 'string',
-                validate: rowData => rowData.description === ""
-                    ? '⚠️ Descrição não pode ser vazia' : ''
+                validate: rowData => ((rowData.description != null && rowData.description.length >= 5 && rowData.description.length <= 50)
+                    ? true : '⚠️ Descrição deve ter entre 5 e 50 caracteres.')
             },
             {
-                title: 'Código', field: 'code', type: 'string',
-                validate: rowData => rowData.code === ""
-                    ? '⚠️ Código deve ter entre 9 e 13 dígitos' : ''
+                title: 'Código', field: 'code', type: 'string', editable: 'never',
+                validate: rowData => ((rowData.code != null && rowData.code.length >= 9 && rowData.code.length <= 13)
+                    ? true : '⚠️ Código deve ter entre 9 e 13 dígitos.')
             },
             {
-                title: 'Preço de compra', field: 'purchasePrice', type: 'currency',
-                validate: rowData => rowData.purchasePrice < 0 ? '⚠️ Preço de compra não pode ser menor que zero' : ''
+                title: 'Compra', field: 'purchasePrice', type: 'currency',
+                validate: rowData => ((rowData.purchasePrice != null && rowData.purchasePrice > 0)
+                    ? true : '⚠️ Preço de compra deve ser maior que zero.')
             },
             {
-                title: 'Preço de venda', field: 'salePrice', type: 'currency',
-                validate: rowData => rowData.salePrice < 0 ? '⚠️ Preço de venda não pode ser menor que zero' : ''
+                title: 'Venda', field: 'salePrice', type: 'currency',
+                validate: rowData => ((rowData.salePrice != null && rowData.salePrice > 0)
+                    ? true : '⚠️ Preço de venda deve ser maior que zero.')
             },
             {
-                title: 'Quantidade', field: 'quantity', type: 'numeric',
-                validate: rowData => rowData.quantity < 0 ? '⚠️ Quantidade não pode ser menor que zero' : ''
+                title: 'Lucro', field: 'profit', type: 'currency', editable: 'never',
+                validate: rowData => ((rowData.salePrice != null && rowData.salePrice > 0)
+                    ? true : '⚠️ Lucro de venda deve ser maior que zero.')
+            },
+            {
+                title: 'Quantidade', field: 'quantity', type: 'numeric', editable: 'never',
+                validate: rowData => ((rowData.quantity != null && rowData.quantity > 0)
+                    ? true : '⚠️ Quantidade deve ser maior que zero.')
             },
             {
                 title: 'Desconto', field: 'discount', type: 'numeric',
-                validate: rowData => (rowData.discount < 0 || rowData.discount > 100) ? '⚠️ Desconto deve ser >= 0 e <=100' : ''
+                validate: rowData => ((rowData.discount != null && rowData.discount >= 0 && rowData.discount < 100)
+                    ? true : '⚠️ Desconto deve estar entre 0 e 100.')
             },
             {
-                title: 'Categoria', field: 'categoryId', type: 'numeric',
-                lookup: categories
+                title: 'Categoria', field: 'categoryId', lookup: categories,
+                validate: rowData => ((rowData.categoryId != null)
+                    ? true : '⚠️ Produto deve ter categoria.')
             },
             {
-                title: 'Fornecedor', field: 'supplierId', type: 'numeric',
-                lookup: suppliers
+                title: 'Fornecedor', field: 'supplierId', lookup: suppliers,
+                validate: rowData => ((rowData.supplierId != null)
+                    ? true : '⚠️ Produto deve ter fornecedor.')
             }
         ];
 
@@ -79,9 +90,12 @@ function renderProductsTable(categories, suppliers, handleRowAdd, handleRowUpdat
         //Searching
         data = data.filter(p =>
             p.description.toLowerCase().includes(query.search.toLowerCase()) ||
-            p.code.includes(query.search) ||
+            p.quantity.includes(query.search) ||
             p.purchasePrice.includes(query.search) ||
-            p.salePrice.includes(query.search)
+            p.salePrice.includes(query.search) ||
+            p.discount.includes(query.search) ||
+            p.profit.includes(query.search)
+
         );
         //Sorting 
         if (query.orderBy != null) {
@@ -130,11 +144,12 @@ function renderProductsTable(categories, suppliers, handleRowAdd, handleRowUpdat
                         url += '&page=' + (query.page + 1)
                         fetch(url)
                             .then(response => response.json())
-                            .then(result => {
+                            .then(result => result.data.map((p) => { p.profit = p.salePrice - p.purchasePrice; return p; }))
+                            .then(data => {
                                 resolve({
-                                    data: operations(query, result.data),
-                                    page: result.page - 1,
-                                    totalCount: result.total
+                                    data: operations(query, data),
+                                    page: data.page - 1,
+                                    totalCount: data.total
                                 })
                             }).catch(err => console.log(err))
                     })
@@ -157,7 +172,6 @@ function renderProductsTable(categories, suppliers, handleRowAdd, handleRowUpdat
 
 
 function Product() {
-
     const [data, setData] = useState([]);
     const [categories, setCategories] = useState({});
     const [suppliers, setsuppliers] = useState({});
@@ -168,12 +182,15 @@ function Product() {
         if (response !== null && response.ok) {
             return response;
         } else {
+            console.log(response)
+            let resp = response.json();
+            console.log(resp.erros);
             throw new Error(response.statusText);
         }
     }
 
     useEffect(() => {
-        fetch('https://localhost:44308/api/Category/All')
+        fetch('/api/Category/All')
             .then(res => isOk(res))
             .then(response => response.json())
             .then(data => {
@@ -181,10 +198,10 @@ function Product() {
                     result[category.id] = category.title;
                     return result;
                 }, {});
-                setCategories(data)                
+                setCategories(data)
             }).catch(err => console.log(err));
 
-        fetch('https://localhost:44308/api/Supplier/All')
+        fetch('/api/Supplier/All')
             .then(res => isOk(res))
             .then(response => response.json())
             .then(data => {
@@ -195,11 +212,12 @@ function Product() {
                 setsuppliers(data)
             }).catch(err => console.log(err));
 
-
     }, [])
 
 
     const handleRowAdd = (newData, resolve) => {
+        newData.categoryId = Number(newData.categoryId);
+        newData.supplierId = Number(newData.supplierId);
 
         fetch(baseURL, {
             method: 'Post',
@@ -225,6 +243,8 @@ function Product() {
     }
 
     const handleRowUpdate = (newData, oldData, resolve) => {
+        newData.categoryId = Number(newData.categoryId);
+        newData.supplierId = Number(newData.supplierId);
         fetch(baseURL,
             {
                 method: 'Put',

@@ -10,13 +10,13 @@ function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessag
             { title: "id", field: "id", hidden: true },
             {
                 title: 'Título', field: 'title', type: 'string',
-                validate: rowData => rowData.title === ""
-                    ? '⚠️ Título deve ter entre 5 e 25 caracteres' : ''
+                validate: rowData => ((rowData.title != null && rowData.title.length >= 5 && rowData.title.length <= 25) ?
+                    true : '⚠️ Título deve ter entre 5 e 25 caracteres')
             },
             {
                 title: 'Desconto', field: 'discount', type: 'numeric',
-                validate: rowData => (rowData.discount < 0 || rowData.discount > 100) ?
-                    '⚠️ Desconto deve ser >= 0 e <=100' : ''
+                validate: rowData => ((rowData.discount != null && rowData.discount >= 0 || rowData.discount < 100) ?
+                    true : '⚠️ Desconto deve ser >= 0 e <100')
             },
         ];
 
@@ -71,9 +71,9 @@ function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessag
 
     const operations = (query, data) => {
         //Searching
-        data = data.filter(p => p.title.toLowerCase().includes(query.search.toLowerCase()))        
+        data = data.filter(p => p.title.toLowerCase().includes(query.search.toLowerCase()))
         //Sorting 
-        if (query.orderBy != null) {            
+        if (query.orderBy != null) {
             let field = query.orderBy.field;
             data.sort(function (a, b) {
                 if (a[field] > b[field]) {
@@ -85,7 +85,7 @@ function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessag
                 // a must be equal to b
                 return 0;
             });
-        }        
+        }
         return data;
     };
 

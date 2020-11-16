@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,6 +9,7 @@ namespace Estoque.Models.OrderModels
     {
         Task<Order> Read(int Id);
         IQueryable<Order> Browse();
+        Task<IEnumerable<Order>> Pending(int id);
         Task Add(Order order);
         Task Edit(Order order);
         Task<float> Total(int id);
@@ -26,6 +28,15 @@ namespace Estoque.Models.OrderModels
         {
             await context.AddAsync(order);
             await context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Order>> Pending(int id)
+        {
+            return await context.Orders
+                .Where(o => o.CLientId == id)
+                .Where(o => o.Status == Status.Pendende)
+                .OrderBy(o => o.Value)
+                .ToListAsync();
         }
 
         public IQueryable<Order> Browse()

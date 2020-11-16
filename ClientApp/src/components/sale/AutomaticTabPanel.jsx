@@ -123,7 +123,7 @@ export function AutomaticTabPanel(props) {
                 helperText={quantityerror.quantity.text}
                 onChange={(event) => {
                     let q = event.target.value;
-                    if (q <= 0) {
+                    if (q <= 0 || q > quantityAvailable) {
                         setQuantityErrors(
                             {
                                 quantity:

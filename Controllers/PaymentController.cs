@@ -49,10 +49,20 @@ namespace Estoque.Controllers
                     return NotFound($"Cliente com Id {model.ClientId} não foi encontrado.");
                 }
 
-                var amount = await orderRepository.Total(model.ClientId);
-                if(model.Value <= 0 || model.Value > amount)
+                if (model.Value <= 0 || model.Value > c.Debt)
                 {
-                    return BadRequest($"O valor precisa ser maior que R$ 0 e menor que R$ {amount}");
+                    return BadRequest($"O valor precisa ser maior que R$ 0 e menor que R$ {c.Debt}");
+                }
+
+                c.Debt -= model.Value;
+
+                if (c.Debt == 0)
+                {
+                    var pendings = await orderRepository.Pending(c.Id);
+                    foreach (var order in pendings)
+                    {
+                        order.Status = Status.Pago;
+                    }
                 }
 
                 var p = new Payment
@@ -61,8 +71,6 @@ namespace Estoque.Controllers
                     Amount = model.Value,
                     Date = DateTime.Now,
                 };
-
-                
 
                 await paymentRepository.Add(p);
                 var url = Url.Action("Get", new { id = p.Id });

@@ -55,10 +55,11 @@ const localization = {
 }
 const operations = (query, data) => {
     //Searching
-    data = data.filter(p =>
-        p.name.toLowerCase().includes(query.search.toLowerCase()) ||
-        p.address.toLowerCase().includes(query.search.toLowerCase()) ||
-        p.phoneNumber.includes(query.search)
+    data = data.filter(o =>
+        o.name.toLowerCase().includes(query.search.toLowerCase()) ||
+        o.address.toLowerCase().includes(query.search.toLowerCase()) ||
+        o.phoneNumber.includes(query.search) ||
+        o.value.includes(query.search)
     )
     //Sorting 
     if (query.orderBy != null) {

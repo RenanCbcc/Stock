@@ -10,18 +10,18 @@ function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessag
             { title: "id", field: "id", hidden: true },
             {
                 title: 'Nome', field: 'name', type: 'string',
-                validate: rowData => rowData.name === ""
-                    ? '⚠️ Descrição não pode ser vazia' : ''
+                validate: rowData => ((rowData.name != null && rowData.name.length >= 5 && rowData.name.length <= 50)
+                    ? true : '⚠️ Nome deve ter entre 5 e 50 caracteres.')
             },
             {
                 title: 'Email', field: 'email', type: 'string',
-                validate: rowData => rowData.email === ""
-                    ? '⚠️ Email deve ter entre 5 e 50 caracteres' : ''
+                validate: rowData => ((rowData.email != null && rowData.email.length >= 5 && rowData.email.length <= 50)
+                    ? true : '⚠️ Email deve ter entre 5 e 50 caracteres.')
             },
             {
                 title: 'Telefone', field: 'phoneNumber', type: 'string',
-                validate: rowData => rowData.phoneNumber === ""
-                    ? '⚠️ Número de telefone deve ter 11 dígitos.' : ''
+                validate: rowData => ((rowData.phoneNumber != null && rowData.phoneNumber.length === 11)
+                    ? true : '⚠️ Número de telefone deve ter 11 dígitos.')
             }
         ];
 

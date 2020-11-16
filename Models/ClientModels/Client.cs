@@ -20,6 +20,9 @@ namespace Estoque.Models.ClientModels
         public float Debt { get; set; }
 
         [Required]
+        [DataType(DataType.Currency)]
+        
+                
         public Status Status { get; set; }
 
 
@@ -40,6 +43,6 @@ namespace Estoque.Models.ClientModels
         ErrorMessage = "O número de telefone deve ter exatamente 11 caracteres.")]
         [DataType(DataType.PhoneNumber)]        
         public string PhoneNumber { get; set; }
-
+        
     }
 }

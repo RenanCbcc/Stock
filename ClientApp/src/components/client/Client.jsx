@@ -19,22 +19,21 @@ const columns =
         { title: "id", field: "id", hidden: true },
         {
             title: 'Nome', field: 'name', type: 'string',
-            validate: (rowData) => rowData.name === "" ?
-                '⚠️ Nome deve ter entre 10 e 50 caracteres.' : ''
+            validate: (rowData) => ((rowData.name != null && rowData.name.length >= 10 && rowData.name.length <= 50)
+                ? true : '⚠️ Nome deve ter entre 10 e 50 caracteres.')
         },
         {
             title: 'Endereço', field: 'address', type: 'string',
-            validate: rowData => rowData.address === ""
-                ? '⚠️ Endereço deve ter entre 10 e 100 caracteres.' : ''
+            validate: rowData => ((rowData.address != null && rowData.address.length >= 10 && rowData.address.length <= 100)
+                ? true : '⚠️ Endereço deve ter entre 10 e 100 caracteres.')
         },
         {
             title: 'Telefone', field: 'phoneNumber', type: 'string',
-            validate: rowData => rowData.phoneNumber === ''
-                ? '⚠️ Número de telefone deve ter 11 dígitos.' : ''
+            validate: rowData => ((rowData.phoneNumber != null && rowData.phoneNumber.length === 11)
+                ? true : '⚠️ Número de telefone deve ter 11 dígitos.')
         },
         {
-            title: 'Status', field: 'status', type: 'numeric',
-            lookup: { 0: 'Ativo', 1: 'Inativo' }
+            title: 'Status', field: 'status', lookup: { 0: 'Ativo', 1: 'Inativo' }
         },
         {
             title: 'Débito', field: 'debt', type: 'currency', editable: 'never'

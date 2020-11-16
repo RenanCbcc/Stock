@@ -36,7 +36,7 @@ export default function Payment(props) {
 
     const inputStyles = useInputStyles();
 
-    const onSubmit = (event) => {
+    const onSubmit = (event) => {        
         event.preventDefault();
         let payment = {
             clientId: Number(clientId),
@@ -52,6 +52,7 @@ export default function Payment(props) {
             .then(response => response.json())
             .then(payment => {
                 console.log(payment);
+                setAmount(amount - value);
                 setValue('');
                 setSuccessMessages('Pagamento enviado com sucesso!')
                 setIsmessage(true);
@@ -76,10 +77,10 @@ export default function Payment(props) {
     }
 
     useEffect(() => {
-        fetch(`/api/Order/ClientAmount/?clientId=${clientId}`)
+        fetch(`/api/Client/${clientId}`)
             .then(res => isOk(res))
             .then(response => response.json())
-            .then(data => { setAmount(data) })
+            .then(data => { setAmount(data.debt) })
             .catch(err => console.log(err));
     }, []);
 

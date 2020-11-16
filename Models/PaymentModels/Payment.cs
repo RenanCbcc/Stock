@@ -14,5 +14,7 @@ namespace Estoque.Models.PaymentModels
         
         [DataType(DataType.Currency)]
         public float Amount { get; set; }
+
+
     }
 }
