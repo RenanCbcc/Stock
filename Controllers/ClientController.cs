@@ -16,7 +16,7 @@ namespace Estoque.Controllers
             this.repository = repository;
         }
 
-        
+
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery(Name = "page")] int page, [FromQuery(Name = "per_page")] int per_page)
         {
@@ -24,7 +24,7 @@ namespace Estoque.Controllers
             return Ok(new { Data = paginatedList, Page = paginatedList.PageIndex, Total = paginatedList.Total });
         }
 
-        
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
@@ -36,7 +36,15 @@ namespace Estoque.Controllers
             return Ok(client);
         }
 
-        
+        [HttpGet]
+        [Route("Inactive")]
+        public async Task<IActionResult> Inactive([FromQuery(Name = "page")] int page, [FromQuery(Name = "per_page")] int per_page)
+        {
+            var paginatedList = await PaginatedList<Client>.CreateAsync(repository.inactive(), page, per_page);
+            return Ok(new { Data = paginatedList, Page = paginatedList.PageIndex, Total = paginatedList.Total });
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> Post(CreateViewModel model)
         {
@@ -57,7 +65,7 @@ namespace Estoque.Controllers
             return BadRequest(ModelState);
         }
 
-        
+
         [HttpPut]
         public async Task<IActionResult> Put(EditViewModel model)
         {

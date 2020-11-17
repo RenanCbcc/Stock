@@ -55,13 +55,14 @@ namespace Estoque.Controllers
                 }
 
                 c.Debt -= model.Value;
+                c.LastPurchase = DateTime.Now;
 
                 if (c.Debt == 0)
                 {
                     var pendings = await orderRepository.Pending(c.Id);
                     foreach (var order in pendings)
                     {
-                        order.Status = Status.Pago;
+                        order.Status = Models.OrderModels.Status.Pago;
                     }
                 }
 

@@ -50,7 +50,7 @@ const operations = (query, data) => {
     //Searching
     data = data.filter(p =>
         p.client.name.toLowerCase().includes(query.search.toLowerCase()) ||
-        p.amount.includes(query.search.toLowerCase()) ||
+        p.amount.includes(query.search) ||
         p.date.includes(query.search)
     )
     //Sorting 

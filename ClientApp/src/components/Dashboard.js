@@ -19,7 +19,11 @@ import Switch from "@material-ui/core/Switch";
 import { orange, lightBlue, deepPurple, deepOrange } from "@material-ui/core/colors";
 import Routes from '../components/Routes'
 
-
+import { Link } from "react-router-dom";
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import DashboardIcon from '@material-ui/icons/Dashboard';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -144,10 +148,12 @@ export default function Dashboard() {
                         >
                             <MenuIcon />
                         </IconButton>
-                        <Typography component="h1" variant="h6" color="inherit" noWrap
-                            className={classes.title}>
-                            Estoque
-                    </Typography>
+                        <ListItem button component={Link} to="/">
+                            <ListItemIcon>
+                                <DashboardIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Estoque" />
+                        </ListItem>
                         <ThemeProvider theme={darkTheme}>
                             <div> Tema </div>
                             <Switch checked={darkState} onChange={handleThemeChange} />

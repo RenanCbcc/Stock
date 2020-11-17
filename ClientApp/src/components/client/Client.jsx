@@ -33,7 +33,7 @@ const columns =
                 ? true : '⚠️ Número de telefone deve ter 11 dígitos.')
         },
         {
-            title: 'Status', field: 'status', lookup: { 0: 'Ativo', 1: 'Inativo' }
+            title: 'Status', field: 'status', lookup: { 0: 'Inativo', 1: 'Ativo' }, editable: 'never'
         },
         {
             title: 'Débito', field: 'debt', type: 'currency', editable: 'never'

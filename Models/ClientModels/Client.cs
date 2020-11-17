@@ -1,5 +1,4 @@
-﻿using Estoque.Models.AccountModels;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Estoque.Models.ClientModels

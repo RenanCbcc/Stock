@@ -8,6 +8,7 @@ namespace Estoque.Models.ClientModels
     {
         Task<Client> Read(int Id);
         IQueryable<Client> Browse();
+        IQueryable<Client> inactive();
         Task Add(Client client);
         Task Edit(Client client);
     }
@@ -37,6 +38,11 @@ namespace Estoque.Models.ClientModels
             var client = context.Clients.Attach(alteredClient);
             client.State = EntityState.Modified;
             await context.SaveChangesAsync();
+        }
+
+        public IQueryable<Client> inactive()
+        {
+            return context.Clients.Where(c => c.Status == Status.Inativo);
         }
 
         public async Task<Client> Read(int Id)
