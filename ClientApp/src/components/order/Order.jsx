@@ -1,6 +1,5 @@
-﻿import React, { useState } from 'react';
+﻿import React from 'react';
 import MaterialTable from 'material-table';
-import Alert from '@material-ui/lab/Alert';
 import PaymentIcon from '@material-ui/icons/Payment';
 import Items from './Items';
 
@@ -54,24 +53,22 @@ const localization = {
     }
 }
 const operations = (query, data) => {
-    //Searching
-    data = data.filter(o =>
-        o.name.toLowerCase().includes(query.search.toLowerCase()) ||
-        o.address.toLowerCase().includes(query.search.toLowerCase()) ||
-        o.phoneNumber.includes(query.search) ||
-        o.value.includes(query.search)
+    //Searching      
+    data = data.filter(o =>        
+        o.client.name.toLowerCase().includes(query.search.toLowerCase()) ||
+        o.value.toString().includes(query.search) ||        
+        new Date(o.date).toLocaleDateString().includes(query.search)
     )
     //Sorting 
     if (query.orderBy != null) {
-        let field = query.orderBy.field;
+        let orderBy = query.orderBy.field;
         data.sort(function (a, b) {
-            if (a[field] > b[field]) {
-                return 1;
-            }
-            if (a[field] < b[field]) {
+            if (b[orderBy] < a[orderBy]) {
                 return -1;
             }
-            // a must be equal to b
+            if (b[orderBy] > a[orderBy]) {
+                return 1;
+            }
             return 0;
         });
     }
@@ -79,65 +76,52 @@ const operations = (query, data) => {
 };
 
 export default function Order(props) {
-    const [errorMessages, setErrorMessages] = useState([]);
-    const [iserror, setIserror] = useState(false);
 
     return (
-        <>
-            <div>
-                {iserror &&
-                    <Alert
-                        severity="error">
-                        {errorMessages.map((msg, i) => {
-                            return <div key={i}>{msg}</div>
-                        })}
-                    </Alert>
+        <MaterialTable
+            title="Pedidos"
+            columns={columns}
+            localization={localization}
+            options={{
+                exportButton: true,
+                headerStyle: {
+                    backgroundColor: '#01579b',
+                    color: '#FFF'
                 }
-            </div>
-            <MaterialTable
-                title="Pedidos"
-                columns={columns}
-                localization={localization}
-                options={{
-                    exportButton: true,
-                    headerStyle: {
-                        backgroundColor: '#01579b',
-                        color: '#FFF'
-                    }
-                }}
-                data={query =>
-                    new Promise((resolve, reject) => {
-                        let url = 'api/Order?'
-                        url += 'per_page=' + query.pageSize
-                        url += '&page=' + (query.page + 1)
-                        fetch(url)
-                            .then(response => response.json())
-                            .then(result => {
-                                resolve({
-                                    data: result.data,
-                                    page: result.page - 1,
-                                    totalCount: result.total
-                                })
-                            }).catch(err => console.log(err))
-                    })
+            }}
+            data={query =>
+                new Promise((resolve, reject) => {
+                    let url = 'api/Order?'
+                    url += 'per_page=' + query.pageSize
+                    url += '&page=' + (query.page + 1)
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(result => {
+                            resolve({
+                                data: operations(query, result.data),
+                                page: result.page - 1,
+                                totalCount: result.total
+                            })
+                        }).catch(err => console.log(err))
+                })
+            }
+            actions={[
+                {
+                    icon: () => <PaymentIcon />,
+                    tooltip: 'Pagar',
+                    onClick: (event, rowData) =>
+                        props
+                            .history
+                            .push(`/payment/client/${rowData.cLientId}`)
                 }
-                actions={[
-                    {
-                        icon: () => <PaymentIcon />,
-                        tooltip: 'Pagar',
-                        onClick: (event, rowData) =>
-                            props
-                                .history
-                                .push(`/payment/client/${rowData.cLientId}`)
-                    }
-                ]}
-                detailPanel={rowData => {
-                    return (
-                        <Items orderId={rowData.id} />
-                    )
-                }}
-            />
-        </>
+            ]}
+            detailPanel={rowData => {
+                return (
+                    <Items orderId={rowData.id} />
+                )
+            }}
+        />
+
     )
 };
 

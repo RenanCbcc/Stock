@@ -70,7 +70,7 @@ export default function Sale(props) {
 
     }
     const handleRowUpdate = (newData, oldData, resolve) => {
-        let objIndex = products.findIndex(p => p.code == oldData.code);
+        let objIndex = products.findIndex(p => p.code === oldData.code);
         let productscopy = [...products];
         productscopy[objIndex] = newData;
         setProducts(productscopy);
@@ -78,7 +78,7 @@ export default function Sale(props) {
     }
 
     const handleRowDelete = (oldData, resolve) => {
-        let newproducts = products.filter(p => p.code != oldData.code);
+        let newproducts = products.filter(p => p.code !== oldData.code);
         setProducts(newproducts);
         resolve();
     }

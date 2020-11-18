@@ -25,6 +25,7 @@ namespace Estoque.Controllers
         }
 
 
+        [HttpGet]
         [Route("Code")]
         public async Task<IActionResult> Code([FromQuery(Name = "code")] string code)
         {
@@ -36,10 +37,20 @@ namespace Estoque.Controllers
             return Ok(product);
         }
 
+        [HttpGet]
         [Route("ByCategory")]
         public IEnumerable<Product> ByCategory([FromQuery(Name = "id")] int id)
         {
             return repository.Browse(id);
+        }
+
+
+        [HttpGet]
+        [Route("RunningLow")]
+        public async Task<IActionResult> LowStock([FromQuery(Name = "page")] int page, [FromQuery(Name = "per_page")] int per_page)
+        {
+            var paginatedList = await PaginatedList<Product>.CreateAsync(repository.RunningLow(), page, per_page);
+            return Ok(new { Data = paginatedList, Page = paginatedList.PageIndex, Total = paginatedList.Total });
         }
 
         // GET: api/Product/5
@@ -68,6 +79,7 @@ namespace Estoque.Controllers
                     Description = model.Description,
                     Code = model.Code,
                     Quantity = model.Quantity,
+                    MinimumQuantity = model.MinimumQuantity,
                     CategoryId = model.CategoryId,
                     SupplierId = model.SupplierId
                 };
@@ -97,6 +109,7 @@ namespace Estoque.Controllers
                 p.PurchasePrice = model.PurchasePrice;
                 p.Description = model.Description;
                 p.Quantity = model.Quantity;
+                p.MinimumQuantity = model.MinimumQuantity;
                 await repository.Edit(p);
                 return Ok(p);
             }

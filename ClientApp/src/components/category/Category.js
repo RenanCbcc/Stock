@@ -15,7 +15,7 @@ function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessag
             },
             {
                 title: 'Desconto', field: 'discount', type: 'numeric',
-                validate: rowData => ((rowData.discount != null && rowData.discount >= 0 || rowData.discount < 100) ?
+                validate: rowData => ((rowData.discount != null && rowData.discount >= 0 && rowData.discount < 100) ?
                     true : '⚠️ Desconto deve ser >= 0 e <100')
             },
         ];
@@ -73,16 +73,16 @@ function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessag
         //Searching
         data = data.filter(p => p.title.toLowerCase().includes(query.search.toLowerCase()))
         //Sorting 
+        //Sorting 
         if (query.orderBy != null) {
-            let field = query.orderBy.field;
+            let orderBy = query.orderBy.field;
             data.sort(function (a, b) {
-                if (a[field] > b[field]) {
-                    return 1;
-                }
-                if (a[field] < b[field]) {
+                if (b[orderBy] < a[orderBy]) {
                     return -1;
                 }
-                // a must be equal to b
+                if (b[orderBy] > a[orderBy]) {
+                    return 1;
+                }
                 return 0;
             });
         }

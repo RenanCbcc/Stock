@@ -11,6 +11,7 @@ namespace Estoque.Models.ProductModels
         Task<Product> Read(int Id);
         Task<Product> Read(string Code);
         IQueryable<Product> Browse();
+        IQueryable<Product> RunningLow();
         IEnumerable<Product> Browse(int id);
         Task Add(Product product);
         Task Edit(Product product);
@@ -57,5 +58,9 @@ namespace Estoque.Models.ProductModels
             return await context.Products.FirstOrDefaultAsync(p => p.Code == Code);
         }
 
+        public IQueryable<Product> RunningLow()
+        {
+            return context.Products.Where(p => p.Quantity < p.MinimumQuantity);
+        }
     }
 }

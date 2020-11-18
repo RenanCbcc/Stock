@@ -1,6 +1,7 @@
 ﻿import React from 'react';
 import MaterialTable from 'material-table';
 
+
 export default function OnProducts() {
 
     const columns =
@@ -8,11 +9,11 @@ export default function OnProducts() {
             { title: "id", field: "id", hidden: true },
             {
                 title: 'Descrição', field: 'description', type: 'string'
-                
+
             },
             {
                 title: 'Código', field: 'code', type: 'string', editable: 'never'
-                
+
             },
             {
                 title: 'Compra', field: 'purchasePrice', type: 'currency'
@@ -25,6 +26,9 @@ export default function OnProducts() {
             },
             {
                 title: 'Quantidade', field: 'quantity', type: 'numeric'
+            },
+            {
+                title: 'Quantidade Mínima', field: 'minimumQuantity', type: 'numeric',
             },
             {
                 title: 'Desconto', field: 'discount', type: 'numeric'
@@ -66,24 +70,24 @@ export default function OnProducts() {
         //Searching
         data = data.filter(p =>
             p.description.toLowerCase().includes(query.search.toLowerCase()) ||
-            p.quantity.includes(query.search) ||
-            p.purchasePrice.includes(query.search) ||
-            p.salePrice.includes(query.search) ||
-            p.discount.includes(query.search) ||
-            p.profit.includes(query.search)
+            p.code.includes(query.search) ||
+            p.quantity.toString().includes(query.search) ||
+            p.purchasePrice.toString().includes(query.search) ||
+            p.salePrice.toString().includes(query.search) ||
+            p.discount.toString().includes(query.search) ||
+            p.profit.toString().includes(query.search)
 
-        );
+        );       
         //Sorting 
         if (query.orderBy != null) {
-            let field = query.orderBy.field;
+            let orderBy = query.orderBy.field;
             data.sort(function (a, b) {
-                if (a[field] > b[field]) {
-                    return 1;
-                }
-                if (a[field] < b[field]) {
+                if (b[orderBy] < a[orderBy]) {
                     return -1;
                 }
-                // a must be equal to b
+                if (b[orderBy] > a[orderBy]) {
+                    return 1;
+                }
                 return 0;
             });
         }
@@ -106,17 +110,20 @@ export default function OnProducts() {
             }}
             data={query =>
                 new Promise((resolve, reject) => {
-                    let url = 'api/Product?'
+                    let url = 'api/Product/RunningLow?'
                     url += 'per_page=' + query.pageSize
                     url += '&page=' + (query.page + 1)
                     fetch(url)
                         .then(response => response.json())
-                        .then(result => result.data.map((p) => { p.profit = p.salePrice - p.purchasePrice; return p; }))
-                        .then(data => {
+                        .then(result => {
+                            result.data = result.data.map((p) => { p.profit = p.salePrice - p.purchasePrice; return p; });
+                            return result;
+                        })
+                        .then(result => {
                             resolve({
-                                data: operations(query, data),
-                                page: data.page - 1,
-                                totalCount: data.total
+                                data: operations(query, result.data),
+                                page: result.page - 1,
+                                totalCount: result.total
                             })
                         }).catch(err => console.log(err))
                 })

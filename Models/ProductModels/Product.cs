@@ -46,9 +46,9 @@ namespace Estoque.Models.ProductModels
         [Range(minimum: 1, maximum: 100, ErrorMessage = "A quantidade deve estar entre 1 e 100.")]
         public int Quantity { get; set; }
 
-        //[Required(ErrorMessage = "Produto precisa ter uma quantidade mínima. ")]
-        //[Range(minimum: 1, maximum: 100, ErrorMessage = "A quantidade deve estar entre 1 e 100.")]
-        //public int MinimumQuantity { get; set; }
+        [Required(ErrorMessage = "Produto precisa ter uma quantidade mínima. ")]
+        [Range(minimum: 1, maximum: 100, ErrorMessage = "A quantidade deve estar entre 1 e 100.")]
+        public int MinimumQuantity { get; set; }
 
     }
 }

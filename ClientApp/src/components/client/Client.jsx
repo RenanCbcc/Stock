@@ -78,19 +78,19 @@ const operations = (query, data) => {
     data = data.filter(p =>
         p.name.toLowerCase().includes(query.search.toLowerCase()) ||
         p.address.toLowerCase().includes(query.search.toLowerCase()) ||
-        p.phoneNumber.includes(query.search)
+        p.phoneNumber.includes(query.search) ||
+        p.debt.toString().includes(query.search)
     )
     //Sorting 
     if (query.orderBy != null) {
-        let field = query.orderBy.field;
+        let orderBy = query.orderBy.field;
         data.sort(function (a, b) {
-            if (a[field] > b[field]) {
-                return 1;
-            }
-            if (a[field] < b[field]) {
+            if (b[orderBy] < a[orderBy]) {
                 return -1;
             }
-            // a must be equal to b
+            if (b[orderBy] > a[orderBy]) {
+                return 1;
+            }
             return 0;
         });
     }

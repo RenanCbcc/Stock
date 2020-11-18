@@ -36,7 +36,7 @@ export function AutomaticTabPanel(props) {
         } else {
             setDisabled(false);
         }
-    });
+    }, [code.length, description.length, quantity, quantityAvailable]);
 
     const isOk = (response) => {
         if (response !== null && response.ok) {

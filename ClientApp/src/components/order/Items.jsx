@@ -45,12 +45,15 @@ export default function Items(props) {
     const [items, setItems] = React.useState([]);
 
     useEffect(() => {
+    /*The last line with an array is necessary or You'll get a
+     * 'React Hook useEffect has a missing dependency: 'props.orderId'.
+     * Either include it or remove the dependency array.'*/
         fetch(`/api/Item/${props.orderId}`)
             .then(res => isOk(res))
             .then(response => response.json())
             .then(data => { setItems(data) })
             .catch(err => console.log(err));
-    }, []);
+    }, [props.orderId]);
 
     return (
         <TableContainer component={Paper}>

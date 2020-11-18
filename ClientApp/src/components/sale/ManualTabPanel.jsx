@@ -93,12 +93,16 @@ export function ManualTabPanel(props) {
     }, []);
 
     useEffect(() => {
+        /*React Hook useEffect contains a call to 'setDisabled'.
+         * Without a list of dependencies, this can lead to an infinite chain of updates. To fix this, 
+         * pass [currentCategory.length, currentProduct.length, quantity, quantityAvailable] as a second 
+         * argument to the useEffect Hook  react-hooks/exhaustive-deps*/
         if (currentCategory.length === 0 || currentProduct.length === 0 || quantity <= 0 || quantity > quantityAvailable) {
             setDisabled(true);
         } else {
             setDisabled(false);
         }
-    });
+    }, [currentCategory.length, currentProduct.length, quantity, quantityAvailable]);
 
     return (
         <form className={inputStyles.text} autoComplete="off"

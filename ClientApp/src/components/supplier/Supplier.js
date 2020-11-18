@@ -64,16 +64,16 @@ function renderProductsTable(handleRowAdd, handleRowUpdate, iserror, errorMessag
             p.phoneNumber.includes(query.search)
         );
         //Sorting 
+        //Sorting 
         if (query.orderBy != null) {
-            let field = query.orderBy.field;
+            let orderBy = query.orderBy.field;
             data.sort(function (a, b) {
-                if (a[field] > b[field]) {
-                    return 1;
-                }
-                if (a[field] < b[field]) {
+                if (b[orderBy] < a[orderBy]) {
                     return -1;
                 }
-                // a must be equal to b
+                if (b[orderBy] > a[orderBy]) {
+                    return 1;
+                }
                 return 0;
             });
         }

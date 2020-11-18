@@ -36,7 +36,7 @@ export default function Payment(props) {
 
     const inputStyles = useInputStyles();
 
-    const onSubmit = (event) => {        
+    const onSubmit = (event) => {
         event.preventDefault();
         let payment = {
             clientId: Number(clientId),
@@ -77,12 +77,15 @@ export default function Payment(props) {
     }
 
     useEffect(() => {
+        /*The last line with an array is necessary or You'll get a 
+         * 'React Hook useEffect has a missing dependency: 'props.orderId'. 
+         * Either include it or remove the dependency array.'*/
         fetch(`/api/Client/${clientId}`)
             .then(res => isOk(res))
             .then(response => response.json())
             .then(data => { setAmount(data.debt) })
             .catch(err => console.log(err));
-    }, []);
+    }, [clientId]);
 
     useEffect(() => {
         if (value <= 0 || value > amount) {
@@ -90,7 +93,7 @@ export default function Payment(props) {
         } else {
             setDisabled(false);
         }
-    });
+    }, [value, amount]);
     return (
         <>
             <div>
