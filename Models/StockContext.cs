@@ -1,14 +1,15 @@
-﻿using Estoque.Models.CategoryModels;
-using Estoque.Models.ClientModels;
-using Estoque.Models.OrderModels;
-using Estoque.Models.PaymentModels;
-using Estoque.Models.ProductModels;
-using Estoque.Models.SupplierModels;
+﻿using Stock_Back_End.Models.CategoryModels;
+using Stock_Back_End.Models.ClientModels;
+using Stock_Back_End.Models.OrderModels;
+using Stock_Back_End.Models.PaymentModels;
+using Stock_Back_End.Models.ProductModels;
+using Stock_Back_End.Models.SupplierModels;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Estoque.Models
+namespace Stock_Back_End.Models
 {
-    public class StockContext : DbContext
+    public class StockContext : IdentityDbContext
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<Client> Clients { get; set; }

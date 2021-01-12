@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Estoque.Models.ClientModels
+namespace Stock_Back_End.Models.ClientModels
 {
     public interface IClientRepository
     {

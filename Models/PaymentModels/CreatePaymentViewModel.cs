@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Estoque.Models.PaymentModels
+namespace Stock_Back_End.Models.PaymentModels
 {
     public class CreatePaymentViewModel
     {

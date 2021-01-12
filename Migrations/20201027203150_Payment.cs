@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Estoque.Migrations
+namespace Stock_Back_End.Migrations
 {
     public partial class Payment : Migration
     {

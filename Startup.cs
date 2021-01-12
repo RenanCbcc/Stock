@@ -1,30 +1,38 @@
-using Estoque.Models;
-using Estoque.Models.CategoryModels;
-using Estoque.Models.ClientModels;
-using Estoque.Models.OrderModels;
-using Estoque.Models.PaymentModels;
-using Estoque.Models.ProductModels;
-using Estoque.Models.SupplierModels;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using Stock_Back_End.Models;
+using Stock_Back_End.Models.CategoryModels;
+using Stock_Back_End.Models.ClientModels;
+using Stock_Back_End.Models.OrderModels;
+using Stock_Back_End.Models.PaymentModels;
+using Stock_Back_End.Models.ProductModels;
+using Stock_Back_End.Models.ReportModels;
+using Stock_Back_End.Models.SupplierModels;
+using System;
+using System.Text;
 
-namespace Estoque
+namespace Stock_Back_End
 {
     public class Startup
     {
         private readonly IConfiguration configuration;
         private readonly IWebHostEnvironment env;
+        private readonly string AllowSpecificOrigins = "stock-front-end";
 
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             this.configuration = configuration;
             this.env = env;
         }
+
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -41,6 +49,10 @@ namespace Estoque
                 }
             });
 
+            //Identity
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<StockContext>();
+
             //Injection
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
@@ -49,14 +61,35 @@ namespace Estoque
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IItemRepository, ItemRepository>();
             services.AddScoped<IPaymentRepository, PaymentRepository>();
+            services.AddScoped<IReportRepository, ReportRepository>();
 
-            services.AddControllersWithViews();
-
-            // In production, the React files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
+            services.AddCors(options =>
             {
-                configuration.RootPath = "ClientApp/build";
+                options.AddPolicy(name: AllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins(configuration["Jwt:Audience"]);
+                                  });
             });
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = configuration["Jwt:Issuer"],
+                        ValidAudience = configuration["Jwt:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"])),
+                        ClockSkew = TimeSpan.FromHours(1)
+                    };
+                }
+            );
+
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,34 +99,18 @@ namespace Estoque
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseSpaStaticFiles();
-
+            app.UseAuthentication();
             app.UseRouting();
+            app.UseCors(AllowSpecificOrigins);
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
-            });
-
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "ClientApp";
-
-                
-                    spa.UseReactDevelopmentServer(npmScript: "start");
-                
-
             });
         }
     }

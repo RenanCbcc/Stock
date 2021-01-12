@@ -1,10 +1,8 @@
-﻿using Estoque.Models.SupplierModels;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Estoque.Models.SupplierModels
+namespace Stock_Back_End.Models.SupplierModels
 {
     public interface ISupplierRepository
     {

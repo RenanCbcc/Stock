@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Estoque.Models;
-using Estoque.Models.ClientModels;
-using Estoque.Models.OrderModels;
-using Estoque.Models.PaymentModels;
+using Stock_Back_End.Models;
+using Stock_Back_End.Models.ClientModels;
+using Stock_Back_End.Models.OrderModels;
+using Stock_Back_End.Models.PaymentModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
-namespace Estoque.Controllers
+namespace Stock_Back_End.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -27,7 +28,7 @@ namespace Estoque.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery(Name = "page")] int page, [FromQuery(Name = "per_page")] int per_page)
+        public async Task<IActionResult> Get([FromQuery(Name = "page")] int page=1, [FromQuery(Name = "per_page")] int per_page=10)
         {
             var paginatedList = await PaginatedList<Payment>.CreateAsync(paymentRepository.Browse(), page, per_page);
             return Ok(new
@@ -39,6 +40,7 @@ namespace Estoque.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Post(CreatePaymentViewModel model)
         {
             if (ModelState.IsValid)

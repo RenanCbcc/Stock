@@ -1,4 +1,4 @@
-﻿namespace Estoque.Models.OrderModels
+﻿namespace Stock_Back_End.Models.OrderModels
 {
     public enum Status
     {

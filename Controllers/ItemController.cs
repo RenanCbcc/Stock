@@ -1,8 +1,8 @@
-﻿using Estoque.Models.OrderModels;
+﻿using Stock_Back_End.Models.OrderModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace Estoque.Controllers
+namespace Stock_Back_End.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

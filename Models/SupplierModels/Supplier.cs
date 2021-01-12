@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Estoque.Models.SupplierModels
+namespace Stock_Back_End.Models.SupplierModels
 {
     public class Supplier : Base
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Estoque.Models.CategoryModels
+namespace Stock_Back_End.Models.CategoryModels
 {
     public class CreateViewModel
     {

@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Estoque.Models.OrderModels
+namespace Stock_Back_End.Models.OrderModels
 {
     public class CreateOrderViewModel
     {

@@ -1,9 +1,9 @@
-﻿using Estoque.Models.CategoryModels;
-using Estoque.Models.SupplierModels;
+﻿using Stock_Back_End.Models.CategoryModels;
+using Stock_Back_End.Models.SupplierModels;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Estoque.Models.ProductModels
+namespace Stock_Back_End.Models.ProductModels
 {
     public class Product : Base
     {

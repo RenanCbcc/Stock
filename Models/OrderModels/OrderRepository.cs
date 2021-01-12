@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Estoque.Models.OrderModels
+namespace Stock_Back_End.Models.OrderModels
 {
     public interface IOrderRepository
-    {
+    {       
         Task<Order> Read(int Id);
         IQueryable<Order> Browse();
         Task<IEnumerable<Order>> Pending(int id);
@@ -59,6 +59,8 @@ namespace Estoque.Models.OrderModels
         public async Task<float> Total(int id)
         {
             return await context.Orders.Where(o => o.CLientId == id).SumAsync(o => o.Value);
-        }
+        }        
+
+
     }
 }

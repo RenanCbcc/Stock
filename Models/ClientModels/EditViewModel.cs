@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Estoque.Models.ClientModels
+namespace Stock_Back_End.Models.ClientModels
 {
     public class EditViewModel : CreateViewModel
     {

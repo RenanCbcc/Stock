@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Estoque.Models;
-using Estoque.Models.ClientModels;
-using Estoque.Models.OrderModels;
-using Estoque.Models.ProductModels;
+using Stock_Back_End.Models;
+using Stock_Back_End.Models.ClientModels;
+using Stock_Back_End.Models.OrderModels;
+using Stock_Back_End.Models.ProductModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
-namespace Estoque.Controllers
+namespace Stock_Back_End.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -26,7 +27,7 @@ namespace Estoque.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery(Name = "page")] int page, [FromQuery(Name = "per_page")] int per_page)
+        public async Task<IActionResult> Get([FromQuery(Name = "page")] int page = 1, [FromQuery(Name = "per_page")] int per_page = 10)
         {
             var paginatedList = await PaginatedList<Order>.CreateAsync(orderRepository.Browse(), page, per_page);
             return Ok(new { Data = paginatedList, Page = paginatedList.PageIndex, Total = paginatedList.Total });
@@ -45,6 +46,7 @@ namespace Estoque.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Post(CreateOrderViewModel model)
         {
             if (ModelState.IsValid)

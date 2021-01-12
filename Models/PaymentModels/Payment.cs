@@ -1,8 +1,8 @@
-﻿using Estoque.Models.ClientModels;
+﻿using Stock_Back_End.Models.ClientModels;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Estoque.Models.PaymentModels
+namespace Stock_Back_End.Models.PaymentModels
 {
     public class Payment : Base
     {

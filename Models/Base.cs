@@ -1,4 +1,4 @@
-﻿namespace Estoque.Models
+﻿namespace Stock_Back_End.Models
 {
     public abstract class Base
     {

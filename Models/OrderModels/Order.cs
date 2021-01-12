@@ -1,10 +1,10 @@
-﻿using Estoque.Models.ClientModels;
+﻿using Stock_Back_End.Models.ClientModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace Estoque.Models.OrderModels
+namespace Stock_Back_End.Models.OrderModels
 {
     public class Order : Base
     {

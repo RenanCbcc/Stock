@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Estoque.Models;
-using Estoque.Models.ProductModels;
+using Stock_Back_End.Models;
+using Stock_Back_End.Models.ProductModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
-namespace Estoque.Controllers
+namespace Stock_Back_End.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -18,7 +19,7 @@ namespace Estoque.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery(Name = "page")] int page, [FromQuery(Name = "per_page")] int per_page)
+        public async Task<IActionResult> Get([FromQuery(Name = "page")] int page = 1, [FromQuery(Name = "per_page")] int per_page = 10)
         {
             var paginatedList = await PaginatedList<Product>.CreateAsync(repository.Browse(), page, per_page);
             return Ok(new { Data = paginatedList, Page = paginatedList.PageIndex, Total = paginatedList.Total });
@@ -47,7 +48,7 @@ namespace Estoque.Controllers
 
         [HttpGet]
         [Route("RunningLow")]
-        public async Task<IActionResult> LowStock([FromQuery(Name = "page")] int page, [FromQuery(Name = "per_page")] int per_page)
+        public async Task<IActionResult> LowStock([FromQuery(Name = "page")] int page = 1, [FromQuery(Name = "per_page")] int per_page = 10)
         {
             var paginatedList = await PaginatedList<Product>.CreateAsync(repository.RunningLow(), page, per_page);
             return Ok(new { Data = paginatedList, Page = paginatedList.PageIndex, Total = paginatedList.Total });
@@ -67,6 +68,7 @@ namespace Estoque.Controllers
 
         // POST: api/Product
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Post(CreateViewModel model)
         {
             if (ModelState.IsValid)
@@ -94,6 +96,7 @@ namespace Estoque.Controllers
 
         // PUT: api/Product/
         [HttpPut]
+        [Authorize]
         public async Task<IActionResult> Put(EditViewModel model)
         {
             if (ModelState.IsValid)
@@ -116,10 +119,6 @@ namespace Estoque.Controllers
             return BadRequest(ModelState);
         }
 
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        
     }
 }

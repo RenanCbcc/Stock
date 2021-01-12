@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Estoque.Models.OrderModels
+namespace Stock_Back_End.Models.OrderModels
 {
     public interface IItemRepository
     {

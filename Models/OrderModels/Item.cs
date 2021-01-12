@@ -1,7 +1,7 @@
 ﻿
-using Estoque.Models.ProductModels;
+using Stock_Back_End.Models.ProductModels;
 
-namespace Estoque.Models.OrderModels
+namespace Stock_Back_End.Models.OrderModels
 {
     public class Item : Base
     {
