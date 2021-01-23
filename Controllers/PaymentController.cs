@@ -9,7 +9,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Stock_Back_End.Controllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion("2.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class PaymentController : ControllerBase
     {
@@ -38,6 +39,7 @@ namespace Stock_Back_End.Controllers
                 Total = paginatedList.Total
             });
         }
+                
 
         [HttpPost]
         [Authorize]

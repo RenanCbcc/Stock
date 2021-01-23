@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Stock_Back_End.Controllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion("2.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class SupplierController : ControllerBase
     {
@@ -19,10 +20,14 @@ namespace Stock_Back_End.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery(Name = "page")] int page=1, [FromQuery(Name = "per_page")] int per_page=10)
+        public async Task<IActionResult> Get([FromQuery] SupplierFilter filter, [FromQuery] EntityOrder order, [FromQuery] PaginationEntry pagination)
         {
-            var paginatedList = await PaginatedList<Supplier>.CreateAsync(repository.Browse(), page, per_page);
-            return Ok(new { Data = paginatedList, Page = paginatedList.PageIndex, Total = paginatedList.Total });
+            var list = await repository.Browse()
+                .AplyFilter(filter)
+                .AplyOrder(order)
+                .ToEntityPaginated(pagination);
+
+            return Ok(list);
         }
 
         [HttpGet]
@@ -32,7 +37,7 @@ namespace Stock_Back_End.Controllers
             return repository.Browse();
         }
 
-        
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
@@ -44,7 +49,7 @@ namespace Stock_Back_End.Controllers
             return Ok(supplier);
         }
 
-       
+
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Post(CreateViewModel model)
@@ -66,7 +71,7 @@ namespace Stock_Back_End.Controllers
             return BadRequest(ModelState);
         }
 
-       
+
         [HttpPut]
         [Authorize]
         public async Task<IActionResult> Put(EditViewModel model)
@@ -88,7 +93,7 @@ namespace Stock_Back_End.Controllers
             return BadRequest(ModelState);
         }
 
-        
+
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

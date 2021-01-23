@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Stock_Back_End.Controllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion("2.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class ClientController : ControllerBase
     {
@@ -17,12 +18,15 @@ namespace Stock_Back_End.Controllers
             this.repository = repository;
         }
 
-
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery(Name = "page")] int page = 1, [FromQuery(Name = "per_page")] int per_page = 10)
+        public async Task<IActionResult> Get([FromQuery] ClientFilter filter, [FromQuery] EntityOrder order, [FromQuery] PaginationEntry pagination)
         {
-            var paginatedList = await PaginatedList<Client>.CreateAsync(repository.Browse(), page, per_page);
-            return Ok(new { Data = paginatedList, Page = paginatedList.PageIndex, Total = paginatedList.Total });
+            var list = await repository.Browse()
+                .AplyFilter(filter)
+                .AplyOrder(order)
+                .ToEntityPaginated(pagination);
+
+            return Ok(list);
         }
 
 
@@ -39,7 +43,7 @@ namespace Stock_Back_End.Controllers
 
         [HttpGet]
         [Route("Inactive")]
-        public async Task<IActionResult> Inactive([FromQuery(Name = "page")] int page=1, [FromQuery(Name = "per_page")] int per_page=10)
+        public async Task<IActionResult> Inactive([FromQuery(Name = "page")] int page = 1, [FromQuery(Name = "per_page")] int per_page = 10)
         {
             var paginatedList = await PaginatedList<Client>.CreateAsync(repository.inactive(), page, per_page);
             return Ok(new { Data = paginatedList, Page = paginatedList.PageIndex, Total = paginatedList.Total });

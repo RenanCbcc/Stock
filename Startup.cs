@@ -32,8 +32,6 @@ namespace Stock_Back_End
             this.env = env;
         }
 
-
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -72,6 +70,7 @@ namespace Stock_Back_End
                                   });
             });
 
+            //Authentication and Autorization
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -89,6 +88,7 @@ namespace Stock_Back_End
                 }
             );
 
+            services.AddApiVersioning();
             services.AddControllers();
         }
 

@@ -12,7 +12,8 @@ using Microsoft.Extensions.Configuration;
 
 namespace Stock_Back_End.Controllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion("2.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
     {

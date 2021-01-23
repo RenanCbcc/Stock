@@ -9,7 +9,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Stock_Back_End.Controllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion("2.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class OrderController : ControllerBase
     {
@@ -33,7 +34,7 @@ namespace Stock_Back_End.Controllers
             return Ok(new { Data = paginatedList, Page = paginatedList.PageIndex, Total = paginatedList.Total });
         }
 
-
+       
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {

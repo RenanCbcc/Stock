@@ -1,12 +1,11 @@
 ﻿using System.Threading.Tasks;
-using Stock_Back_End.Models.OrderModels;
-using Stock_Back_End.Models.PaymentModels;
 using Stock_Back_End.Models.ReportModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Stock_Back_End.Controllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion("2.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class ReportController : ControllerBase
     {

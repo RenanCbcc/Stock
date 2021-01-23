@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Stock_Back_End.Controllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion("2.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -18,16 +19,21 @@ namespace Stock_Back_End.Controllers
             this.repository = repository;
         }
 
+
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery(Name = "page")] int page = 1, [FromQuery(Name = "per_page")] int per_page = 10)
+        public async Task<IActionResult> Get([FromQuery] ProductFilter filter, [FromQuery] EntityOrder order, [FromQuery] PaginationEntry pagination)
         {
-            var paginatedList = await PaginatedList<Product>.CreateAsync(repository.Browse(), page, per_page);
-            return Ok(new { Data = paginatedList, Page = paginatedList.PageIndex, Total = paginatedList.Total });
+            var list = await repository.Browse()
+                .AplyFilter(filter)
+                .AplyOrder(order)
+                .ToEntityPaginated(pagination);
+
+            return Ok(list);
         }
 
 
         [HttpGet]
-        [Route("Code")]
+
         public async Task<IActionResult> Code([FromQuery(Name = "code")] string code)
         {
             var product = await repository.Read(code);
@@ -119,6 +125,6 @@ namespace Stock_Back_End.Controllers
             return BadRequest(ModelState);
         }
 
-        
+
     }
 }

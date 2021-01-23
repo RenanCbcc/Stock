@@ -27,9 +27,11 @@
         "dependencies": {
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.1",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.1",
+          "Microsoft.AspNetCore.Mvc.Versioning": "4.2.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.1",
           "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": "1.10.9",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "5.0.1",
+          "System.Linq.Dynamic.Core": "1.2.7",
           "Microsoft.AspNetCore.Antiforgery": "5.0.0.0",
           "Microsoft.AspNetCore.Authentication.Abstractions": "5.0.0.0",
           "Microsoft.AspNetCore.Authentication.Cookies": "5.0.0.0",
@@ -368,6 +370,17 @@
         },
         "compile": {
           "lib/net5.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll": {}
+        }
+      },
+      "Microsoft.AspNetCore.Mvc.Versioning/4.2.0": {
+        "runtime": {
+          "lib/netcoreapp3.1/Microsoft.AspNetCore.Mvc.Versioning.dll": {
+            "assemblyVersion": "4.2.0.0",
+            "fileVersion": "4.2.7612.3743"
+          }
+        },
+        "compile": {
+          "lib/netcoreapp3.1/Microsoft.AspNetCore.Mvc.Versioning.dll": {}
         }
       },
       "Microsoft.CSharp/4.5.0": {},
@@ -930,6 +943,17 @@
           "System.Resources.ResourceManager": "4.3.0",
           "System.Runtime": "4.3.0",
           "System.Runtime.Extensions": "4.3.0"
+        }
+      },
+      "System.Linq.Dynamic.Core/1.2.7": {
+        "runtime": {
+          "lib/netcoreapp2.1/System.Linq.Dynamic.Core.dll": {
+            "assemblyVersion": "1.2.7.0",
+            "fileVersion": "1.2.7.0"
+          }
+        },
+        "compile": {
+          "lib/netcoreapp2.1/System.Linq.Dynamic.Core.dll": {}
         }
       },
       "System.Net.NameResolution/4.3.0": {
@@ -3005,6 +3029,13 @@
       "path": "microsoft.aspnetcore.identity.entityframeworkcore/5.0.1",
       "hashPath": "microsoft.aspnetcore.identity.entityframeworkcore.5.0.1.nupkg.sha512"
     },
+    "Microsoft.AspNetCore.Mvc.Versioning/4.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-d536XDKU4kRXXwSKPImb7X2viJhxwHkqneadAI6Snqd3JaxtMM6nvzhF3Br49rZT48EAJcH1oHPq2zLRBu3CcQ==",
+      "path": "microsoft.aspnetcore.mvc.versioning/4.2.0",
+      "hashPath": "microsoft.aspnetcore.mvc.versioning.4.2.0.nupkg.sha512"
+    },
     "Microsoft.CSharp/4.5.0": {
       "type": "package",
       "serviceable": true,
@@ -3389,6 +3420,13 @@
       "sha512": "sha512-5DbqIUpsDp0dFftytzuMmc0oeMdQwjcP/EWxsksIz/w1TcFRkZ3yKKz0PqiYFMmEwPSWw+qNVqD7PJ889JzHbw==",
       "path": "system.linq/4.3.0",
       "hashPath": "system.linq.4.3.0.nupkg.sha512"
+    },
+    "System.Linq.Dynamic.Core/1.2.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-5m38/z1CrZ6Ul+1fSLh0J1ij0MNmllppxHPF9IaBzoeTARQDtS7zM0mGMrYFCwpE2Ditx17gBPCv5YC95OhTSA==",
+      "path": "system.linq.dynamic.core/1.2.7",
+      "hashPath": "system.linq.dynamic.core.1.2.7.nupkg.sha512"
     },
     "System.Net.NameResolution/4.3.0": {
       "type": "package",
