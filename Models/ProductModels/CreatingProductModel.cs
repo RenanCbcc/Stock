@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Stock_Back_End.Models.ProductModels
 {
-    public class CreateViewModel
+    public class CreatingProductModel
     {
         [Range(minimum: 0, maximum: 100, ErrorMessage = "O desconto do produto deve estar entre 0 e 100.")]
         public float Discount { get; set; }

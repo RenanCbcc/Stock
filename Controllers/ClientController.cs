@@ -52,7 +52,7 @@ namespace Stock_Back_End.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Post(CreateViewModel model)
+        public async Task<IActionResult> Post(CreatingClientModel model)
         {
             if (ModelState.IsValid)
             {
@@ -74,7 +74,7 @@ namespace Stock_Back_End.Controllers
 
         [HttpPut]
         [Authorize]
-        public async Task<IActionResult> Put(EditViewModel model)
+        public async Task<IActionResult> Put(EditingClientModel model)
         {
             if (ModelState.IsValid)
             {

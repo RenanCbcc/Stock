@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Stock_Back_End.Models.ProductModels;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace Stock_Back_End.Models.CategoryModels
         Task<Category> Read(int Id);
         Task<IEnumerable<Category>> All();
         IQueryable<Category> Browse();
+        IQueryable<Product> Browse(int id);
         Task Add(Category category);
         Task Edit(Category category);
     }
@@ -35,6 +37,11 @@ namespace Stock_Back_End.Models.CategoryModels
         public IQueryable<Category> Browse()
         {
             return context.Categories;
+        }
+
+        public IQueryable<Product> Browse(int id)
+        {
+            return context.Products.Where(p => p.CategoryId == id);
         }
 
         public async Task Edit(Category alteredCategory)

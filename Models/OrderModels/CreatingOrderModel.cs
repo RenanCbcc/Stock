@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Stock_Back_End.Models.OrderModels
 {
-    public class CreateOrderViewModel
+    public class CreatingOrderModel
     {
-        public CreateOrderViewModel()
+        public CreatingOrderModel()
         {
             Items = new HashSet<Item>();
         }

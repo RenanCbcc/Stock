@@ -43,7 +43,7 @@ namespace Stock_Back_End.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Post(CreatePaymentViewModel model)
+        public async Task<IActionResult> Post(CreatingPaymentModel model)
         {
             if (ModelState.IsValid)
             {

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Stock_Back_End.Models.SupplierModels
 {
-    public class CreateViewModel
+    public class CreatingSupplierModel
     {
         [Required(ErrorMessage = "Fornecedor precisa ter um nome.")]
         [DataType(DataType.Text)]

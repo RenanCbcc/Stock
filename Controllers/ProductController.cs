@@ -4,6 +4,7 @@ using Stock_Back_End.Models;
 using Stock_Back_End.Models.ProductModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Stock_Back_End.Models.ErrorModels;
 
 namespace Stock_Back_End.Controllers
 {
@@ -19,7 +20,6 @@ namespace Stock_Back_End.Controllers
             this.repository = repository;
         }
 
-
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] ProductFilter filter, [FromQuery] EntityOrder order, [FromQuery] PaginationEntry pagination)
         {
@@ -31,10 +31,20 @@ namespace Stock_Back_End.Controllers
             return Ok(list);
         }
 
+        // GET: api/Product/5
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var product = await repository.Read(id);
+            if (product == null)
+            {
+                return NotFound(id);
+            }
+            return Ok(product);
+        }
 
-        [HttpGet]
-
-        public async Task<IActionResult> Code([FromQuery(Name = "code")] string code)
+        [HttpGet("{code}")]
+        public async Task<IActionResult> GetByCode(string code)
         {
             var product = await repository.Read(code);
             if (product == null)
@@ -42,14 +52,7 @@ namespace Stock_Back_End.Controllers
                 return NotFound(code);
             }
             return Ok(product);
-        }
-
-        [HttpGet]
-        [Route("ByCategory")]
-        public IEnumerable<Product> ByCategory([FromQuery(Name = "id")] int id)
-        {
-            return repository.Browse(id);
-        }
+        }  
 
 
         [HttpGet]
@@ -60,22 +63,12 @@ namespace Stock_Back_End.Controllers
             return Ok(new { Data = paginatedList, Page = paginatedList.PageIndex, Total = paginatedList.Total });
         }
 
-        // GET: api/Product/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            var product = await repository.Read(id);
-            if (product == null)
-            {
-                return NotFound(id);
-            }
-            return Ok(product);
-        }
+
 
         // POST: api/Product
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Post(CreateViewModel model)
+        public async Task<IActionResult> Post(CreatingProductModel model)
         {
             if (ModelState.IsValid)
             {
@@ -97,13 +90,13 @@ namespace Stock_Back_End.Controllers
                 return Created(url, p);
             }
 
-            return BadRequest(ModelState);
+            return BadRequest(ErrorResponse.FromModelState(ModelState));
         }
 
         // PUT: api/Product/
         [HttpPut]
         [Authorize]
-        public async Task<IActionResult> Put(EditViewModel model)
+        public async Task<IActionResult> Put(EditingProductModel model)
         {
             if (ModelState.IsValid)
             {
@@ -122,7 +115,7 @@ namespace Stock_Back_End.Controllers
                 await repository.Edit(p);
                 return Ok(p);
             }
-            return BadRequest(ModelState);
+            return BadRequest(ErrorResponse.FromModelState(ModelState));
         }
 
 

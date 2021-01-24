@@ -48,7 +48,7 @@ namespace Stock_Back_End.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Post(CreateOrderViewModel model)
+        public async Task<IActionResult> Post(CreatingOrderModel model)
         {
             if (ModelState.IsValid)
             {
@@ -95,6 +95,7 @@ namespace Stock_Back_End.Controllers
             return BadRequest(ModelState);
         }
 
+        [HttpGet]
         [Route("ClientAmount")]
         public async Task<IActionResult> ClientAmount([FromQuery(Name = "clientId")] int clientId)
         {

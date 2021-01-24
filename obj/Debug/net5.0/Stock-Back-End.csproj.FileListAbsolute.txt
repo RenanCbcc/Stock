@@ -61,3 +61,7 @@ C:\Users\Renan\source\repos\Stock-Back-End\bin\Debug\net5.0\Microsoft.AspNetCore
 C:\Users\Renan\source\repos\Stock-Back-End\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.Versioning.dll
 C:\Users\Renan\source\repos\Stock-Back-End\obj\Debug\net5.0\Stock-Back-End.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Renan\source\repos\Stock-Back-End\bin\Debug\net5.0\System.Linq.Dynamic.Core.dll
+C:\Users\Renan\source\repos\Stock-Back-End\bin\Debug\net5.0\Microsoft.OpenApi.dll
+C:\Users\Renan\source\repos\Stock-Back-End\bin\Debug\net5.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\Renan\source\repos\Stock-Back-End\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\Renan\source\repos\Stock-Back-End\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll

@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Stock_Back_End.Models;
 using Stock_Back_End.Models.CategoryModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Stock_Back_End.Models.ErrorModels;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Stock_Back_End.Models.ProductModels;
 
 namespace Stock_Back_End.Controllers
 {
@@ -31,6 +33,18 @@ namespace Stock_Back_End.Controllers
         }
 
         [HttpGet]
+        [Route("{id}/Product")]
+        public async Task<IActionResult> Products(int id, [FromQuery] ProductFilter filter, [FromQuery] EntityOrder order, [FromQuery] PaginationEntry pagination)
+        {
+            var list = await repository.Browse(id)
+              .AplyFilter(filter)
+              .AplyOrder(order)
+              .ToEntityPaginated(pagination);
+
+            return Ok(list);
+        }
+
+        [HttpGet]
         [Route("All")]
         public async Task<IActionResult> All()
         {
@@ -52,8 +66,8 @@ namespace Stock_Back_End.Controllers
 
 
         [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> Post(CreateViewModel model)
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> Post([FromBody] CreatingCategoryModel model)
         {
             if (ModelState.IsValid)
             {
@@ -68,13 +82,13 @@ namespace Stock_Back_End.Controllers
                 return Created(url, p);
             }
 
-            return BadRequest(ModelState);
+            return BadRequest(ErrorResponse.FromModelState(ModelState));
         }
 
 
         [HttpPut]
         [Authorize]
-        public async Task<IActionResult> Put(EditViewModel model)
+        public async Task<IActionResult> Put(EditingCategoryModel model)
         {
             if (ModelState.IsValid)
             {
@@ -89,7 +103,7 @@ namespace Stock_Back_End.Controllers
                 await repository.Edit(c);
                 return Ok(c);
             }
-            return BadRequest(ModelState);
+            return BadRequest(ErrorResponse.FromModelState(ModelState));
         }
 
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Stock_Back_End.Models.PaymentModels
 {
-    public class CreatePaymentViewModel
+    public class CreatingPaymentModel
     {
         public int ClientId { get; set; }
 

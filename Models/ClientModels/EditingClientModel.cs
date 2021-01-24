@@ -2,7 +2,7 @@
 
 namespace Stock_Back_End.Models.ClientModels
 {
-    public class EditViewModel : CreateViewModel
+    public class EditingClientModel : CreatingClientModel
     {
         public int Id { get; set; }
 
