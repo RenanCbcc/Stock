@@ -38,19 +38,18 @@ namespace Stock_Back_End.Controllers
             {
                 var user = await userManager.FindByEmailAsync(model.Email);
 
-                if (user == null || !(await userManager.CheckPasswordAsync(user, model.Password)))
+                if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
                 {
-                    return BadRequest("Login ou senha incorretos.");
+                    //var result = await signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, false);
+                    var succeeded = await signInManager.UserManager.CheckPasswordAsync(user, model.Password);
+                    if (succeeded)
+                    {
+                        return Ok(GenerateJwt(model.Email));
+                    }
+                    return Unauthorized("Login ou senha incorretos.");
                 }
+                return Unauthorized("Login ou senha incorretos.");
 
-                //var result = await signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, false);
-                var succeeded = await signInManager.UserManager.CheckPasswordAsync(user, model.Password);
-
-                if (succeeded)
-                {
-                    return Ok(GenerateJwt(model.Email));
-                }
-                return Unauthorized();
             }
 
             return BadRequest(ModelState);
@@ -85,13 +84,14 @@ namespace Stock_Back_End.Controllers
                 new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Exp,DateTime.Now.AddHours(1).ToString())
             };
-            var key = Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"]);
-            var symetricKey = new SymmetricSecurityKey(key);
+
+            var symetricKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"]));
             var credentials = new SigningCredentials(symetricKey, SecurityAlgorithms.HmacSha256);
             var securityToken = new JwtSecurityToken
                 (
                 issuer: configuration["Jwt:Issuer"],
                 audience: configuration["Jwt:Audience"],
+                expires: DateTime.Now.AddHours(1),
                 claims: rights,
                 signingCredentials: credentials
                 );

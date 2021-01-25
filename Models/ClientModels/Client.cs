@@ -19,11 +19,9 @@ namespace Stock_Back_End.Models.ClientModels
         public float Debt { get; set; }
 
         [Required]
-        [DataType(DataType.Currency)]
-        
+        [DataType(DataType.Currency)]        
                 
         public Status Status { get; set; }
-
 
         [Required]
         [StringLength(maximumLength: 50, MinimumLength = 10,

@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Stock_Back_End.Models;
 using Stock_Back_End.Models.ProductModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Stock_Back_End.Models.ErrorModels;
+using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Stock_Back_End.Controllers
 {
@@ -21,6 +22,9 @@ namespace Stock_Back_End.Controllers
         }
 
         [HttpGet]
+        [SwaggerOperation(Summary = "Retrieve a collections of products.")]
+        [SwaggerResponse(200, "The request has succeeded.", typeof(Pagination<Product>))]
+        [SwaggerResponse(500, "The server encountered an unexpected condition that prevented it from fulfilling the request.", typeof(ErrorResponse))]
         public async Task<IActionResult> Get([FromQuery] ProductFilter filter, [FromQuery] EntityOrder order, [FromQuery] PaginationEntry pagination)
         {
             var list = await repository.Browse()
@@ -33,6 +37,10 @@ namespace Stock_Back_End.Controllers
 
         // GET: api/Product/5
         [HttpGet("{id:int}")]
+        [SwaggerOperation(Summary = "Retrieve a client identified by it's {id}")]
+        [SwaggerResponse(200, "The request has succeeded.", typeof(Product))]
+        [SwaggerResponse(500, "The server encountered an unexpected condition that prevented it from fulfilling the request.", typeof(ErrorResponse))]
+        [SwaggerResponse(404, "The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.", typeof(ErrorResponse))]
         public async Task<IActionResult> GetById(int id)
         {
             var product = await repository.Read(id);
@@ -44,6 +52,10 @@ namespace Stock_Back_End.Controllers
         }
 
         [HttpGet("{code}")]
+        [SwaggerOperation(Summary = "Retrieve a client identified by it's {code}")]
+        [SwaggerResponse(200, "The request has succeeded.", typeof(Product))]
+        [SwaggerResponse(500, "The server encountered an unexpected condition that prevented it from fulfilling the request.", typeof(ErrorResponse))]
+        [SwaggerResponse(404, "The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.", typeof(ErrorResponse))]
         public async Task<IActionResult> GetByCode(string code)
         {
             var product = await repository.Read(code);
@@ -54,7 +66,6 @@ namespace Stock_Back_End.Controllers
             return Ok(product);
         }  
 
-
         [HttpGet]
         [Route("RunningLow")]
         public async Task<IActionResult> LowStock([FromQuery(Name = "page")] int page = 1, [FromQuery(Name = "per_page")] int per_page = 10)
@@ -64,10 +75,13 @@ namespace Stock_Back_End.Controllers
         }
 
 
-
         // POST: api/Product
         [HttpPost]
-        [Authorize]
+        [SwaggerOperation(Summary = "Creates a new product.", Description = "Requires admin privileges")]
+        [SwaggerResponse(201, "The client was created", typeof(string))]
+        [SwaggerResponse(500, "The server encountered an unexpected condition that prevented it from fulfilling the request.", typeof(ErrorResponse))]
+        [SwaggerResponse(400, "The was unable to processe the request.", typeof(ErrorResponse))]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Post(CreatingProductModel model)
         {
             if (ModelState.IsValid)
@@ -95,7 +109,12 @@ namespace Stock_Back_End.Controllers
 
         // PUT: api/Product/
         [HttpPut]
-        [Authorize]
+        [SwaggerOperation(Summary = "Modifies a client.", Description = "Requires admin privileges")]
+        [SwaggerResponse(201, "The category modification has succeeded.", typeof(Product))]
+        [SwaggerResponse(500, "The server encountered an unexpected condition that prevented it from fulfilling the request.", typeof(ErrorResponse))]
+        [SwaggerResponse(400, "The was unable to processe the request.", typeof(ErrorResponse))]
+        [SwaggerResponse(404, "The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.", typeof(ErrorResponse))]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Put(EditingProductModel model)
         {
             if (ModelState.IsValid)

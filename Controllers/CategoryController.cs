@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Stock_Back_End.Models.ErrorModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Stock_Back_End.Models.ProductModels;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Stock_Back_End.Controllers
 {
@@ -22,6 +23,9 @@ namespace Stock_Back_End.Controllers
         }
 
         [HttpGet]
+        [SwaggerOperation(Summary = "Retrieve a collections of categories.")]
+        [SwaggerResponse(200, "The request has succeeded.", typeof(Pagination<Category>))]
+        [SwaggerResponse(500, "The server encountered an unexpected condition that prevented it from fulfilling the request.", typeof(ErrorResponse))]
         public async Task<IActionResult> Get([FromQuery] CategoryFilter filter, [FromQuery] EntityOrder order, [FromQuery] PaginationEntry pagination)
         {
             var list = await repository.Browse()
@@ -34,6 +38,9 @@ namespace Stock_Back_End.Controllers
 
         [HttpGet]
         [Route("{id}/Product")]
+        [SwaggerOperation(Summary = "Retrieve a collection of products belonging to a specific category.")]
+        [SwaggerResponse(200, "The request has succeeded.", typeof(Pagination<Product>))]
+        [SwaggerResponse(500, "The server encountered an unexpected condition that prevented it from fulfilling the request.", typeof(ErrorResponse))]
         public async Task<IActionResult> Products(int id, [FromQuery] ProductFilter filter, [FromQuery] EntityOrder order, [FromQuery] PaginationEntry pagination)
         {
             var list = await repository.Browse(id)
@@ -43,16 +50,12 @@ namespace Stock_Back_End.Controllers
 
             return Ok(list);
         }
+                
 
-        [HttpGet]
-        [Route("All")]
-        public async Task<IActionResult> All()
-        {
-            var items = await repository.All();
-            return Ok(items);
-        }
-
-
+        [SwaggerOperation(Summary = "Retrieve a category identified by it's {id}")]
+        [SwaggerResponse(200, "The request has succeeded.", typeof(Category))]
+        [SwaggerResponse(500, "The server encountered an unexpected condition that prevented it from fulfilling the request.", typeof(ErrorResponse))]
+        [SwaggerResponse(404, "The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.", typeof(ErrorResponse))]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
@@ -66,20 +69,24 @@ namespace Stock_Back_End.Controllers
 
 
         [HttpPost]
+        [SwaggerOperation(Summary = "Creates a new category.", Description = "Requires admin privileges")]
+        [SwaggerResponse(201, "The category was created", typeof(string))]
+        [SwaggerResponse(500, "The server encountered an unexpected condition that prevented it from fulfilling the request.", typeof(ErrorResponse))]
+        [SwaggerResponse(400, "The was unable to processe the request.", typeof(ErrorResponse))]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Post([FromBody] CreatingCategoryModel model)
         {
             if (ModelState.IsValid)
             {
-                var p = new Category
+                var c = new Category
                 {
                     Title = model.Title,
                     Discount = model.Discount
                 };
 
-                await repository.Add(p);
-                var url = Url.Action("Get", new { id = p.Id });
-                return Created(url, p);
+                await repository.Add(c);
+                var url = Url.Action("Get", new { id = c.Id });
+                return Created(url, c);
             }
 
             return BadRequest(ErrorResponse.FromModelState(ModelState));
@@ -87,7 +94,12 @@ namespace Stock_Back_End.Controllers
 
 
         [HttpPut]
-        [Authorize]
+        [SwaggerOperation(Summary = "Modifies a category.", Description = "Requires admin privileges")]
+        [SwaggerResponse(201, "The category modification has succeeded.", typeof(Category))]
+        [SwaggerResponse(500, "The server encountered an unexpected condition that prevented it from fulfilling the request.", typeof(ErrorResponse))]
+        [SwaggerResponse(400, "The was unable to processe the request.", typeof(ErrorResponse))]
+        [SwaggerResponse(404, "The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.", typeof(ErrorResponse))]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Put(EditingCategoryModel model)
         {
             if (ModelState.IsValid)

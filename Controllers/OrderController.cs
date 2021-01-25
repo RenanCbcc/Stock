@@ -6,6 +6,9 @@ using Stock_Back_End.Models.OrderModels;
 using Stock_Back_End.Models.ProductModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Swashbuckle.AspNetCore.Annotations;
+using Stock_Back_End.Models.ErrorModels;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Stock_Back_End.Controllers
 {
@@ -34,7 +37,11 @@ namespace Stock_Back_End.Controllers
             return Ok(new { Data = paginatedList, Page = paginatedList.PageIndex, Total = paginatedList.Total });
         }
 
-       
+
+        [SwaggerOperation(Summary = "Retrieve an order identified by it's {id}")]
+        [SwaggerResponse(200, "The request has succeeded.", typeof(Order))]
+        [SwaggerResponse(500, "The server encountered an unexpected condition that prevented it from fulfilling the request.", typeof(ErrorResponse))]
+        [SwaggerResponse(404, "The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.", typeof(ErrorResponse))]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
@@ -47,7 +54,11 @@ namespace Stock_Back_End.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [SwaggerOperation(Summary = "Creates a new order.", Description = "Requires admin privileges")]
+        [SwaggerResponse(201, "The category was created", typeof(string))]
+        [SwaggerResponse(500, "The server encountered an unexpected condition that prevented it from fulfilling the request.", typeof(ErrorResponse))]
+        [SwaggerResponse(400, "The was unable to processe the request.", typeof(ErrorResponse))]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Post(CreatingOrderModel model)
         {
             if (ModelState.IsValid)
@@ -95,12 +106,5 @@ namespace Stock_Back_End.Controllers
             return BadRequest(ModelState);
         }
 
-        [HttpGet]
-        [Route("ClientAmount")]
-        public async Task<IActionResult> ClientAmount([FromQuery(Name = "clientId")] int clientId)
-        {
-            var amount = await orderRepository.Total(clientId);
-            return Ok(amount);
-        }
     }
 }

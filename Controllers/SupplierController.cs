@@ -4,6 +4,9 @@ using Stock_Back_End.Models;
 using Stock_Back_End.Models.SupplierModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Swashbuckle.AspNetCore.Annotations;
+using Stock_Back_End.Models.ErrorModels;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Stock_Back_End.Controllers
 {
@@ -20,6 +23,9 @@ namespace Stock_Back_End.Controllers
         }
 
         [HttpGet]
+        [SwaggerOperation(Summary = "Retrieve a collections of suppliers.")]
+        [SwaggerResponse(200, "The request has succeeded.", typeof(Pagination<Supplier>))]
+        [SwaggerResponse(500, "The server encountered an unexpected condition that prevented it from fulfilling the request.", typeof(ErrorResponse))]
         public async Task<IActionResult> Get([FromQuery] SupplierFilter filter, [FromQuery] EntityOrder order, [FromQuery] PaginationEntry pagination)
         {
             var list = await repository.Browse()
@@ -30,14 +36,11 @@ namespace Stock_Back_End.Controllers
             return Ok(list);
         }
 
-        [HttpGet]
-        [Route("All")]
-        public IEnumerable<Supplier> Get()
-        {
-            return repository.Browse();
-        }
 
-
+        [SwaggerOperation(Summary = "Retrieve a supplier identified by it's {id}")]
+        [SwaggerResponse(200, "The request has succeeded.", typeof(Supplier))]
+        [SwaggerResponse(500, "The server encountered an unexpected condition that prevented it from fulfilling the request.", typeof(ErrorResponse))]
+        [SwaggerResponse(404, "The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.", typeof(ErrorResponse))]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
@@ -51,7 +54,11 @@ namespace Stock_Back_End.Controllers
 
 
         [HttpPost]
-        [Authorize]
+        [SwaggerOperation(Summary = "Creates a new supplier.", Description = "Requires admin privileges")]
+        [SwaggerResponse(201, "The category was created", typeof(string))]
+        [SwaggerResponse(500, "The server encountered an unexpected condition that prevented it from fulfilling the request.", typeof(ErrorResponse))]
+        [SwaggerResponse(400, "The was unable to processe the request.", typeof(ErrorResponse))]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Post(CreatingSupplierModel model)
         {
             if (ModelState.IsValid)
@@ -73,7 +80,12 @@ namespace Stock_Back_End.Controllers
 
 
         [HttpPut]
-        [Authorize]
+        [SwaggerOperation(Summary = "Modifies a supplier.", Description = "Requires admin privileges")]
+        [SwaggerResponse(201, "The category modification has succeeded.", typeof(Supplier))]
+        [SwaggerResponse(500, "The server encountered an unexpected condition that prevented it from fulfilling the request.", typeof(ErrorResponse))]
+        [SwaggerResponse(400, "The was unable to processe the request.", typeof(ErrorResponse))]
+        [SwaggerResponse(404, "The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.", typeof(ErrorResponse))]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Put(EditingSupplierModel model)
         {
             if (ModelState.IsValid)
@@ -93,10 +105,5 @@ namespace Stock_Back_End.Controllers
             return BadRequest(ModelState);
         }
 
-
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

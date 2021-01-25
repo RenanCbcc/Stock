@@ -6,6 +6,9 @@ using Stock_Back_End.Models.OrderModels;
 using Stock_Back_End.Models.PaymentModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Stock_Back_End.Models.ErrorModels;
 
 namespace Stock_Back_End.Controllers
 {
@@ -39,10 +42,14 @@ namespace Stock_Back_End.Controllers
                 Total = paginatedList.Total
             });
         }
-                
+
 
         [HttpPost]
-        [Authorize]
+        [SwaggerOperation(Summary = "Creates a new payment.", Description = "Requires admin privileges")]
+        [SwaggerResponse(201, "The category was created", typeof(string))]
+        [SwaggerResponse(500, "The server encountered an unexpected condition that prevented it from fulfilling the request.", typeof(ErrorResponse))]
+        [SwaggerResponse(400, "The was unable to processe the request.", typeof(ErrorResponse))]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Post(CreatingPaymentModel model)
         {
             if (ModelState.IsValid)

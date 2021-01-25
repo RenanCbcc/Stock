@@ -56,7 +56,8 @@ namespace Stock_Back_End
                 options.User.RequireUniqueEmail = true;
                 options.User.AllowedUserNameCharacters = null;
             })
-                .AddEntityFrameworkStores<StockContext>();
+                .AddEntityFrameworkStores<StockContext>()
+                .AddDefaultTokenProviders();
 
             //Injection
             services.AddScoped<IClientRepository, ClientRepository>();
@@ -79,7 +80,13 @@ namespace Stock_Back_End
             });
 
             //Authentication and Autorization
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
                 .AddJwtBearer(options =>
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
@@ -111,13 +118,47 @@ namespace Stock_Back_End
 
             //APi documentation
             services.AddSwaggerGen(options =>
-            {
+            {                
                 options.EnableAnnotations();
+
+                //Fix enums conflicts.
+                options.CustomSchemaIds(type => type.FullName);
+
+                // definition of the security scheme used
+                options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme (Example: 'Bearer 12345abcdef')",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = JwtBearerDefaults.AuthenticationScheme
+                });
+                //Defines what operations use the abome scheme - (all).
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement{
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = JwtBearerDefaults.AuthenticationScheme
+                        }
+                    },
+                    Array.Empty<string>()
+                }});
+
+                options.OperationFilter<AuthResponseFilter>();
+
                 options.SwaggerDoc("v2", new OpenApiInfo
                 {
                     Version = "v2",
                     Title = "Estoque api",
                     Description = "Documentação da api de estoque de produtos.",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Renan Rosa",
+                        Email = "renannojosa@gmail.com"
+                    },
                 });
             });
         }
@@ -130,10 +171,9 @@ namespace Stock_Back_End
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-            app.UseAuthentication();
             app.UseRouting();
             app.UseCors(AllowSpecificOrigins);
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

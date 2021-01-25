@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 namespace Stock_Back_End.Models.OrderModels
 {
     public interface IOrderRepository
-    {       
+    {
         Task<Order> Read(int Id);
         IQueryable<Order> Browse();
         Task<IEnumerable<Order>> Pending(int id);
         Task Add(Order order);
         Task Edit(Order order);
-        Task<float> Total(int id);
     }
 
     public class OrderRepository : IOrderRepository
@@ -55,11 +54,6 @@ namespace Stock_Back_End.Models.OrderModels
         {
             return await context.Orders.FindAsync(Id);
         }
-
-        public async Task<float> Total(int id)
-        {
-            return await context.Orders.Where(o => o.CLientId == id).SumAsync(o => o.Value);
-        }        
 
 
     }

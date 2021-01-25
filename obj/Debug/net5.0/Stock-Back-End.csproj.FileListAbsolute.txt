@@ -65,3 +65,4 @@ C:\Users\Renan\source\repos\Stock-Back-End\bin\Debug\net5.0\Microsoft.OpenApi.dl
 C:\Users\Renan\source\repos\Stock-Back-End\bin\Debug\net5.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\Renan\source\repos\Stock-Back-End\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\Renan\source\repos\Stock-Back-End\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\Renan\source\repos\Stock-Back-End\bin\Debug\net5.0\Swashbuckle.AspNetCore.Annotations.dll
