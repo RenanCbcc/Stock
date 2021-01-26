@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Swashbuckle.AspNetCore.Annotations;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Stock_Back_End.Models.ClientModels
@@ -19,8 +20,10 @@ namespace Stock_Back_End.Models.ClientModels
         public float Debt { get; set; }
 
         [Required]
-        [DataType(DataType.Currency)]        
-                
+        [DataType(DataType.Currency)]
+
+        
+        [SwaggerSchema("Can be Inativo or Ativo.", Format = "enum")]
         public Status Status { get; set; }
 
         [Required]

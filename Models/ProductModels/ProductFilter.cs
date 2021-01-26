@@ -15,12 +15,17 @@ namespace Stock_Back_End.Models.ProductModels
 
                 if (filter.DiscountBiggerThan != 0)
                 {
-                    query = query.Where(p => p.Discount > filter.DiscountBiggerThan);
+                    query = query.Where(p => filter.DiscountBiggerThan > p.Discount);
                 }
 
                 if (filter.DiscountLessThan != 0)
                 {
-                    query = query.Where(p => p.Discount < filter.DiscountLessThan);
+                    query = query.Where(p => filter.DiscountLessThan < p.Discount);
+                }
+
+                if (filter.RunningLow)
+                {
+                    query = query.Where(p => p.Quantity < p.MinimumQuantity);
                 }
             }
             return query;
@@ -36,5 +41,6 @@ namespace Stock_Back_End.Models.ProductModels
         public float PurchasePriceLessThan { get; set; }
         public int QuantityBiggerThan { get; set; }
         public int QuantityLessThan { get; set; }
+        public bool RunningLow { get; set; } = false;
     }
 }

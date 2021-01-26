@@ -21,7 +21,12 @@ namespace Stock_Back_End.Models.ClientModels
                 if (!string.IsNullOrEmpty(filter.PhoneNumber))
                 {
                     query = query.Where(c => c.PhoneNumber.Contains(filter.PhoneNumber));
-                }               
+                }
+
+                if (filter.Status != null)
+                {
+                    query = query.Where(c => c.Status == filter.Status);
+                }
 
             }
             return query;

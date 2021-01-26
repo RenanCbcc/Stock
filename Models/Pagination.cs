@@ -8,22 +8,22 @@ namespace Stock_Back_End.Models
 {
     public static class EntityPaginationExtentions
     {
-        public static async Task<Pagination<T>> ToEntityPaginated<T>(this IQueryable<T> query, PaginationEntry pagination)
+        public static async Task<Pagination<T>> ToEntityPaginated<T>(this IQueryable<T> query, PagingParams pagination)
         {
             int count = query.Count();
-            int totalPages = (int)Math.Ceiling(count / (double)pagination.PerPage);
+            int totalPages = (int)Math.Ceiling(count / (double)pagination.PageSize);
             string endPoint = typeof(T).Name.ToLower();
             return new Pagination<T>()
             {
                 Total = count,
                 Pages = totalPages,
-                Page = pagination.Page,
-                PerPage = pagination.PerPage,
-                Result = await query.Skip((pagination.Page - 1) * pagination.PerPage).Take(pagination.PerPage).ToListAsync(),
-                Previous = (pagination.Page > 1) ?
-                $"{endPoint}?size={pagination.PerPage}&page={pagination.Page - 1}" : "",
-                Next = (pagination.Page < totalPages) ?
-                $"{endPoint}?size={pagination.PerPage}&page={pagination.Page + 1}" : ""
+                Page = pagination.PageNo,
+                PerPage = pagination.PageSize,
+                Result = await query.Skip((pagination.PageNo - 1) * pagination.PageSize).Take(pagination.PageSize).ToListAsync(),
+                Previous = (pagination.PageNo > 1) ?
+                $"{endPoint}?size={pagination.PageSize}&page={pagination.PageNo - 1}" : "",
+                Next = (pagination.PageNo < totalPages) ?
+                $"{endPoint}?size={pagination.PageSize}&page={pagination.PageNo + 1}" : ""
             };
 
         }

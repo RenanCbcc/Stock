@@ -30,11 +30,19 @@ namespace Stock_Back_End.Controllers
             this.productRepository = productRepository;
         }
 
+
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery(Name = "page")] int page = 1, [FromQuery(Name = "per_page")] int per_page = 10)
+        [SwaggerOperation(Summary = "Retrieve a collections of orders.")]
+        [SwaggerResponse(200, "The request has succeeded.", typeof(Pagination<Order>))]
+        [SwaggerResponse(500, "The server encountered an unexpected condition that prevented it from fulfilling the request.", typeof(ErrorResponse))]
+        public async Task<IActionResult> Get([FromQuery] OrderFilter filter, [FromQuery] EntityOrder order, [FromQuery] PagingParams pagination)
         {
-            var paginatedList = await PaginatedList<Order>.CreateAsync(orderRepository.Browse(), page, per_page);
-            return Ok(new { Data = paginatedList, Page = paginatedList.PageIndex, Total = paginatedList.Total });
+            var list = await orderRepository.Browse()
+                .AplyFilter(filter)
+                .AplyOrder(order)
+                .ToEntityPaginated(pagination);
+
+            return Ok(list);
         }
 
 
@@ -58,6 +66,7 @@ namespace Stock_Back_End.Controllers
         [SwaggerResponse(201, "The category was created", typeof(string))]
         [SwaggerResponse(500, "The server encountered an unexpected condition that prevented it from fulfilling the request.", typeof(ErrorResponse))]
         [SwaggerResponse(400, "The was unable to processe the request.", typeof(ErrorResponse))]
+        [SwaggerResponse(404, "The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.", typeof(ErrorResponse))]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Post(CreatingOrderModel model)
         {

@@ -25,7 +25,7 @@ namespace Stock_Back_End.Controllers
         [SwaggerOperation(Summary = "Retrieve a collections of clients.")]
         [SwaggerResponse(200, "The request has succeeded.", typeof(Pagination<Client>))]
         [SwaggerResponse(500, "The server encountered an unexpected condition that prevented it from fulfilling the request.", typeof(ErrorResponse))]
-        public async Task<IActionResult> Get([FromQuery] ClientFilter filter, [FromQuery] EntityOrder order, [FromQuery] PaginationEntry pagination)
+        public async Task<IActionResult> Get([FromQuery] ClientFilter filter, [FromQuery] EntityOrder order, [FromQuery] PagingParams pagination)
         {
             var list = await repository.Browse()
                 .AplyFilter(filter)
@@ -50,15 +50,6 @@ namespace Stock_Back_End.Controllers
             }
             return Ok(client);
         }
-
-        [HttpGet]
-        [Route("Inactive")]
-        public async Task<IActionResult> Inactive([FromQuery(Name = "page")] int page = 1, [FromQuery(Name = "per_page")] int per_page = 10)
-        {
-            var paginatedList = await PaginatedList<Client>.CreateAsync(repository.inactive(), page, per_page);
-            return Ok(new { Data = paginatedList, Page = paginatedList.PageIndex, Total = paginatedList.Total });
-        }
-
 
         [HttpPost]
         [SwaggerOperation(Summary = "Creates a new client.", Description = "Requires admin privileges")]

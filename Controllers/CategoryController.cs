@@ -26,7 +26,7 @@ namespace Stock_Back_End.Controllers
         [SwaggerOperation(Summary = "Retrieve a collections of categories.")]
         [SwaggerResponse(200, "The request has succeeded.", typeof(Pagination<Category>))]
         [SwaggerResponse(500, "The server encountered an unexpected condition that prevented it from fulfilling the request.", typeof(ErrorResponse))]
-        public async Task<IActionResult> Get([FromQuery] CategoryFilter filter, [FromQuery] EntityOrder order, [FromQuery] PaginationEntry pagination)
+        public async Task<IActionResult> Get([FromQuery] CategoryFilter filter, [FromQuery] EntityOrder order, [FromQuery] PagingParams pagination)
         {
             var list = await repository.Browse()
                 .AplyFilter(filter)
@@ -41,7 +41,7 @@ namespace Stock_Back_End.Controllers
         [SwaggerOperation(Summary = "Retrieve a collection of products belonging to a specific category.")]
         [SwaggerResponse(200, "The request has succeeded.", typeof(Pagination<Product>))]
         [SwaggerResponse(500, "The server encountered an unexpected condition that prevented it from fulfilling the request.", typeof(ErrorResponse))]
-        public async Task<IActionResult> Products(int id, [FromQuery] ProductFilter filter, [FromQuery] EntityOrder order, [FromQuery] PaginationEntry pagination)
+        public async Task<IActionResult> Products(int id, [FromQuery] ProductFilter filter, [FromQuery] EntityOrder order, [FromQuery] PagingParams pagination)
         {
             var list = await repository.Browse(id)
               .AplyFilter(filter)

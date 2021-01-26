@@ -32,15 +32,17 @@ namespace Stock_Back_End.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery(Name = "page")] int page=1, [FromQuery(Name = "per_page")] int per_page=10)
+        [SwaggerOperation(Summary = "Retrieve a collections of payments.")]
+        [SwaggerResponse(200, "The request has succeeded.", typeof(Pagination<Payment>))]
+        [SwaggerResponse(500, "The server encountered an unexpected condition that prevented it from fulfilling the request.", typeof(ErrorResponse))]
+        public async Task<IActionResult> Get([FromQuery] PaymentFilter filter, [FromQuery] EntityOrder order, [FromQuery] PagingParams pagination)
         {
-            var paginatedList = await PaginatedList<Payment>.CreateAsync(paymentRepository.Browse(), page, per_page);
-            return Ok(new
-            {
-                Data = paginatedList,
-                Page = paginatedList.PageIndex,
-                Total = paginatedList.Total
-            });
+            var list = await paymentRepository.Browse()
+                .AplyFilter(filter)
+                .AplyOrder(order)
+                .ToEntityPaginated(pagination);
+
+            return Ok(list);
         }
 
 

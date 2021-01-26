@@ -25,7 +25,7 @@ namespace Stock_Back_End.Controllers
         [SwaggerOperation(Summary = "Retrieve a collections of products.")]
         [SwaggerResponse(200, "The request has succeeded.", typeof(Pagination<Product>))]
         [SwaggerResponse(500, "The server encountered an unexpected condition that prevented it from fulfilling the request.", typeof(ErrorResponse))]
-        public async Task<IActionResult> Get([FromQuery] ProductFilter filter, [FromQuery] EntityOrder order, [FromQuery] PaginationEntry pagination)
+        public async Task<IActionResult> Get([FromQuery] ProductFilter filter, [FromQuery] EntityOrder order, [FromQuery] PagingParams pagination)
         {
             var list = await repository.Browse()
                 .AplyFilter(filter)
@@ -34,6 +34,7 @@ namespace Stock_Back_End.Controllers
 
             return Ok(list);
         }
+                
 
         // GET: api/Product/5
         [HttpGet("{id:int}")]
@@ -64,14 +65,6 @@ namespace Stock_Back_End.Controllers
                 return NotFound(code);
             }
             return Ok(product);
-        }  
-
-        [HttpGet]
-        [Route("RunningLow")]
-        public async Task<IActionResult> LowStock([FromQuery(Name = "page")] int page = 1, [FromQuery(Name = "per_page")] int per_page = 10)
-        {
-            var paginatedList = await PaginatedList<Product>.CreateAsync(repository.RunningLow(), page, per_page);
-            return Ok(new { Data = paginatedList, Page = paginatedList.PageIndex, Total = paginatedList.Total });
         }
 
 

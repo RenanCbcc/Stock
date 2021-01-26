@@ -8,6 +8,12 @@ To change that, navigate to appsettings.json
 Update-Database
 ```
 
+### Do not forget to change the connection string in launchSettings.json to either:
+
+```
+Production or Development
+```
+
 ### Prerequisites
 
 ```
@@ -55,9 +61,6 @@ Releasing the container on heroku.
 heroku container:release web -a you_app_name
 ```
 
-Change the launchSettings.json file. Replace the value of the ASPNETCORE_ENVIRONMENT property 
-from Development to Production. That change will make the app use the Postgres database.
-
 ## Working demo
 
-estoquapp.herokuapp.com/
+https://estoquapp.herokuapp.com/
