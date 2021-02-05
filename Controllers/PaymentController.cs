@@ -92,7 +92,7 @@ namespace Stock_Back_End.Controllers
                 return created;
             }
 
-            return BadRequest(ModelState);
+            return BadRequest(ErrorResponse.FromModelState(ModelState));
         }
     }
 }

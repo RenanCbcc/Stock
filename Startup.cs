@@ -27,7 +27,7 @@ namespace Stock_Back_End
     {
         private readonly IConfiguration configuration;
         private readonly IWebHostEnvironment env;
-        private readonly string AllowSpecificOrigins = "stock-front-end";
+
 
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
@@ -72,12 +72,12 @@ namespace Stock_Back_End
             //CORS Policy
             services.AddCors(options =>
             {
-                options.AddPolicy(name: AllowSpecificOrigins,
-                                  builder =>
-                                  {
-                                      builder.WithOrigins(configuration["Jwt:Audience"]);
-                                  });
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyMethod().AllowAnyHeader().WithOrigins(configuration["Jwt:Audience"]);
+                });
             });
+
 
             //Authentication and Autorization
             services
@@ -118,7 +118,7 @@ namespace Stock_Back_End
 
             //APi documentation
             services.AddSwaggerGen(options =>
-            {                
+            {
                 options.EnableAnnotations();
 
                 //Fix enums conflicts.
@@ -171,8 +171,8 @@ namespace Stock_Back_End
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors();
             app.UseRouting();
-            app.UseCors(AllowSpecificOrigins);
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -185,9 +185,10 @@ namespace Stock_Back_End
 
             app.UseSwagger();
 
-            app.UseSwaggerUI(c =>
+            app.UseSwaggerUI(options =>
             {
-                c.SwaggerEndpoint("/swagger/v2/swagger.json", "Stock API V2");
+                options.SwaggerEndpoint("/swagger/v2/swagger.json", "Stock API V2");
+                options.DefaultModelsExpandDepth(-1);
             });
         }
     }

@@ -36,5 +36,15 @@ namespace Stock_Back_End.Models.ErrorModels
                 Details = errors.Select(e => e.ErrorMessage).ToArray()
             };
         }
+
+        internal static ErrorResponse FromUnauthorized(string details)
+        {
+
+            return new ErrorResponse()
+            {
+                Code = 100,
+                Message = details,                
+            };
+        }
     }
 }

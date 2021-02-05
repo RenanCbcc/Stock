@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Stock_Back_End.Filters
 {
@@ -20,7 +18,7 @@ namespace Stock_Back_End.Filters
 
             if (requiredScopes.Any())
             {
-                operation.Responses.Add("401", new OpenApiResponse { Description = "Unauthorized" });
+                operation.Responses.Add("401", new OpenApiResponse { Description = "Unauthorized. Access is denied due to invalid credentials" });
             }
 
         }

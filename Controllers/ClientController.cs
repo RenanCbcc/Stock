@@ -73,7 +73,7 @@ namespace Stock_Back_End.Controllers
                 return Created(url, c);
             }
 
-            return BadRequest(ModelState);
+            return BadRequest(ErrorResponse.FromModelState(ModelState));
         }
 
 
@@ -102,7 +102,7 @@ namespace Stock_Back_End.Controllers
                 await repository.Edit(c);
                 return Ok(c);
             }
-            return BadRequest(ModelState);
+            return BadRequest(ErrorResponse.FromModelState(ModelState));
         }
 
 

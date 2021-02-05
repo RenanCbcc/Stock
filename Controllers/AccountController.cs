@@ -9,6 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
+using Stock_Back_End.Models.ErrorModels;
 
 namespace Stock_Back_End.Controllers
 {
@@ -32,7 +33,7 @@ namespace Stock_Back_End.Controllers
         [HttpPost]
         [Route("Login")]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login([FromBody] LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -46,15 +47,15 @@ namespace Stock_Back_End.Controllers
                     {
                         return Ok(GenerateJwt(model.Email));
                     }
-                    return Unauthorized("Login ou senha incorretos.");
+
+                    return Unauthorized(ErrorResponse.FromUnauthorized("Login ou senha incorretos."));
                 }
-                return Unauthorized("Login ou senha incorretos.");
+                return Unauthorized(ErrorResponse.FromUnauthorized("Login ou senha incorretos."));
 
             }
 
             return BadRequest(ModelState);
         }
-
 
         [HttpPost]
         [Route("Register")]

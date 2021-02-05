@@ -19,7 +19,7 @@ namespace Stock_Back_End.Models
                 Pages = totalPages,
                 Page = pagination.PageNo,
                 PerPage = pagination.PageSize,
-                Result = await query.Skip((pagination.PageNo - 1) * pagination.PageSize).Take(pagination.PageSize).ToListAsync(),
+                Data = await query.Skip((pagination.PageNo - 1) * pagination.PageSize).Take(pagination.PageSize).ToListAsync(),
                 Previous = (pagination.PageNo > 1) ?
                 $"{endPoint}?size={pagination.PageSize}&page={pagination.PageNo - 1}" : "",
                 Next = (pagination.PageNo < totalPages) ?
@@ -35,7 +35,7 @@ namespace Stock_Back_End.Models
         public int Pages { get; set; }
         public int PerPage { get; set; }
         public int Page { get; set; }
-        public List<T> Result { get; set; }
+        public List<T> Data { get; set; }
         public string Previous { get; set; }
         public string Next { get; set; }
     }

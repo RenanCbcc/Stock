@@ -32,7 +32,7 @@ namespace Stock_Back_End.Controllers
 
 
         [HttpGet]
-        [SwaggerOperation(Summary = "Retrieve a collections of orders.")]
+        [SwaggerOperation(Summary = "Retrieve a collection of orders.")]
         [SwaggerResponse(200, "The request has succeeded.", typeof(Pagination<Order>))]
         [SwaggerResponse(500, "The server encountered an unexpected condition that prevented it from fulfilling the request.", typeof(ErrorResponse))]
         public async Task<IActionResult> Get([FromQuery] OrderFilter filter, [FromQuery] EntityOrder order, [FromQuery] PagingParams pagination)
@@ -41,6 +41,18 @@ namespace Stock_Back_End.Controllers
                 .AplyFilter(filter)
                 .AplyOrder(order)
                 .ToEntityPaginated(pagination);
+
+            return Ok(list);
+        }
+
+        [SwaggerOperation(Summary = "Retrieve a item collections items identified by order's {id}")]
+        [SwaggerResponse(200, "The request has succeeded.", typeof(Item))]
+        [SwaggerResponse(500, "The server encountered an unexpected condition that prevented it from fulfilling the request.", typeof(ErrorResponse))]
+        [SwaggerResponse(404, "The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.", typeof(ErrorResponse))]
+        [HttpGet("{id}/Item")]
+        public IActionResult GetItems(int id)
+        {
+            var list = orderRepository.Browse(id);
 
             return Ok(list);
         }

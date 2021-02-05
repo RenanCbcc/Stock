@@ -9,6 +9,7 @@ namespace Stock_Back_End.Models.OrderModels
     {
         Task<Order> Read(int Id);
         IQueryable<Order> Browse();
+        IQueryable<Item> Browse(int Id);
         Task<IEnumerable<Order>> Pending(int id);
         Task Add(Order order);
         Task Edit(Order order);
@@ -29,18 +30,15 @@ namespace Stock_Back_End.Models.OrderModels
             await context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Order>> Pending(int id)
-        {
-            return await context.Orders
-                .Where(o => o.CLientId == id)
-                .Where(o => o.Status == Status.Pendende)
-                .OrderBy(o => o.Value)
-                .ToListAsync();
-        }
 
         public IQueryable<Order> Browse()
         {
             return context.Orders.Include(o => o.Client);
+        }
+
+        public IQueryable<Item> Browse(int Id)
+        {
+            return context.Items.Include(i => i.Product).Where(i => i.OrderId == Id);
         }
 
         public async Task Edit(Order alteredOrder)
@@ -55,6 +53,13 @@ namespace Stock_Back_End.Models.OrderModels
             return await context.Orders.FindAsync(Id);
         }
 
-
+        public async Task<IEnumerable<Order>> Pending(int id)
+        {
+            return await context.Orders
+                .Where(o => o.CLientId == id)
+                .Where(o => o.Status == Status.Pendende)
+                .OrderBy(o => o.Value)
+                .ToListAsync();
+        }
     }
 }
