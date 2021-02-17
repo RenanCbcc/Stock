@@ -34,7 +34,7 @@ namespace Stock_Back_End.Models.PaymentModels
 
         public async Task<float> Total(int id)
         {
-            return await context.Payments.Where(p => p.ClientId == id).SumAsync(p => p.Amount);
+            return await context.Payments.Where(p => p.Client.Id == id).SumAsync(p => p.Amount);
         }
     }
 }

@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using Stock_Back_End.Models.ErrorModels;
 using Swashbuckle.AspNetCore.Annotations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Stock_Back_End.Models.CategoryModels;
+using Stock_Back_End.Models.SupplierModels;
 
 namespace Stock_Back_End.Controllers
 {
@@ -15,10 +17,15 @@ namespace Stock_Back_End.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductRepository repository;
+        private readonly ICategoryRepository categoryRepository;
+        private readonly ISupplierRepository supplierRepository;
 
-        public ProductController(IProductRepository repository)
+        public ProductController(IProductRepository repository,
+            ICategoryRepository categoryRepository, ISupplierRepository supplierRepository)
         {
             this.repository = repository;
+            this.categoryRepository = categoryRepository;
+            this.supplierRepository = supplierRepository;
         }
 
         [HttpGet]
@@ -34,7 +41,7 @@ namespace Stock_Back_End.Controllers
 
             return Ok(list);
         }
-                
+
 
         // GET: api/Product/5
         [HttpGet("{id:int}")]
@@ -79,6 +86,17 @@ namespace Stock_Back_End.Controllers
         {
             if (ModelState.IsValid)
             {
+                var category = await categoryRepository.Read(model.CategoryId);
+                if (category == null)
+                {
+                    return NotFound($"Categoria com Id {model.CategoryId} não foi encontrado.");
+                }
+                var supplier = await supplierRepository.Read(model.SupplierId);
+                if (supplier == null)
+                {
+                    return NotFound($"Fornecedor com Id {model.SupplierId} não foi encontrado.");
+                }
+
                 var p = new Product
                 {
                     Discount = model.Discount,
@@ -88,8 +106,8 @@ namespace Stock_Back_End.Controllers
                     Code = model.Code,
                     Quantity = model.Quantity,
                     MinimumQuantity = model.MinimumQuantity,
-                    CategoryId = model.CategoryId,
-                    SupplierId = model.SupplierId
+                    Category = category,
+                    Supplier = supplier
                 };
 
                 await repository.Add(p);

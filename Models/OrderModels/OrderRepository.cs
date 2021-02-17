@@ -56,7 +56,7 @@ namespace Stock_Back_End.Models.OrderModels
         public async Task<IEnumerable<Order>> Pending(int id)
         {
             return await context.Orders
-                .Where(o => o.CLientId == id)
+                .Where(o => o.Client.Id == id)
                 .Where(o => o.Status == Status.Pendende)
                 .OrderBy(o => o.Value)
                 .ToListAsync();

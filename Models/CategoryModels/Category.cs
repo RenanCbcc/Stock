@@ -1,5 +1,5 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using Stock_Back_End.Models.ProductModels;
+using System.Collections.Generic;
 
 namespace Stock_Back_End.Models.CategoryModels
 {
@@ -7,17 +7,15 @@ namespace Stock_Back_End.Models.CategoryModels
     {
         public Category()
         {
-            Discount = 0;           
+            Discount = 0;
+            Products = new HashSet<Product>();
         }
 
-        [Required]
-        [StringLength(maximumLength: 25, MinimumLength = 5,
-        ErrorMessage = "O título da categoria deve ter no mímino 5 caracteres e no máximo 25.")]
         public string Title { get; set; }
 
-        [Range(minimum: 0, maximum: 100, ErrorMessage = "O desconto da categoria deve estar entre 0 e 100.")]
         public float Discount { get; set; }
 
-        
+       
+        public ISet<Product> Products { get; set; }
     }
 }

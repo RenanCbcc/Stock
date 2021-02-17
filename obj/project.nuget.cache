@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "qRcW0F7T75u9AnQWswgzLddA6U4mOVH/tTTrspd4aGriWRWGgrVen2joApdePPBKhfK+PdA6Dg/JXkZBUE9IDA==",
+  "dgSpecHash": "gxXG2X2vUWAnYodgTQ7ptMUWYPsBP8AWjVJ7gkBpE14RrvKxxZPbzhQXMbcLRPMfMMCP5UwyeGC17N6vOpsQYw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Renan\\source\\repos\\Stock-Back-End\\Stock-Back-End.csproj",
   "expectedPackageFiles": [
@@ -8,8 +8,10 @@
     "C:\\Users\\Renan\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\5.0.1\\microsoft.aspnetcore.cryptography.internal.5.0.1.nupkg.sha512",
     "C:\\Users\\Renan\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\5.0.1\\microsoft.aspnetcore.cryptography.keyderivation.5.0.1.nupkg.sha512",
     "C:\\Users\\Renan\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\5.0.1\\microsoft.aspnetcore.identity.entityframeworkcore.5.0.1.nupkg.sha512",
+    "C:\\Users\\Renan\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\5.0.3\\microsoft.aspnetcore.jsonpatch.5.0.3.nupkg.sha512",
+    "C:\\Users\\Renan\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\5.0.3\\microsoft.aspnetcore.mvc.newtonsoftjson.5.0.3.nupkg.sha512",
     "C:\\Users\\Renan\\.nuget\\packages\\microsoft.aspnetcore.mvc.versioning\\4.2.0\\microsoft.aspnetcore.mvc.versioning.4.2.0.nupkg.sha512",
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
+    "C:\\Users\\Renan\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\Renan\\.nuget\\packages\\microsoft.data.sqlclient\\2.0.1\\microsoft.data.sqlclient.2.0.1.nupkg.sha512",
     "C:\\Users\\Renan\\.nuget\\packages\\microsoft.data.sqlclient.sni.runtime\\2.0.1\\microsoft.data.sqlclient.sni.runtime.2.0.1.nupkg.sha512",
     "C:\\Users\\Renan\\.nuget\\packages\\microsoft.entityframeworkcore\\5.0.1\\microsoft.entityframeworkcore.5.0.1.nupkg.sha512",
@@ -41,6 +43,8 @@
     "C:\\Users\\Renan\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.10.9\\microsoft.visualstudio.azure.containers.tools.targets.1.10.9.nupkg.sha512",
     "C:\\Users\\Renan\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
     "C:\\Users\\Renan\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
+    "C:\\Users\\Renan\\.nuget\\packages\\newtonsoft.json\\12.0.2\\newtonsoft.json.12.0.2.nupkg.sha512",
+    "C:\\Users\\Renan\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512",
     "C:\\Users\\Renan\\.nuget\\packages\\npgsql\\5.0.1.1\\npgsql.5.0.1.1.nupkg.sha512",
     "C:\\Users\\Renan\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\5.0.1\\npgsql.entityframeworkcore.postgresql.5.0.1.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\runtime.native.system\\4.3.0\\runtime.native.system.4.3.0.nupkg.sha512",

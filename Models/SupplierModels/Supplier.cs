@@ -1,25 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Stock_Back_End.Models.ProductModels;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Stock_Back_End.Models.SupplierModels
 {
     public class Supplier : Base
     {
-        [Required(ErrorMessage = "Fornecedor precisa ter um nome.")]
-        [DataType(DataType.Text)]
-        [StringLength(maximumLength: 50, MinimumLength = 5,
-        ErrorMessage = "O nome do fornecedor deve ter no mímino 5 caracteres e no máximo 50.")]
+        public Supplier()
+        {
+            Products = new HashSet<Product>();
+        }
         public string Name { get; set; }
 
-        [DataType(DataType.EmailAddress)]
-        [StringLength(maximumLength: 50, MinimumLength = 5,
-        ErrorMessage = "O nome do fornecedor deve ter no mímino 5 caracteres e no máximo 50.")]
         public string Email { get; set; }
 
-
-        [Required]
-        [StringLength(maximumLength: 11, MinimumLength = 11,
-        ErrorMessage = "O número de telefone deve ter exatamente 11 caracteres.")]
-        [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
+
+        
+        public ISet<Product> Products { get; set; }
     }
 }

@@ -39,9 +39,10 @@ namespace Stock_Back_End.Models.CategoryModels
             return context.Categories;
         }
 
-        public IQueryable<Product> Browse(int id)
+        public IQueryable<Product> Browse(int Id)
         {
-            return context.Products.Where(p => p.CategoryId == id);
+            //return context.Categories.Include(c => c.Products).Where(c=> c.Id == Id);
+            return context.Products.Where(p => p.Category.Id == Id);
         }
 
         public async Task Edit(Category alteredCategory)

@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using Stock_Back_End.Filters;
 using Stock_Back_End.Models;
 using Stock_Back_End.Models.CategoryModels;
@@ -104,10 +105,18 @@ namespace Stock_Back_End
             );
 
             services.AddApiVersioning();
+
             services.AddControllers(options =>
             {
                 options.Filters.Add(typeof(ErrorResponseFilter));
+            }).AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
+
+
+
+
 
             //I want to use my own state validation implemented in my exception filter.
             services.Configure<ApiBehaviorOptions>(options =>

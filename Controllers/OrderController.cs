@@ -92,7 +92,7 @@ namespace Stock_Back_End.Controllers
 
                 var order = new Order
                 {
-                    CLientId = model.CLientId,
+                    Client = client,
                     Items = model.Items,
                     Date = DateTime.Now,
                 };

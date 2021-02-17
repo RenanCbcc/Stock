@@ -56,23 +56,23 @@ namespace Stock_Back_End.Controllers
         {
             if (ModelState.IsValid)
             {
-                var c = await clientRepository.Read(model.ClientId);
-                if (c == null)
+                var client = await clientRepository.Read(model.ClientId);
+                if (client == null)
                 {
                     return NotFound($"Cliente com Id {model.ClientId} não foi encontrado.");
                 }
 
-                if (model.Value <= 0 || model.Value > c.Debt)
+                if (model.Value <= 0 || model.Value > client.Debt)
                 {
-                    return BadRequest($"O valor precisa ser maior que R$ 0 e menor que R$ {c.Debt}");
+                    return BadRequest($"O valor precisa ser maior que R$ 0 e menor que R$ {client.Debt}");
                 }
 
-                c.Debt -= model.Value;
-                c.LastPurchase = DateTime.Now;
+                client.Debt -= model.Value;
+                client.LastPurchase = DateTime.Now;
 
-                if (c.Debt == 0)
+                if (client.Debt == 0)
                 {
-                    var pendings = await orderRepository.Pending(c.Id);
+                    var pendings = await orderRepository.Pending(client.Id);
                     foreach (var order in pendings)
                     {
                         order.Status = Models.OrderModels.Status.Pago;
@@ -81,7 +81,7 @@ namespace Stock_Back_End.Controllers
 
                 var p = new Payment
                 {
-                    ClientId = model.ClientId,
+                    Client = client,
                     Amount = model.Value,
                     Date = DateTime.Now,
                 };
