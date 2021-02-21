@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace Stock_Back_End.Models.PaymentModels
 {
@@ -12,7 +13,9 @@ namespace Stock_Back_End.Models.PaymentModels
                 .WithMany(c => c.Payments)
                 .HasForeignKey("ClientId");
 
-            builder.Property(p => p.Date).HasColumnType("datetime").IsRequired();
+            builder.Property(p => p.Date)
+                .HasColumnType("datetime")
+               .HasDefaultValueSql("getdate()");
         }
     }
 }

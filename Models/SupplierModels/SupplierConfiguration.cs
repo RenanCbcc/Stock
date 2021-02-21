@@ -11,7 +11,8 @@ namespace Stock_Back_End.Models.SupplierModels
             builder.Property(s => s.Name).HasMaxLength(50).IsRequired();
             builder.Property(s => s.Email).HasMaxLength(50).IsRequired();
             builder.Property(s => s.PhoneNumber).HasMaxLength(11).IsRequired();
-
+            builder.HasAlternateKey(s => s.Name);
+            
         }
     }
 }

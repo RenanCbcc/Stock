@@ -70,3 +70,6 @@ C:\Users\Renan\source\repos\Stock-Back-End\bin\Debug\net5.0\Microsoft.AspNetCore
 C:\Users\Renan\source\repos\Stock-Back-End\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\Renan\source\repos\Stock-Back-End\bin\Debug\net5.0\Newtonsoft.Json.dll
 C:\Users\Renan\source\repos\Stock-Back-End\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll
+C:\Users\Renan\source\repos\Stock-Back-End\bin\Debug\net5.0\Humanizer.dll
+C:\Users\Renan\source\repos\Stock-Back-End\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\Renan\source\repos\Stock-Back-End\bin\Debug\net5.0\System.Diagnostics.DiagnosticSource.dll
