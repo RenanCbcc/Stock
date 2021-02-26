@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Swashbuckle.AspNetCore.Annotations;
 using Stock_Back_End.Models.ErrorModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Stock_Back_End.Models.ProductModels;
 
 namespace Stock_Back_End.Controllers
 {
@@ -15,10 +16,12 @@ namespace Stock_Back_End.Controllers
     public class ClientController : ControllerBase
     {
         private readonly IClientRepository repository;
+        private readonly IProductRepository productRepository;
 
-        public ClientController(IClientRepository repository)
+        public ClientController(IClientRepository repository, IProductRepository productRepository)
         {
             this.repository = repository;
+            this.productRepository = productRepository;
         }
 
         [HttpGet]
@@ -28,6 +31,21 @@ namespace Stock_Back_End.Controllers
         public async Task<IActionResult> Get([FromQuery] ClientFilter filter, [FromQuery] EntityOrder order, [FromQuery] PagingParams pagination)
         {
             var list = await repository.Browse()
+                .AplyFilter(filter)
+                .AplyOrder(order)
+                .ToEntityPaginated(pagination);
+
+            return Ok(list);
+        }
+
+        [HttpGet]
+        [Route("{id}/Suggestions")]
+        [SwaggerOperation(Summary = "Retrieve a collections of products.")]
+        [SwaggerResponse(200, "The request has succeeded.", typeof(Pagination<Product>))]
+        [SwaggerResponse(500, "The server encountered an unexpected condition that prevented it from fulfilling the request.", typeof(ErrorResponse))]
+        public async Task<IActionResult> Suggestions(int id, [FromQuery] ProductFilter filter, [FromQuery] EntityOrder order, [FromQuery] PagingParams pagination)
+        {
+            var list = await (await productRepository.SuggestionsTo(id))
                 .AplyFilter(filter)
                 .AplyOrder(order)
                 .ToEntityPaginated(pagination);

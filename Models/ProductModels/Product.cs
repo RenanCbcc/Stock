@@ -10,8 +10,10 @@ namespace Stock_Back_End.Models.ProductModels
             Discount = 0;
         }
 
+        public int CategoryId { get; set; }
         public Category Category { get; set; }
 
+        public int SupplierId { get; set; }
         public Supplier Supplier { get; set; }
 
         public float Discount { get; set; }

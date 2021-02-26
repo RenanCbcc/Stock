@@ -9,6 +9,7 @@ namespace Stock_Back_End.Models.ProductModels
         Task<Product> Read(int Id);
         Task<Product> Read(string Code);
         IQueryable<Product> Browse();
+        Task<IQueryable<Product>> SuggestionsTo(int ClientId);
         Task Add(Product product);
         Task Edit(Product product);
     }
@@ -48,6 +49,31 @@ namespace Stock_Back_End.Models.ProductModels
         {
             return await context.Products.FirstOrDefaultAsync(p => p.Code == Code);
         }
-        
+
+        public async Task<IQueryable<Product>> SuggestionsTo(int Id)
+        {
+            /*
+             SELECT alsobought.* from Items itemBought
+            JOIN Items alsobought on itemBought.OrderId = alsobought.OrderId
+            WHERE itemBought.ProductId = 1 AND itemBought.ProductId != alsobought.ProductId
+             */
+
+            var lastOrder = await context.Orders.Where(o => o.Client.Id == Id)
+                .OrderByDescending(o => o.Date).FirstAsync();
+
+            var lastPurchases = context.Items.Where(i => i.OrderId == lastOrder.Id)
+                .Select(i => i.Id);
+
+            var query = from itemBought in context.Items
+                        join alsobought in context.Items
+                        on itemBought.OrderId equals alsobought.OrderId
+                        where lastPurchases.Contains(itemBought.ProductId)
+                        && itemBought.ProductId != alsobought.ProductId
+                        select alsobought.Product;
+
+            return query;
+        }
+
+
     }
 }

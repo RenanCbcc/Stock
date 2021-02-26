@@ -14,6 +14,11 @@ namespace Stock_Back_End.Models.OrderModels
                     query = query.Where(o => o.Client.Name.Contains(filter.Client));
                 }
 
+                if (filter.ClientId != 0)
+                {
+                    query = query.Where(o => o.Client.Id == filter.ClientId);
+                }
+
                 if (filter.ValueBiggerThan != 0)
                 {
                     query = query.Where(o => o.Value > filter.ValueBiggerThan);
@@ -43,6 +48,7 @@ namespace Stock_Back_End.Models.OrderModels
     public class OrderFilter
     {
         public string Client { get; set; }
+        public int ClientId { get; set; }
         public float ValueBiggerThan { get; set; }
         public float ValueLessThan { get; set; }
         public DateTime? Before { get; set; }

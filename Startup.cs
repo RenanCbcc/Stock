@@ -112,6 +112,7 @@ namespace Stock_Back_End
             }).AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                //options.SerializerSettings.MaxDepth = 2;
             });
 
 

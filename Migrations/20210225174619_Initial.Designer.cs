@@ -10,7 +10,7 @@ using Stock_Back_End.Models;
 namespace Stock_Back_End.Migrations
 {
     [DbContext(typeof(StockContext))]
-    [Migration("20210221130545_Initial")]
+    [Migration("20210225174619_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -372,7 +372,7 @@ namespace Stock_Back_End.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CategoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Code")
@@ -400,7 +400,7 @@ namespace Stock_Back_End.Migrations
                     b.Property<float>("SalePrice")
                         .HasColumnType("real");
 
-                    b.Property<int?>("SupplierId")
+                    b.Property<int>("SupplierId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -533,11 +533,15 @@ namespace Stock_Back_End.Migrations
                 {
                     b.HasOne("Stock_Back_End.Models.CategoryModels.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Stock_Back_End.Models.SupplierModels.Supplier", "Supplier")
                         .WithMany("Products")
-                        .HasForeignKey("SupplierId");
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
 

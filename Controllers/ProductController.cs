@@ -41,8 +41,7 @@ namespace Stock_Back_End.Controllers
 
             return Ok(list);
         }
-
-
+                
         // GET: api/Product/5
         [HttpGet("{id:int}")]
         [SwaggerOperation(Summary = "Retrieve a client identified by it's {id}")]

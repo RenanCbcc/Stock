@@ -10,6 +10,9 @@ namespace Stock_Back_End.Models.ProductModels
             builder.Property(p => p.Description).HasMaxLength(50).IsRequired();
             builder.Property(p => p.Code).HasMaxLength(13).IsRequired();
             builder.HasAlternateKey(p => p.Code);
+            
+            builder.HasOne(p => p.Category).WithMany(c => c.Products).HasForeignKey("CategoryId");
+            builder.HasOne(p => p.Supplier).WithMany(c => c.Products).HasForeignKey("SupplierId");
         }
     }
 }
