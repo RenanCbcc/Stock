@@ -28,12 +28,23 @@ namespace Stock_Back_End
     {
         private readonly IConfiguration configuration;
         private readonly IWebHostEnvironment env;
-
+        private readonly string stringConnection;
+        private readonly string stringAudience;
 
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             this.configuration = configuration;
             this.env = env;
+            if (env.IsDevelopment())
+            {
+                stringConnection = configuration["ConnectionStrings:SqlServerConnection"];
+                stringAudience = configuration["Jwt:AudienceDevelopment"];
+            }
+            if (env.IsProduction())
+            {
+                stringConnection = configuration["ConnectionStrings:PostgresqlConnection"];
+                stringAudience = configuration["Jwt:AudienceProduction"];
+            }
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -43,11 +54,11 @@ namespace Stock_Back_End
             {
                 if (env.IsDevelopment())
                 {
-                    options.UseSqlServer(configuration.GetConnectionString("SqlServerConnection"));
+                    options.UseSqlServer(stringConnection);
                 }
                 if (env.IsProduction())
                 {
-                    options.UseNpgsql(configuration.GetConnectionString("PostgresqlConnection"));
+                    options.UseNpgsql(stringConnection);
                 }
             });
 
@@ -75,7 +86,7 @@ namespace Stock_Back_End
             {
                 options.AddDefaultPolicy(builder =>
                 {
-                    builder.AllowAnyMethod().AllowAnyHeader().WithOrigins(configuration["Jwt:Audience"]);
+                    builder.AllowAnyMethod().AllowAnyHeader().WithOrigins(stringAudience);
                 });
             });
 
@@ -97,7 +108,7 @@ namespace Stock_Back_End
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = configuration["Jwt:Issuer"],
-                        ValidAudience = configuration["Jwt:Audience"],
+                        ValidAudience = stringAudience,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"])),
                         ClockSkew = TimeSpan.FromHours(1)
                     };
